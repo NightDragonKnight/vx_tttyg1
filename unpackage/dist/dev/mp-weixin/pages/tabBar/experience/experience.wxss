@@ -1,0 +1,129 @@
+
+.content {
+		background-color: #fef5f7;
+		min-height: 100vh;
+}
+	
+	/* 搜索区域样式 */
+.search-section {
+		padding: 20rpx;
+}
+.search-bar {
+		display: flex;
+		background-color: #fff8fa;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+		overflow: hidden;
+}
+.search-input {
+		flex: 1;
+		height: 80rpx;
+		padding: 0 30rpx;
+		font-size: 28rpx;
+		background-color: transparent;
+}
+.search-btn {
+		width: 120rpx;
+		height: 80rpx;
+		background-color: #FF69B4;
+		color: #fff;
+		font-size: 28rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+}
+	
+	/* 体验项目列表样式 */
+.experience-list {
+		padding: 0 20rpx;
+}
+.experience-item {
+		background-color: #fff8fa;
+		border-radius: 16rpx;
+		margin-bottom: 20rpx;
+		overflow: hidden;
+		border: 1rpx solid #ffe4e8;
+}
+.experience-image {
+		position: relative;
+}
+.experience-image image {
+		width: 100%;
+		height: 300rpx;
+}
+.experience-tag {
+		position: absolute;
+		top: 20rpx;
+		right: 20rpx;
+		background-color: #FF69B4;
+		color: #fff;
+		padding: 8rpx 16rpx;
+		border-radius: 20rpx;
+		font-size: 24rpx;
+}
+.experience-info {
+		padding: 30rpx;
+}
+.experience-name {
+		font-size: 32rpx;
+		font-weight: bold;
+		color: #333;
+		display: block;
+		margin-bottom: 16rpx;
+}
+.experience-desc {
+		font-size: 26rpx;
+		color: #666;
+		display: block;
+		margin-bottom: 20rpx;
+		line-height: 1.5;
+}
+.experience-details {
+		margin-bottom: 20rpx;
+}
+.experience-details text {
+		font-size: 24rpx;
+		color: #999;
+		display: block;
+		margin-bottom: 8rpx;
+}
+.experience-footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+}
+.price-info {
+		display: flex;
+		align-items: center;
+}
+.current-price {
+		font-size: 36rpx;
+		color: #FF69B4;
+		font-weight: bold;
+		margin-right: 16rpx;
+}
+.original-price {
+		font-size: 26rpx;
+		color: #999;
+		text-decoration: line-through;
+}
+.book-btn {
+		background-color: #FF69B4;
+		color: #fff;
+		padding: 16rpx 32rpx;
+		border-radius: 30rpx;
+		font-size: 26rpx;
+}
+	
+	/* 空状态样式 */
+.empty-state {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 100rpx 0;
+}
+.empty-text {
+		font-size: 28rpx;
+		color: #999;
+}

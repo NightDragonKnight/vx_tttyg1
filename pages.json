@@ -1,0 +1,163 @@
+{
+	"leftWindow": {
+		"path": "windows/left-window.vue",
+		"style": {
+			"width": "350px"
+		}
+	},
+	"topWindow": {
+		"path": "windows/top-window.vue",
+		"style": {
+			"height": "60px"
+		}
+	},
+	"pages": [
+		{
+			"path": "pages/tabBar/home/home",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"navigationBarBackgroundColor": "#FF69B4",
+				"navigationBarTextStyle": "white",
+				"app-plus": {
+					"bounce": "vertical",
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue534",
+							"fontSrc": "/static/uni.ttf",
+							"fontSize": "22px",
+							"color": "#FFFFFF"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/tabBar/discount/discount",
+			"style": {
+				"navigationBarTitleText": "优惠中心",
+				"navigationBarBackgroundColor": "#FF69B4",
+				"navigationBarTextStyle": "white",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue534",
+							"fontSrc": "/static/uni.ttf",
+							"fontSize": "22px",
+							"color": "#FFFFFF"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/tabBar/booking/booking",
+			"style": {
+				"navigationBarTitleText": "我的预订",
+				"navigationBarBackgroundColor": "#FF69B4",
+				"navigationBarTextStyle": "white",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue534",
+							"fontSrc": "/static/uni.ttf",
+							"fontSize": "22px",
+							"color": "#FFFFFF"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/tabBar/profile/profile",
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"navigationBarBackgroundColor": "#FF69B4",
+				"navigationBarTextStyle": "white",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue534",
+							"fontSrc": "/static/uni.ttf",
+							"fontSize": "22px",
+							"color": "#FFFFFF"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/tabBar/experience/experience",
+			"style": {
+				"navigationBarTitleText": "体验馆",
+				"navigationBarBackgroundColor": "#FF69B4",
+				"navigationBarTextStyle": "white",
+						"app-plus": {
+							"titleNView": {
+								"buttons": [{
+							"text": "\ue534",
+							"fontSrc": "/static/uni.ttf",
+							"fontSize": "22px",
+							"color": "#FFFFFF"
+								}]
+							}
+						}
+					}
+				},
+				{
+			"path": "pages/tabBar/booking-detail/booking-detail",
+					"style": {
+				"navigationBarTitleText": "预订详情",
+				"navigationBarBackgroundColor": "#FF69B4",
+				"navigationBarTextStyle": "white",
+						"app-plus": {
+							"titleNView": {
+								"buttons": [{
+							"text": "\ue534",
+									"fontSrc": "/static/uni.ttf",
+							"fontSize": "22px",
+							"color": "#FFFFFF"
+						}]
+					}
+				}
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "天天体验馆",
+		"navigationBarBackgroundColor": "#FF69B4",
+		"backgroundColor": "#fef5f7"
+	},
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#FF69B4",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"pagePath": "pages/tabBar/home/home",
+				"iconPath": "static/image/day/首页.png",
+				"selectedIconPath": "static/image/day/首页.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/tabBar/discount/discount",
+				"iconPath": "static/image/day/优惠.png",
+				"selectedIconPath": "static/image/day/优惠.png",
+				"text": "优惠中心"
+			},
+			{
+				"pagePath": "pages/tabBar/booking/booking",
+				"iconPath": "static/image/day/我的预订.png",
+				"selectedIconPath": "static/image/day/我的预订.png",
+				"text": "我的预订"
+			},
+			{
+				"pagePath": "pages/tabBar/profile/profile",
+				"iconPath": "static/image/day/个人中心.png",
+				"selectedIconPath": "static/image/day/个人中心.png",
+				"text": "个人中心"
+			}
+		]
+	}
+}
