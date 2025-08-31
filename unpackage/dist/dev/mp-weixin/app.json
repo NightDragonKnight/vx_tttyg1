@@ -5,7 +5,8 @@
     "pages/tabBar/booking/booking",
     "pages/tabBar/profile/profile",
     "pages/tabBar/experience/experience",
-    "pages/tabBar/booking-detail/booking-detail"
+    "pages/tabBar/booking-detail/booking-detail",
+    "pages/order-detail/order-detail"
   ],
   "window": {
     "navigationBarTextStyle": "white",
@@ -29,7 +30,7 @@
         "pagePath": "pages/tabBar/discount/discount",
         "iconPath": "static/image/day/优惠.png",
         "selectedIconPath": "static/image/day/优惠.png",
-        "text": "优惠中心"
+        "text": "热门活动"
       },
       {
         "pagePath": "pages/tabBar/booking/booking",

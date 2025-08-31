@@ -5,7 +5,6 @@ const _sfc_main = {
   data() {
     return {
       currentStore: 0,
-      currentOrderType: 0,
       currentOrderStatus: 0,
       storeOptions: [
         { name: "全部门店", id: "all" },
@@ -13,20 +12,13 @@ const _sfc_main = {
         { name: "海淀店", id: "haidian" },
         { name: "西城店", id: "xicheng" }
       ],
-      orderTypes: [
-        { name: "全部类型", id: "all" },
-        { name: "VR体验", id: "vr" },
-        { name: "密室逃脱", id: "escape" },
-        { name: "电玩城", id: "arcade" },
-        { name: "棋牌室", id: "card" },
-        { name: "台球室", id: "billiards" },
-        { name: "KTV", id: "ktv" }
-      ],
       orderStatus: [
         { name: "全部状态", count: 0 },
         { name: "待支付", count: 2 },
         { name: "已支付", count: 3 },
         { name: "已完成", count: 1 },
+        { name: "退款中", count: 1 },
+        { name: "退款完成", count: 1 },
         { name: "已取消", count: 0 }
       ],
       bookings: [
@@ -65,14 +57,15 @@ const _sfc_main = {
           store: "西城店",
           orderType: "billiards",
           image: "/static/image/day/台球1.png",
-          date: "2024-12-10",
+          date: "2024-12-25",
           time: "10:00",
           quantity: 3,
           totalPrice: "150",
           status: "paid",
           statusText: "已支付",
           roomStatus: "可使用",
-          roomNumber: "A-101"
+          roomNumber: "A-101",
+          createTime: "2024-12-08 15:30"
         },
         {
           orderNo: "BK20241125001",
@@ -95,14 +88,15 @@ const _sfc_main = {
           store: "朝阳店",
           orderType: "vr",
           image: "/static/image/day/VR体验馆.jpg",
-          date: "2024-12-12",
+          date: "2024-12-20",
           time: "15:00",
           quantity: 1,
           totalPrice: "80",
           status: "paid",
           statusText: "已支付",
           roomStatus: "清洁中",
-          roomNumber: "B-203"
+          roomNumber: "B-203",
+          createTime: "2024-12-10 09:15"
         },
         {
           orderNo: "BK20241203001",
@@ -118,7 +112,40 @@ const _sfc_main = {
           status: "paid",
           statusText: "已支付",
           roomStatus: "使用中",
-          roomNumber: "C-305"
+          roomNumber: "C-305",
+          createTime: "2024-12-11 16:45"
+        },
+        {
+          orderNo: "BK20241204001",
+          productName: "密室逃脱",
+          description: "惊险刺激的解密游戏",
+          store: "朝阳店",
+          orderType: "escape",
+          image: "/static/image/day/密室逃脱.jpg",
+          date: "2024-12-18",
+          time: "14:00",
+          quantity: 2,
+          totalPrice: "160",
+          status: "refunding",
+          statusText: "退款中",
+          createTime: "2024-12-12 10:20"
+        },
+        {
+          orderNo: "BK20241120001",
+          productName: "VR体验馆",
+          description: "沉浸式虚拟现实体验",
+          store: "西城店",
+          orderType: "vr",
+          image: "/static/image/day/VR体验馆.jpg",
+          date: "2024-12-08",
+          time: "16:00",
+          quantity: 1,
+          totalPrice: "80",
+          status: "refunded",
+          statusText: "退款完成",
+          refundAmount: "64.00",
+          refundRate: "80",
+          createTime: "2024-11-28 13:15"
         }
       ]
     };
@@ -130,12 +157,8 @@ const _sfc_main = {
         const storeId = this.storeOptions[this.currentStore].id;
         result = result.filter((item) => item.store.includes(storeId.replace("店", "")));
       }
-      if (this.currentOrderType > 0) {
-        const typeId = this.orderTypes[this.currentOrderType].id;
-        result = result.filter((item) => item.orderType === typeId);
-      }
       if (this.currentOrderStatus > 0) {
-        const statusMap = ["", "pending", "paid", "completed", "cancelled"];
+        const statusMap = ["", "pending", "paid", "completed", "refunding", "refunded", "cancelled"];
         const status = statusMap[this.currentOrderStatus];
         result = result.filter((item) => item.status === status);
       }
@@ -145,9 +168,6 @@ const _sfc_main = {
   methods: {
     onStoreChange(e) {
       this.currentStore = e.detail.value;
-    },
-    onOrderTypeChange(e) {
-      this.currentOrderType = e.detail.value;
     },
     onOrderStatusChange(e) {
       this.currentOrderStatus = e.detail.value;
@@ -173,9 +193,8 @@ const _sfc_main = {
       });
     },
     viewDetail(item) {
-      common_vendor.index.showToast({
-        title: "查看详情",
-        icon: "none"
+      common_vendor.index.navigateTo({
+        url: `/pages/order-detail/order-detail?orderData=${encodeURIComponent(JSON.stringify(item))}`
       });
     },
     writeReview(item) {
@@ -221,19 +240,15 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return common_vendor.e({
-    a: common_vendor.t($data.orderTypes[$data.currentOrderType].name),
-    b: $data.currentOrderType,
-    c: $data.orderTypes,
-    d: common_vendor.o((...args) => $options.onOrderTypeChange && $options.onOrderTypeChange(...args)),
-    e: common_vendor.t($data.storeOptions[$data.currentStore].name),
-    f: $data.currentStore,
-    g: $data.storeOptions,
-    h: common_vendor.o((...args) => $options.onStoreChange && $options.onStoreChange(...args)),
-    i: common_vendor.t($data.orderStatus[$data.currentOrderStatus].name),
-    j: $data.currentOrderStatus,
-    k: $data.orderStatus,
-    l: common_vendor.o((...args) => $options.onOrderStatusChange && $options.onOrderStatusChange(...args)),
-    m: common_vendor.f($options.filteredBookings, (item, index, i0) => {
+    a: common_vendor.t($data.storeOptions[$data.currentStore].name),
+    b: $data.currentStore,
+    c: $data.storeOptions,
+    d: common_vendor.o((...args) => $options.onStoreChange && $options.onStoreChange(...args)),
+    e: common_vendor.t($data.orderStatus[$data.currentOrderStatus].name),
+    f: $data.currentOrderStatus,
+    g: $data.orderStatus,
+    h: common_vendor.o((...args) => $options.onOrderStatusChange && $options.onOrderStatusChange(...args)),
+    i: common_vendor.f($options.filteredBookings, (item, index, i0) => {
       return common_vendor.e({
         a: common_vendor.t(item.orderNo),
         b: common_vendor.t(item.statusText),
@@ -271,12 +286,22 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       }, item.status === "completed" ? {
         z: common_vendor.o(($event) => $options.writeReview(item), index)
       } : {}, {
-        A: index
+        A: item.status === "refunding"
+      }, item.status === "refunding" ? {
+        B: common_vendor.o(($event) => $options.viewDetail(item), index)
+      } : {}, {
+        C: item.status === "refunded"
+      }, item.status === "refunded" ? {
+        D: common_vendor.t(item.refundAmount),
+        E: common_vendor.t(item.refundRate),
+        F: common_vendor.o(($event) => $options.viewDetail(item), index)
+      } : {}, {
+        G: index
       });
     }),
-    n: $options.filteredBookings.length === 0
+    j: $options.filteredBookings.length === 0
   }, $options.filteredBookings.length === 0 ? {
-    o: common_assets._imports_0
+    k: common_assets._imports_0
   } : {});
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render]]);

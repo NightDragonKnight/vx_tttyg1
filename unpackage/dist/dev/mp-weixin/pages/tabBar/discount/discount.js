@@ -3,166 +3,115 @@ const common_vendor = require("../../../common/vendor.js");
 const _sfc_main = {
   data() {
     return {
-      currentCategory: 0,
-      categories: [
-        { name: "账户充值", id: "recharge" },
-        { name: "团购优惠", id: "group" },
-        { name: "体验中心", id: "experience" },
-        { name: "特邀嘉宾", id: "vip" }
-      ],
-      discounts: {
-        recharge: [
-          {
-            title: "充值100送20",
-            description: "充值满100元，赠送20元体验券",
-            originalPrice: "100",
-            currentPrice: "120",
-            image: "/static/componentIndex.png",
-            tag: "限时特惠",
-            validDate: "2024-12-31"
-          },
-          {
-            title: "充值200送50",
-            description: "充值满200元，赠送50元体验券",
-            originalPrice: "200",
-            currentPrice: "250",
-            image: "/static/apiIndex.png",
-            tag: "新用户专享",
-            validDate: "2024-12-31"
-          },
-          {
-            title: "充值500送150",
-            description: "充值满500元，赠送150元体验券",
-            originalPrice: "500",
-            currentPrice: "650",
-            image: "/static/extuiIndex.png",
-            tag: "会员专享",
-            validDate: "2024-12-31"
-          }
-        ],
-        group: [
-          {
-            title: "VR体验团购",
-            description: "5人团购，每人立减30元",
-            originalPrice: "80",
-            currentPrice: "50",
-            image: "/static/templateIndex.png",
-            tag: "团购特惠",
-            validDate: "2024-12-31"
-          },
-          {
-            title: "密室逃脱团购",
-            description: "3人团购，每人立减40元",
-            originalPrice: "120",
-            currentPrice: "80",
-            image: "/static/image/day/密室逃脱.jpg",
-            tag: "限时抢购",
-            validDate: "2024-12-31"
-          }
-        ],
-        experience: [
-          {
-            title: "VR体验馆",
-            description: "沉浸式虚拟现实体验",
-            originalPrice: "80",
-            currentPrice: "60",
-            image: "/static/image/day/VR体验馆.jpg",
-            tag: "体验推荐",
-            validDate: "2024-12-31"
-          },
-          {
-            title: "棋牌室",
-            description: "休闲娱乐棋牌游戏",
-            originalPrice: "60",
-            currentPrice: "45",
-            image: "/static/image/day/棋牌1.jpg",
-            tag: "热门体验",
-            validDate: "2024-12-31"
-          },
-          {
-            title: "台球室",
-            description: "专业台球体验",
-            originalPrice: "50",
-            currentPrice: "35",
-            image: "/static/image/day/台球1.png",
-            tag: "新项目",
-            validDate: "2024-12-31"
-          }
-        ],
-        vip: [
-          {
-            title: "VIP专享体验",
-            description: "特邀嘉宾专享的豪华体验套餐",
-            originalPrice: "300",
-            currentPrice: "200",
-            image: "/static/componentIndex.png",
-            tag: "VIP专享",
-            validDate: "2024-12-31"
-          },
-          {
-            title: "私人定制服务",
-            description: "为特邀嘉宾提供个性化定制服务",
-            originalPrice: "500",
-            currentPrice: "350",
-            image: "/static/apiIndex.png",
-            tag: "专属服务",
-            validDate: "2024-12-31"
-          },
-          {
-            title: "贵宾休息室",
-            description: "独立休息空间，提供免费饮品",
-            originalPrice: "100",
-            currentPrice: "0",
-            image: "/static/extuiIndex.png",
-            tag: "免费体验",
-            validDate: "2024-12-31"
-          }
-        ]
-      }
+      activities: [
+        {
+          id: 1,
+          title: "🎉 新店开业大酬宾",
+          description: "庆祝新店开业，全场体验项目享8折优惠，新用户首次体验更享特价！",
+          image: "/static/image/day/VR体验馆.jpg",
+          startDate: "2024-12-01",
+          endDate: "2024-12-31",
+          location: "全部门店",
+          participants: 1288,
+          status: "active",
+          statusText: "进行中"
+        },
+        {
+          id: 2,
+          title: "🔥 周末狂欢夜",
+          description: "每周末晚上18:00-22:00，特色体验项目限时开放，还有神秘嘉宾现场互动！",
+          image: "/static/componentIndex.png",
+          startDate: "2024-12-01",
+          endDate: "2024-12-31",
+          location: "旗舰店",
+          participants: 856,
+          status: "active",
+          statusText: "每周进行"
+        },
+        {
+          id: 3,
+          title: "💝 生日月专享福利",
+          description: "生日当月持身份证享受免费体验一次，还有生日礼品相送！",
+          image: "/static/apiIndex.png",
+          startDate: "2024-01-01",
+          endDate: "2024-12-31",
+          location: "全部门店",
+          participants: 2156,
+          status: "active",
+          statusText: "长期有效"
+        },
+        {
+          id: 4,
+          title: "🎯 连续签到挑战",
+          description: "连续签到7天送体验券，连续签到30天送神秘大礼包！",
+          image: "/static/extuiIndex.png",
+          startDate: "2024-12-01",
+          endDate: "2024-12-31",
+          location: "线上活动",
+          participants: 3247,
+          status: "hot",
+          statusText: "火热进行"
+        },
+        {
+          id: 5,
+          title: "👥 好友拼团活动",
+          description: "邀请好友一起体验，3人团享7折，5人团享6折，团长免费！",
+          image: "/static/templateIndex.png",
+          startDate: "2024-12-15",
+          endDate: "2024-12-25",
+          location: "全部门店",
+          participants: 567,
+          status: "new",
+          statusText: "最新活动"
+        },
+        {
+          id: 6,
+          title: "🏆 年终盛典",
+          description: "年终感恩回馈，VIP会员专享超值套餐，限量发售！",
+          image: "/static/image/day/VR体验馆.jpg",
+          startDate: "2024-12-20",
+          endDate: "2024-12-31",
+          location: "全部门店",
+          participants: 234,
+          status: "coming",
+          statusText: "即将开始"
+        }
+      ]
     };
   },
-  computed: {
-    currentDiscounts() {
-      const categoryId = this.categories[this.currentCategory].id;
-      return this.discounts[categoryId] || [];
-    }
-  },
   methods: {
-    switchCategory(index) {
-      this.currentCategory = index;
-    },
-    getDiscount(item) {
-      common_vendor.index.showToast({
-        title: "领取成功",
-        icon: "success"
+    viewActivity(activity) {
+      common_vendor.index.showModal({
+        title: activity.title,
+        content: `${activity.description}
+
+活动时间：${activity.startDate} - ${activity.endDate}
+活动地点：${activity.location}
+已有${activity.participants}人参与`,
+        showCancel: false,
+        confirmText: "知道了"
       });
     }
   }
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
-    a: common_vendor.f($data.categories, (item, index, i0) => {
-      return {
-        a: common_vendor.t(item.name),
-        b: index,
-        c: $data.currentCategory === index ? 1 : "",
-        d: common_vendor.o(($event) => $options.switchCategory(index), index)
-      };
-    }),
-    b: common_vendor.f($options.currentDiscounts, (item, index, i0) => {
+    a: common_vendor.f($data.activities, (item, index, i0) => {
       return common_vendor.e({
         a: item.image,
-        b: item.tag
-      }, item.tag ? {
-        c: common_vendor.t(item.tag)
-      } : {}, {
+        b: common_vendor.t(item.statusText),
+        c: common_vendor.n(item.status),
         d: common_vendor.t(item.title),
         e: common_vendor.t(item.description),
-        f: common_vendor.t(item.originalPrice),
-        g: common_vendor.t(item.currentPrice),
-        h: common_vendor.t(item.validDate),
-        i: common_vendor.o(($event) => $options.getDiscount(item), index),
-        j: index
+        f: common_vendor.t(item.startDate),
+        g: common_vendor.t(item.endDate),
+        h: item.location
+      }, item.location ? {
+        i: common_vendor.t(item.location)
+      } : {}, {
+        j: common_vendor.t(item.participants),
+        k: index,
+        l: common_vendor.o(($event) => $options.viewActivity(item), index)
       });
     })
   };

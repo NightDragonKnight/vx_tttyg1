@@ -51,7 +51,8 @@
 			console.log('App Hide')
 		},
 		globalData: {
-			test: ''
+			test: '',
+			hasShownAnnouncement: false  // 标记本次会话是否已显示公告
 		},
 		methods: {
 			...mapMutations(['setUniverifyErrorMsg', 'setUniverifyLogin'])

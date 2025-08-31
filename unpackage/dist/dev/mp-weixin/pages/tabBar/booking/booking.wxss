@@ -37,27 +37,26 @@
   font-weight: bold;
   color: #333;
 }
-.filter-section {
+.search-section {
   background-color: #fff8fa;
   border-radius: 16rpx;
   margin: 20rpx;
   padding: 30rpx;
   border: 1rpx solid #ffe4e8;
+  display: flex;
+  gap: 30rpx;
 }
-.filter-section .filter-group {
-  margin-bottom: 30rpx;
+.search-section .search-group {
+  flex: 1;
 }
-.filter-section .filter-group:last-child {
-  margin-bottom: 0;
-}
-.filter-section .filter-group .filter-label {
+.search-section .search-group .search-label {
   font-size: 30rpx;
   font-weight: bold;
   color: #333;
   margin-bottom: 20rpx;
   display: block;
 }
-.filter-section .filter-group .picker-btn {
+.search-section .search-group .picker-btn {
   height: 80rpx;
   background-color: #fff0f5;
   border-radius: 12rpx;
@@ -69,7 +68,7 @@
   font-size: 28rpx;
   color: #333;
 }
-.filter-section .filter-group .picker-btn .picker-arrow {
+.search-section .search-group .picker-btn .picker-arrow {
   color: #999;
   font-size: 24rpx;
 }
@@ -107,6 +106,14 @@
 .booking-list .booking-item .booking-header .status.completed {
   background-color: #fff0f5;
   color: #FF69B4;
+}
+.booking-list .booking-item .booking-header .status.refunding {
+  background-color: #fff7e6;
+  color: #fa8c16;
+}
+.booking-list .booking-item .booking-header .status.refunded {
+  background-color: #f0f9ff;
+  color: #1890ff;
 }
 .booking-list .booking-item .booking-content {
   display: flex;
@@ -222,6 +229,20 @@
   display: flex;
   justify-content: flex-end;
   gap: 20rpx;
+}
+.booking-list .booking-item .booking-footer .refund-info, .booking-list .booking-item .booking-footer .refunded-info {
+  width: 100%;
+}
+.booking-list .booking-item .booking-footer .refund-info .refund-text, .booking-list .booking-item .booking-footer .refunded-info .refund-text {
+  font-size: 24rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 15rpx;
+  line-height: 1.4;
+}
+.booking-list .booking-item .booking-footer .refunded-info .refund-text {
+  color: #1890ff;
+  font-weight: 500;
 }
 .empty-state {
   display: flex;

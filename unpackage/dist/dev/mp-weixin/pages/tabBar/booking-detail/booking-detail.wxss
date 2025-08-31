@@ -45,6 +45,23 @@
 		margin-right: 10rpx;
 }
 	
+	/* 提示区域 */
+.tip-section {
+		background-color: #fff0f5;
+		padding: 30rpx;
+		margin: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+}
+.tip-content {
+		text-align: center;
+}
+.tip-text {
+		font-size: 26rpx;
+		color: #FF69B4;
+		font-weight: bold;
+}
+	
 	/* 视频区域 */
 .video-section {
 		background-color: #fff8fa;
@@ -59,51 +76,183 @@
 		color: #333;
 		margin-bottom: 20rpx;
 }
-.store-video {
+.product-video {
 		width: 100%;
 		height: 400rpx;
 		border-radius: 12rpx;
 }
 	
-	/* 预约信息 */
-.booking-section {
+	/* 产品轮播图 */
+.swiper-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
 		margin: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 }
-.booking-item {
-		margin-bottom: 30rpx;
+.product-swiper {
+		width: 100%;
+		height: 300rpx;
+		border-radius: 12rpx;
 }
-.booking-item:last-child {
-		margin-bottom: 0;
+.swiper-image {
+		width: 100%;
+		height: 100%;
+		border-radius: 12rpx;
 }
-.item-label {
-		font-size: 28rpx;
+	
+	/* 产品选择 */
+.product-section {
+		background-color: #fff8fa;
+		padding: 30rpx;
+		margin: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+}
+.product-list {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr); /* 五列布局 */
+		gap: 15rpx;
+}
+.product-item {
+		background-color: #fff;
+		border-radius: 8rpx;
+		border: 2rpx solid #ffe4e8;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+		transition: all 0.3s ease;
+}
+.product-item.selected {
+		border-color: #FF69B4;
+		box-shadow: 0 0 10rpx rgba(255, 105, 180, 0.3);
+}
+.product-thumbnail {
+		width: 100%;
+		height: 120rpx;
+		object-fit: cover;
+}
+.product-info {
+		padding: 8rpx 6rpx;
+		text-align: center;
+}
+.product-name {
+		font-size: 22rpx;
+		font-weight: bold;
 		color: #333;
-		margin-bottom: 15rpx;
-		display: block;
+		margin-bottom: 4rpx;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 }
-.item-content {
+.product-desc {
+		font-size: 20rpx;
+		color: #666;
+		margin-bottom: 6rpx;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+}
+.product-price {
+		font-size: 22rpx;
+		font-weight: bold;
+		color: #FF69B4;
+}
+	
+	/* 房间选择 */
+.room-section {
+		background-color: #fff8fa;
+		padding: 30rpx;
+		margin: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+}
+.room-list {
+		display: flex;
+		flex-direction: column;
+		gap: 15rpx;
+}
+.room-item {
+		background-color: #fff;
+		padding: 20rpx;
+		border-radius: 12rpx;
+		border: 2rpx solid #ffe4e8;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+}
+.room-item.selected {
+		border-color: #FF69B4;
+		background-color: #fff0f5;
+}
+.room-item.unavailable {
+		opacity: 0.6;
+		background-color: #f5f5f5;
+}
+.room-info {
+		flex: 1;
+}
+.room-name {
+		font-size: 28rpx;
+		font-weight: bold;
+		color: #333;
+		margin-bottom: 8rpx;
+}
+.room-capacity {
+		font-size: 24rpx;
+		color: #666;
+		margin-bottom: 8rpx;
+}
+.room-features {
+		font-size: 22rpx;
+		color: #999;
+}
+.room-status {
+		padding: 8rpx 15rpx;
+		border-radius: 8rpx;
+		font-size: 22rpx;
+		font-weight: bold;
+}
+.room-status.available {
+		background-color: #e0f7fa;
+		color: #007bff;
+}
+.room-status.unavailable {
+		background-color: #ffebee;
+		color: #f44336;
+}
+.room-images {
+		margin-top: 20rpx;
 		background-color: #fff;
 		padding: 20rpx;
 		border-radius: 12rpx;
 		border: 1rpx solid #ffe4e8;
 }
-.experience-name {
-		font-size: 30rpx;
+.section-subtitle {
+		font-size: 28rpx;
 		font-weight: bold;
 		color: #333;
-		display: block;
-		margin-bottom: 10rpx;
+		margin-bottom: 15rpx;
 }
-.experience-desc {
-		font-size: 26rpx;
-		color: #666;
+.room-swiper {
+		width: 100%;
+		height: 200rpx;
+		border-radius: 12rpx;
+}
+.room-swiper .swiper-image {
+		width: 100%;
+		height: 100%;
+		border-radius: 12rpx;
 }
 	
-	/* 时间选择器 */
+	/* 时间选择 */
+.time-section {
+		background-color: #fff8fa;
+		padding: 30rpx;
+		margin: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+}
 .time-selector {
 		background-color: #fff;
 		padding: 20rpx;
@@ -112,6 +261,28 @@
 }
 .date-selector {
 		margin-bottom: 20rpx;
+}
+.time-range-section {
+		margin-top: 20rpx;
+}
+.time-range-row {
+		display: flex;
+		align-items: flex-end;
+		gap: 15rpx;
+		margin-bottom: 20rpx;
+}
+.time-picker-item {
+		flex: 1;
+}
+.time-separator {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 80rpx;
+		font-size: 28rpx;
+		color: #666;
+		font-weight: bold;
+		padding: 0 10rpx;
 }
 .selector-label {
 		font-size: 26rpx;
@@ -129,29 +300,21 @@
 		font-size: 28rpx;
 		color: #333;
 }
-.time-range-selector {
-		display: flex;
-		align-items: flex-end;
-		gap: 20rpx;
-		margin-bottom: 20rpx;
+.picker-btn.placeholder {
+		color: #999;
+		font-style: italic;
 }
-.time-selector-item {
-		flex: 1;
-}
-.time-separator {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 80rpx;
-		font-size: 28rpx;
-		color: #666;
-		font-weight: bold;
+.picker-btn.disabled {
+		background-color: #f5f5f5;
+		color: #ccc;
+		cursor: not-allowed;
 }
 .duration-info {
 		background-color: #fff0f5;
 		padding: 15rpx 20rpx;
 		border-radius: 8rpx;
 		border: 1rpx solid #ffe4e8;
+		text-align: center;
 }
 .duration-text {
 		font-size: 26rpx;
@@ -159,47 +322,174 @@
 		font-weight: bold;
 }
 	
-
-	
-	/* 人数选择器 */
-.people-selector {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 30rpx;
+	/* 24小时时间段可视化 */
+.time-visual-section {
+		margin-top: 30rpx;
+		background-color: #fff;
+		padding: 20rpx;
+		border-radius: 12rpx;
+		border: 1rpx solid #ffe4e8;
 }
-.count-btn {
-		width: 60rpx;
+.time-visual-grid {
+		display: grid;
+		grid-template-columns: repeat(8, 1fr); /* 8列，三行显示24小时 */
+		gap: 8rpx;
+		margin-bottom: 20rpx;
+}
+.time-visual-item {
+		position: relative;
 		height: 60rpx;
-		background-color: #FF69B4;
-		color: #fff;
-		border-radius: 50%;
+		border-radius: 8rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 32rpx;
-		font-weight: bold;
-}
-.people-count {
-		font-size: 30rpx;
-		color: #333;
-		font-weight: bold;
+		cursor: pointer;
+		transition: all 0.3s ease;
 }
 	
-	/* 优惠券 */
-.coupon-section {
+	/* 可预约时间 - 绿色 */
+.time-visual-item.available {
+		background-color: #4CAF50;
+		color: #fff;
+}
+.time-visual-item.available:hover {
+		background-color: #45a049;
+		transform: scale(1.05);
+}
+	
+	/* 已预订时间 - 红色 */
+.time-visual-item.booked {
+		background-color: #F44336;
+		color: #fff;
+		cursor: not-allowed;
+}
+	
+	/* 保洁时间 - 黄色 */
+.time-visual-item.cleaning {
+		background-color: #FFC107;
+		color: #333;
+		cursor: not-allowed;
+}
+	
+	/* 选中范围高亮 */
+.time-visual-item.selected-range {
+		box-shadow: 0 0 0 3rpx #FF69B4;
+		transform: scale(1.1);
+		z-index: 2;
+}
+.hour-text {
+		font-size: 20rpx;
+		font-weight: bold;
+		position: relative;
+		z-index: 1;
+}
+.status-dot {
+		position: absolute;
+		top: 4rpx;
+		right: 4rpx;
+		width: 12rpx;
+		height: 12rpx;
+		border-radius: 50%;
+}
+.status-dot.available {
+		background-color: #2E7D32;
+}
+.status-dot.booked {
+		background-color: #C62828;
+}
+.status-dot.cleaning {
+		background-color: #F57F17;
+}
+	
+	/* 图例 */
+.time-legend {
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		padding: 15rpx 0;
+		border-top: 1rpx solid #ffe4e8;
+}
+.legend-item {
+		display: flex;
+		align-items: center;
+		gap: 8rpx;
+}
+.legend-dot {
+		width: 16rpx;
+		height: 16rpx;
+		border-radius: 50%;
+}
+.legend-dot.available {
+		background-color: #4CAF50;
+}
+.legend-dot.booked {
+		background-color: #F44336;
+}
+.legend-dot.cleaning {
+		background-color: #FFC107;
+}
+.legend-text {
+		font-size: 22rpx;
+		color: #666;
+}
+	
+	/* 用户备注 */
+.remark-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
 		margin: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 }
-.coupon-list {
+.remark-input-container {
+		position: relative;
+		background-color: #fff;
+		border-radius: 12rpx;
+		border: 1rpx solid #ffe4e8;
+		padding: 20rpx;
+}
+.remark-input {
+		width: 100%;
+		min-height: 120rpx;
+		font-size: 28rpx;
+		color: #333;
+		line-height: 1.5;
+		background-color: transparent;
+		border: none;
+		outline: none;
+		resize: none;
+}
+.remark-input::-webkit-input-placeholder {
+		color: #999;
+		font-style: italic;
+}
+.remark-input::placeholder {
+		color: #999;
+		font-style: italic;
+}
+.char-count {
+		position: absolute;
+		bottom: 10rpx;
+		right: 15rpx;
+		font-size: 22rpx;
+		color: #999;
+}
+
+	
+	/* 套餐选择 */
+.package-section {
+		background-color: #fff8fa;
+		padding: 30rpx;
+		margin: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+}
+.package-list {
 		display: flex;
 		flex-direction: column;
 		gap: 15rpx;
 }
-.coupon-item {
+.package-item {
 		background-color: #fff;
 		padding: 20rpx;
 		border-radius: 12rpx;
@@ -208,38 +498,47 @@
 		justify-content: space-between;
 		align-items: center;
 }
-.coupon-item.selected {
+.package-item.selected {
 		border-color: #FF69B4;
 		background-color: #fff0f5;
 }
-.coupon-info {
+.package-info {
 		flex: 1;
 }
-.coupon-name {
+.package-name {
 		font-size: 28rpx;
 		font-weight: bold;
 		color: #333;
-		display: block;
 		margin-bottom: 8rpx;
 }
-.coupon-desc {
+.package-desc {
 		font-size: 24rpx;
 		color: #666;
-		display: block;
-		margin-bottom: 8rpx;
+		margin-bottom: 10rpx;
 }
-.coupon-validity {
+.package-includes {
+		display: flex;
+		align-items: center;
 		font-size: 22rpx;
 		color: #999;
 }
-.coupon-value {
+.includes-title {
+		margin-right: 10rpx;
+}
+.package-price {
 		text-align: right;
 }
-.discount-amount {
+.price-text {
 		font-size: 32rpx;
 		font-weight: bold;
 		color: #FF69B4;
 }
+.price-unit {
+		font-size: 24rpx;
+		color: #FF69B4;
+}
+	
+
 	
 	/* 价格信息 */
 .price-section {
@@ -265,11 +564,9 @@
 		font-weight: bold;
 		color: #333;
 }
-.original-price {
-		text-decoration: line-through;
-}
-.discount-price {
+.price-value {
 		color: #FF69B4;
+		font-size: 36rpx;
 }
 .final-price {
 		color: #FF69B4;
@@ -309,4 +606,9 @@
 		border-radius: 30rpx;
 		font-size: 30rpx;
 		font-weight: bold;
+}
+.pay-btn[disabled] {
+		background-color: #ccc;
+		color: #666;
+		opacity: 0.7;
 }

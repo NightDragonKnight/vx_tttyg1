@@ -1,42 +1,28 @@
 <template>
 	<view class="content">
-		<view class="header">
-			<text class="title">优惠中心</text>
-		</view>
-		
-		<view class="search-bar">
-			<input type="text" placeholder="搜索充值、团购、体验项目" class="search-input" />
-			<button class="search-btn">搜索</button>
-		</view>
-		
-		<view class="category-tabs">
-			<view 
-				class="tab-item" 
-				v-for="(item, index) in categories" 
-				:key="index"
-				:class="{ active: currentCategory === index }"
-				@click="switchCategory(index)"
-			>
-				<text>{{item.name}}</text>
-			</view>
-		</view>
-		
-		<view class="discount-list">
-			<view class="discount-item" v-for="(item, index) in currentDiscounts" :key="index">
-				<view class="discount-image">
+		<view class="activity-list">
+			<view class="activity-item" v-for="(item, index) in activities" :key="index" @click="viewActivity(item)">
+				<view class="activity-image">
 					<image :src="item.image" mode="aspectFill"></image>
-					<view class="discount-tag" v-if="item.tag">{{item.tag}}</view>
+					<view class="activity-tag" :class="item.status">{{item.statusText}}</view>
 				</view>
-				<view class="discount-info">
-					<text class="discount-title">{{item.title}}</text>
-					<text class="discount-desc">{{item.description}}</text>
-					<view class="discount-price">
-						<text class="original-price">¥{{item.originalPrice}}</text>
-						<text class="current-price">¥{{item.currentPrice}}</text>
+				<view class="activity-info">
+					<text class="activity-title">{{item.title}}</text>
+					<text class="activity-desc">{{item.description}}</text>
+					<view class="activity-details">
+						<view class="activity-time">
+							<text class="time-label">活动时间：</text>
+							<text class="time-text">{{item.startDate}} - {{item.endDate}}</text>
+						</view>
+						<view class="activity-location" v-if="item.location">
+							<text class="location-label">活动地点：</text>
+							<text class="location-text">{{item.location}}</text>
+						</view>
 					</view>
-					<view class="discount-footer">
-						<text class="valid-date">有效期至：{{item.validDate}}</text>
-						<button class="get-btn" @click="getDiscount(item)">立即领取</button>
+					<view class="activity-footer">
+						<view class="participants-info">
+							<text class="participants-text">已有{{item.participants}}人参与</text>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -48,138 +34,89 @@
 	export default {
 		data() {
 			return {
-				currentCategory: 0,
-				categories: [
-					{ name: '账户充值', id: 'recharge' },
-					{ name: '团购优惠', id: 'group' },
-					{ name: '体验中心', id: 'experience' },
-					{ name: '特邀嘉宾', id: 'vip' }
-				],
-				discounts: {
-					recharge: [
-						{
-							title: '充值100送20',
-							description: '充值满100元，赠送20元体验券',
-							originalPrice: '100',
-							currentPrice: '120',
-							image: '/static/componentIndex.png',
-							tag: '限时特惠',
-							validDate: '2024-12-31'
-						},
-						{
-							title: '充值200送50',
-							description: '充值满200元，赠送50元体验券',
-							originalPrice: '200',
-							currentPrice: '250',
-							image: '/static/apiIndex.png',
-							tag: '新用户专享',
-							validDate: '2024-12-31'
-						},
-						{
-							title: '充值500送150',
-							description: '充值满500元，赠送150元体验券',
-							originalPrice: '500',
-							currentPrice: '650',
-							image: '/static/extuiIndex.png',
-							tag: '会员专享',
-							validDate: '2024-12-31'
-						}
-					],
-					group: [
-						{
-							title: 'VR体验团购',
-							description: '5人团购，每人立减30元',
-							originalPrice: '80',
-							currentPrice: '50',
-							image: '/static/templateIndex.png',
-							tag: '团购特惠',
-							validDate: '2024-12-31'
-						},
-						{
-							title: '密室逃脱团购',
-							description: '3人团购，每人立减40元',
-							originalPrice: '120',
-							currentPrice: '80',
-							image: '/static/image/day/密室逃脱.jpg',
-							tag: '限时抢购',
-							validDate: '2024-12-31'
-						}
-					],
-					experience: [
-						{
-							title: 'VR体验馆',
-							description: '沉浸式虚拟现实体验',
-							originalPrice: '80',
-							currentPrice: '60',
-							image: '/static/image/day/VR体验馆.jpg',
-							tag: '体验推荐',
-							validDate: '2024-12-31'
-						},
-						{
-							title: '棋牌室',
-							description: '休闲娱乐棋牌游戏',
-							originalPrice: '60',
-							currentPrice: '45',
-							image: '/static/image/day/棋牌1.jpg',
-							tag: '热门体验',
-							validDate: '2024-12-31'
-						},
-						{
-							title: '台球室',
-							description: '专业台球体验',
-							originalPrice: '50',
-							currentPrice: '35',
-							image: '/static/image/day/台球1.png',
-							tag: '新项目',
-							validDate: '2024-12-31'
-						}
-					],
-					vip: [
-						{
-							title: 'VIP专享体验',
-							description: '特邀嘉宾专享的豪华体验套餐',
-							originalPrice: '300',
-							currentPrice: '200',
-							image: '/static/componentIndex.png',
-							tag: 'VIP专享',
-							validDate: '2024-12-31'
-						},
-						{
-							title: '私人定制服务',
-							description: '为特邀嘉宾提供个性化定制服务',
-							originalPrice: '500',
-							currentPrice: '350',
-							image: '/static/apiIndex.png',
-							tag: '专属服务',
-							validDate: '2024-12-31'
-						},
-						{
-							title: '贵宾休息室',
-							description: '独立休息空间，提供免费饮品',
-							originalPrice: '100',
-							currentPrice: '0',
-							image: '/static/extuiIndex.png',
-							tag: '免费体验',
-							validDate: '2024-12-31'
-						}
-					]
-				}
-			}
-		},
-		computed: {
-			currentDiscounts() {
-				const categoryId = this.categories[this.currentCategory].id;
-				return this.discounts[categoryId] || [];
+				activities: [
+					{
+						id: 1,
+						title: '🎉 新店开业大酬宾',
+						description: '庆祝新店开业，全场体验项目享8折优惠，新用户首次体验更享特价！',
+						image: '/static/image/day/VR体验馆.jpg',
+						startDate: '2024-12-01',
+						endDate: '2024-12-31',
+						location: '全部门店',
+						participants: 1288,
+						status: 'active',
+						statusText: '进行中'
+					},
+					{
+						id: 2,
+						title: '🔥 周末狂欢夜',
+						description: '每周末晚上18:00-22:00，特色体验项目限时开放，还有神秘嘉宾现场互动！',
+						image: '/static/componentIndex.png',
+						startDate: '2024-12-01',
+						endDate: '2024-12-31',
+						location: '旗舰店',
+						participants: 856,
+						status: 'active',
+						statusText: '每周进行'
+					},
+					{
+						id: 3,
+						title: '💝 生日月专享福利',
+						description: '生日当月持身份证享受免费体验一次，还有生日礼品相送！',
+						image: '/static/apiIndex.png',
+						startDate: '2024-01-01',
+						endDate: '2024-12-31',
+						location: '全部门店',
+						participants: 2156,
+						status: 'active',
+						statusText: '长期有效'
+					},
+					{
+						id: 4,
+						title: '🎯 连续签到挑战',
+						description: '连续签到7天送体验券，连续签到30天送神秘大礼包！',
+						image: '/static/extuiIndex.png',
+						startDate: '2024-12-01',
+						endDate: '2024-12-31',
+						location: '线上活动',
+						participants: 3247,
+						status: 'hot',
+						statusText: '火热进行'
+					},
+					{
+						id: 5,
+						title: '👥 好友拼团活动',
+						description: '邀请好友一起体验，3人团享7折，5人团享6折，团长免费！',
+						image: '/static/templateIndex.png',
+						startDate: '2024-12-15',
+						endDate: '2024-12-25',
+						location: '全部门店',
+						participants: 567,
+						status: 'new',
+						statusText: '最新活动'
+					},
+					{
+						id: 6,
+						title: '🏆 年终盛典',
+						description: '年终感恩回馈，VIP会员专享超值套餐，限量发售！',
+						image: '/static/image/day/VR体验馆.jpg',
+						startDate: '2024-12-20',
+						endDate: '2024-12-31',
+						location: '全部门店',
+						participants: 234,
+						status: 'coming',
+						statusText: '即将开始'
+					}
+				]
 			}
 		},
 		methods: {
-			switchCategory(index) {
-				this.currentCategory = index;
-			},
-			getDiscount(item) {
-				uni.showToast({
-					title: '领取成功',
-					icon: 'success'
+			viewActivity(activity) {
+				uni.showModal({
+					title: activity.title,
+					content: `${activity.description}\n\n活动时间：${activity.startDate} - ${activity.endDate}\n活动地点：${activity.location}\n已有${activity.participants}人参与`,
+					showCancel: false,
+					confirmText: '知道了'
 				});
 			}
 		}
@@ -193,88 +130,20 @@
 		min-height: 100vh;
 	}
 	
-	.header {
-		text-align: center;
-		padding: 20rpx 0;
-		.title {
-			font-size: 36rpx;
-			font-weight: bold;
-			color: #333;
-		}
-	}
-	
-	.search-bar {
-		display: flex;
-		margin: 20rpx 0;
-		
-		.search-input {
-			flex: 1;
-			height: 80rpx;
-			background-color: #fff;
-			border-radius: 40rpx 0 0 40rpx;
-			padding: 0 30rpx;
-			font-size: 28rpx;
-		}
-		
-		.search-btn {
-			width: 120rpx;
-			height: 80rpx;
-			background-color: #FF69B4;
-			color: #fff;
-			border-radius: 0 40rpx 40rpx 0;
-			font-size: 28rpx;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-	}
-	
-	.category-tabs {
-		display: flex;
-		background-color: #fff8fa;
-		border-radius: 16rpx;
-		margin: 20rpx 0;
-		overflow: hidden;
-		border: 1rpx solid #ffe4e8;
-		
-		.tab-item {
-			flex: 1;
-			height: 80rpx;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 28rpx;
-			color: #666;
-			position: relative;
-			
-			&.active {
-				color: #FF69B4;
-				background-color: #fff0f5;
-				
-				&::after {
-					content: '';
-					position: absolute;
-					bottom: 0;
-					left: 50%;
-					transform: translateX(-50%);
-					width: 60rpx;
-					height: 4rpx;
-					background-color: #FF69B4;
-					border-radius: 2rpx;
-				}
-			}
-		}
-	}
-	
-	.discount-list {
-		.discount-item {
+	.activity-list {
+		.activity-item {
 			background-color: #fff8fa;
 			border-radius: 16rpx;
-			margin-bottom: 20rpx;
+			margin-bottom: 30rpx;
 			overflow: hidden;
 			border: 1rpx solid #ffe4e8;
+			transition: all 0.3s ease;
 			
-			.discount-image {
+			&:active {
+				transform: scale(0.98);
+			}
+			
+			.activity-image {
 				position: relative;
 				
 				image {
@@ -282,71 +151,88 @@
 					height: 300rpx;
 				}
 				
-				.discount-tag {
+				.activity-tag {
 					position: absolute;
 					top: 20rpx;
 					right: 20rpx;
-					background-color: #ff6b35;
 					color: #fff;
 					padding: 8rpx 16rpx;
 					border-radius: 20rpx;
 					font-size: 24rpx;
+					font-weight: bold;
+					
+					&.active {
+						background-color: #4CAF50; /* 进行中 - 绿色 */
+					}
+					
+					&.hot {
+						background-color: #FF6347; /* 火热 - 红色 */
+					}
+					
+					&.new {
+						background-color: #FF69B4; /* 最新 - 粉色 */
+					}
+					
+					&.coming {
+						background-color: #FFA500; /* 即将开始 - 橙色 */
+					}
+					
+					&.ended {
+						background-color: #999; /* 已结束 - 灰色 */
+					}
 				}
 			}
 			
-			.discount-info {
+			.activity-info {
 				padding: 30rpx;
 				
-				.discount-title {
+				.activity-title {
 					font-size: 32rpx;
 					font-weight: bold;
 					color: #333;
 					display: block;
 					margin-bottom: 16rpx;
+					line-height: 1.4;
 				}
 				
-				.discount-desc {
+				.activity-desc {
 					font-size: 26rpx;
 					color: #666;
 					display: block;
-					margin-bottom: 20rpx;
+					margin-bottom: 24rpx;
+					line-height: 1.5;
 				}
 				
-				.discount-price {
-					display: flex;
-					align-items: center;
-					margin-bottom: 20rpx;
+				.activity-details {
+					margin-bottom: 24rpx;
 					
-					.original-price {
-						font-size: 26rpx;
-						color: #999;
-						text-decoration: line-through;
-						margin-right: 20rpx;
-					}
-					
-					.current-price {
-						font-size: 36rpx;
-						color: #ff6b35;
-						font-weight: bold;
+					.activity-time, .activity-location {
+						display: flex;
+						align-items: center;
+						margin-bottom: 8rpx;
+						
+						.time-label, .location-label {
+							font-size: 24rpx;
+							color: #999;
+							margin-right: 8rpx;
+							min-width: 140rpx;
+						}
+						
+						.time-text, .location-text {
+							font-size: 24rpx;
+							color: #666;
+							flex: 1;
+						}
 					}
 				}
 				
-				.discount-footer {
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-					
-					.valid-date {
-						font-size: 24rpx;
-						color: #999;
-					}
-					
-					.get-btn {
-						background-color: #FF69B4;
-						color: #fff;
-						padding: 16rpx 32rpx;
-						border-radius: 30rpx;
-						font-size: 26rpx;
+				.activity-footer {
+					.participants-info {
+						.participants-text {
+							font-size: 24rpx;
+							color: #FF69B4;
+							font-weight: bold;
+						}
 					}
 				}
 			}

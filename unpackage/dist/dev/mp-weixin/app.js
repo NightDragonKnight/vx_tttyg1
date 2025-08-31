@@ -9,26 +9,89 @@ if (!Math) {
   "./pages/tabBar/profile/profile.js";
   "./pages/tabBar/experience/experience.js";
   "./pages/tabBar/booking-detail/booking-detail.js";
+  "./pages/order-detail/order-detail.js";
 }
-const _sfc_main = {
-  onLaunch: function() {
-    common_vendor.index.__f__("log", "at App.vue:23", "App Launch");
-  },
-  onShow: function() {
-    common_vendor.index.__f__("log", "at App.vue:48", "App Show");
-  },
-  onHide: function() {
-    common_vendor.index.__f__("log", "at App.vue:51", "App Hide");
-  },
-  globalData: {
-    test: ""
-  },
-  methods: {
-    ...common_vendor.mapMutations(["setUniverifyErrorMsg", "setUniverifyLogin"])
+const pages = [
+  "pages/tabBar/home/home",
+  "pages/tabBar/discount/discount",
+  "pages/tabBar/booking/booking",
+  "pages/tabBar/profile/profile",
+  "pages/tabBar/experience/experience",
+  "pages/tabBar/booking-detail/booking-detail"
+];
+const window = {
+  backgroundTextStyle: "light",
+  navigationBarBackgroundColor: "#FF69B4",
+  navigationBarTitleText: "天天体验馆",
+  navigationBarTextStyle: "white",
+  backgroundColor: "#fef5f7"
+};
+const tabBar = {
+  color: "#7A7E83",
+  selectedColor: "#FF69B4",
+  borderStyle: "black",
+  backgroundColor: "#ffffff",
+  list: [
+    {
+      pagePath: "pages/tabBar/home/home",
+      iconPath: "static/home.png",
+      selectedIconPath: "static/home-active.png",
+      text: "首页"
+    },
+    {
+      pagePath: "pages/tabBar/discount/discount",
+      iconPath: "static/star.png",
+      selectedIconPath: "static/star-active.png",
+      text: "优惠中心"
+    },
+    {
+      pagePath: "pages/tabBar/booking/booking",
+      iconPath: "static/component.png",
+      selectedIconPath: "static/componentHL.png",
+      text: "我的预订"
+    },
+    {
+      pagePath: "pages/tabBar/profile/profile",
+      iconPath: "static/uni.png",
+      selectedIconPath: "static/uni.png",
+      text: "个人中心"
+    }
+  ]
+};
+const networkTimeout = {
+  request: 1e4,
+  downloadFile: 1e4
+};
+const debug = true;
+const permission = {
+  "scope.userLocation": {
+    desc: "你的位置信息将用于小程序位置接口的效果展示"
   }
 };
+const requiredBackgroundModes = [
+  "audio"
+];
+const plugins = {};
+const preloadRule = {};
+const resizable = false;
+const usingComponents = {};
+const sitemapLocation = "sitemap.json";
+const App = {
+  pages,
+  window,
+  tabBar,
+  networkTimeout,
+  debug,
+  permission,
+  requiredBackgroundModes,
+  plugins,
+  preloadRule,
+  resizable,
+  usingComponents,
+  sitemapLocation
+};
 function createApp() {
-  const app = common_vendor.createSSRApp(_sfc_main);
+  const app = common_vendor.createSSRApp(App);
   app.use(store_index.store);
   app.use(common_vendor.createPinia());
   app.config.globalProperties.$adpid = "1111111111";

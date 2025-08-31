@@ -34,7 +34,7 @@
 		{
 			"path": "pages/tabBar/discount/discount",
 			"style": {
-				"navigationBarTitleText": "优惠中心",
+				"navigationBarTitleText": "热门活动",
 				"navigationBarBackgroundColor": "#FF69B4",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
@@ -105,15 +105,33 @@
 				},
 				{
 			"path": "pages/tabBar/booking-detail/booking-detail",
-					"style": {
+			"style": {
 				"navigationBarTitleText": "预订详情",
 				"navigationBarBackgroundColor": "#FF69B4",
 				"navigationBarTextStyle": "white",
-						"app-plus": {
-							"titleNView": {
-								"buttons": [{
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
 							"text": "\ue534",
-									"fontSrc": "/static/uni.ttf",
+							"fontSrc": "/static/uni.ttf",
+							"fontSize": "22px",
+							"color": "#FFFFFF"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/order-detail/order-detail",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"navigationBarBackgroundColor": "#FF69B4",
+				"navigationBarTextStyle": "white",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue534",
+							"fontSrc": "/static/uni.ttf",
 							"fontSize": "22px",
 							"color": "#FFFFFF"
 						}]
@@ -144,7 +162,7 @@
 				"pagePath": "pages/tabBar/discount/discount",
 				"iconPath": "static/image/day/优惠.png",
 				"selectedIconPath": "static/image/day/优惠.png",
-				"text": "优惠中心"
+				"text": "热门活动"
 			},
 			{
 				"pagePath": "pages/tabBar/booking/booking",

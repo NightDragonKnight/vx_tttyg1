@@ -88,6 +88,36 @@ const looseToNumber = (val) => {
   const n2 = parseFloat(val);
   return isNaN(n2) ? val : n2;
 };
+function normalizeStyle(value) {
+  if (isArray(value)) {
+    const res = {};
+    for (let i2 = 0; i2 < value.length; i2++) {
+      const item = value[i2];
+      const normalized = isString(item) ? parseStringStyle(item) : normalizeStyle(item);
+      if (normalized) {
+        for (const key in normalized) {
+          res[key] = normalized[key];
+        }
+      }
+    }
+    return res;
+  } else if (isString(value) || isObject$1(value)) {
+    return value;
+  }
+}
+const listDelimiterRE = /;(?![^(]*\))/g;
+const propertyDelimiterRE = /:([^]+)/;
+const styleCommentRE = /\/\*[^]*?\*\//g;
+function parseStringStyle(cssText) {
+  const ret = {};
+  cssText.replace(styleCommentRE, "").split(listDelimiterRE).forEach((item) => {
+    if (item) {
+      const tmp = item.split(propertyDelimiterRE);
+      tmp.length > 1 && (ret[tmp[0].trim()] = tmp[1].trim());
+    }
+  });
+  return ret;
+}
 function normalizeClass(value) {
   let res = "";
   if (isString(value)) {
@@ -2166,6 +2196,47 @@ function setCurrentRenderingInstance(instance) {
   instance && instance.type.__scopeId || null;
   return prev;
 }
+const COMPONENTS = "components";
+function resolveComponent(name, maybeSelfReference) {
+  return resolveAsset(COMPONENTS, name, true, maybeSelfReference) || name;
+}
+function resolveAsset(type, name, warnMissing = true, maybeSelfReference = false) {
+  const instance = currentRenderingInstance || currentInstance;
+  if (instance) {
+    const Component2 = instance.type;
+    if (type === COMPONENTS) {
+      const selfName = getComponentName(
+        Component2,
+        false
+      );
+      if (selfName && (selfName === name || selfName === camelize(name) || selfName === capitalize(camelize(name)))) {
+        return Component2;
+      }
+    }
+    const res = (
+      // local registration
+      // check instance[type] first which is resolved for options API
+      resolve(instance[type] || Component2[type], name) || // global registration
+      resolve(instance.appContext[type], name)
+    );
+    if (!res && maybeSelfReference) {
+      return Component2;
+    }
+    if (warnMissing && !res) {
+      const extra = type === COMPONENTS ? `
+If this is a native custom element, make sure to exclude it from component resolution via compilerOptions.isCustomElement.` : ``;
+      warn$1(`Failed to resolve ${type.slice(0, -1)}: ${name}${extra}`);
+    }
+    return res;
+  } else {
+    warn$1(
+      `resolve${capitalize(type.slice(0, -1))} can only be used in render() or setup().`
+    );
+  }
+}
+function resolve(registry, name) {
+  return registry && (registry[name] || registry[camelize(name)] || registry[capitalize(camelize(name))]);
+}
 const INITIAL_WATCHER_VALUE = {};
 function watch(source, cb, options) {
   if (!isFunction(cb)) {
@@ -3783,6 +3854,12 @@ const Static = Symbol.for("v-stc");
 function isVNode(value) {
   return value ? value.__v_isVNode === true : false;
 }
+const InternalObjectKey = `__vInternal`;
+function guardReactiveProps(props) {
+  if (!props)
+    return null;
+  return isProxy(props) || InternalObjectKey in props ? extend({}, props) : props;
+}
 const emptyAppContext = createAppContext();
 let uid = 0;
 function createComponentInstance(vnode, parent, suspense) {
@@ -5023,6 +5100,11 @@ function initApp(app) {
   }
 }
 const propsCaches = /* @__PURE__ */ Object.create(null);
+function renderProps(props) {
+  const { uid: uid2, __counter } = getCurrentInstance();
+  const propsId = (propsCaches[uid2] || (propsCaches[uid2] = [])).push(guardReactiveProps(props)) - 1;
+  return uid2 + "," + propsId + "," + __counter;
+}
 function pruneComponentPropsCache(uid2) {
   delete propsCaches[uid2];
 }
@@ -5062,6 +5144,22 @@ function getCreateApp() {
   } else if (typeof my !== "undefined") {
     return my[method];
   }
+}
+function stringifyStyle(value) {
+  if (isString(value)) {
+    return value;
+  }
+  return stringify(normalizeStyle(value));
+}
+function stringify(styles) {
+  let ret = "";
+  if (!styles || isString(styles)) {
+    return ret;
+  }
+  for (const key in styles) {
+    ret += `${key.startsWith(`--`) ? key : hyphenate(key)}:${styles[key]};`;
+  }
+  return ret;
 }
 function vOn(value, key) {
   const instance = getCurrentInstance();
@@ -5189,11 +5287,18 @@ function vFor(source, renderItem) {
   }
   return ret;
 }
+function setRef(ref2, id, opts = {}) {
+  const { $templateRefs } = getCurrentInstance();
+  $templateRefs.push({ i: id, r: ref2, k: opts.k, f: opts.f });
+}
 const o$1 = (value, key) => vOn(value, key);
 const f$1 = (source, renderItem) => vFor(source, renderItem);
+const s$1 = (value) => stringifyStyle(value);
 const e$1 = (target, ...sources) => extend(target, ...sources);
 const n$1 = (value) => normalizeClass(value);
 const t$1 = (val) => toDisplayString(val);
+const p$1 = (props) => renderProps(props);
+const sr = (ref2, id, opts) => setRef(ref2, id, opts);
 function createApp$1(rootComponent, rootProps = null) {
   rootComponent && (rootComponent.mpType = "app");
   return createVueApp(rootComponent, rootProps).use(plugin);
@@ -5515,8 +5620,8 @@ function promisify$1(name, fn) {
     if (hasCallback(args)) {
       return wrapperReturnValue(name, invokeApi(name, fn, extend({}, args), rest));
     }
-    return wrapperReturnValue(name, handlePromise(new Promise((resolve, reject) => {
-      invokeApi(name, fn, extend({}, args, { success: resolve, fail: reject }), rest);
+    return wrapperReturnValue(name, handlePromise(new Promise((resolve2, reject) => {
+      invokeApi(name, fn, extend({}, args, { success: resolve2, fail: reject }), rest);
     })));
   };
 }
@@ -5837,7 +5942,7 @@ function invokeGetPushCidCallbacks(cid2, errMsg) {
   getPushCidCallbacks.length = 0;
 }
 const API_GET_PUSH_CLIENT_ID = "getPushClientId";
-const getPushClientId = defineAsyncApi(API_GET_PUSH_CLIENT_ID, (_2, { resolve, reject }) => {
+const getPushClientId = defineAsyncApi(API_GET_PUSH_CLIENT_ID, (_2, { resolve: resolve2, reject }) => {
   Promise.resolve().then(() => {
     if (typeof enabled === "undefined") {
       enabled = false;
@@ -5846,7 +5951,7 @@ const getPushClientId = defineAsyncApi(API_GET_PUSH_CLIENT_ID, (_2, { resolve, r
     }
     getPushCidCallbacks.push((cid2, errMsg) => {
       if (cid2) {
-        resolve({ cid: cid2 });
+        resolve2({ cid: cid2 });
       } else {
         reject(errMsg);
       }
@@ -5915,9 +6020,9 @@ function promisify(name, api) {
     if (isFunction(options.success) || isFunction(options.fail) || isFunction(options.complete)) {
       return wrapperReturnValue(name, invokeApi(name, api, extend({}, options), rest));
     }
-    return wrapperReturnValue(name, handlePromise(new Promise((resolve, reject) => {
+    return wrapperReturnValue(name, handlePromise(new Promise((resolve2, reject) => {
       invokeApi(name, api, extend({}, options, {
-        success: resolve,
+        success: resolve2,
         fail: reject
       }), rest);
     })));
@@ -6115,7 +6220,7 @@ function populateParameters(fromRes, toRes) {
   let _SDKVersion = SDKVersion;
   const hostLanguage = (language || "").replace(/_/g, "-");
   const parameters = {
-    appId: "",
+    appId: "wx6d764013e44997e8",
     appName: "天天体验馆",
     appVersion: "1.0.0",
     appVersionCode: "100",
@@ -6264,7 +6369,7 @@ const getAppBaseInfo = {
       hostName: _hostName,
       hostSDKVersion: SDKVersion,
       hostTheme: theme,
-      appId: "",
+      appId: "wx6d764013e44997e8",
       appName: "天天体验馆",
       appVersion: "1.0.0",
       appVersionCode: "100",
@@ -6524,13 +6629,13 @@ function initRuntimeSocket(hosts, port, id) {
 }
 const SOCKET_TIMEOUT = 500;
 function tryConnectSocket(host2, port, id) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve2, reject) => {
     const socket = index$1.connectSocket({
       url: `ws://${host2}:${port}/${id}`,
       multiple: true,
       // 支付宝小程序 是否开启多实例
       fail() {
-        resolve(null);
+        resolve2(null);
       }
     });
     const timer = setTimeout(() => {
@@ -6538,19 +6643,19 @@ function tryConnectSocket(host2, port, id) {
         code: 1006,
         reason: "connect timeout"
       });
-      resolve(null);
+      resolve2(null);
     }, SOCKET_TIMEOUT);
     socket.onOpen((e2) => {
       clearTimeout(timer);
-      resolve(socket);
+      resolve2(socket);
     });
     socket.onClose((e2) => {
       clearTimeout(timer);
-      resolve(null);
+      resolve2(null);
     });
     socket.onError((e2) => {
       clearTimeout(timer);
-      resolve(null);
+      resolve2(null);
     });
   });
 }
@@ -7013,9 +7118,9 @@ function isConsoleWritable() {
   return isWritable;
 }
 function initRuntimeSocketService() {
-  const hosts = "198.18.0.1,192.168.62.47,127.0.0.1";
+  const hosts = "198.18.0.1,192.168.1.3,192.168.157.1,192.168.23.1,127.0.0.1";
   const port = "8090";
-  const id = "mp-weixin_I6mDbQ";
+  const id = "mp-weixin_-zXka4";
   const lazy = typeof swan !== "undefined";
   let restoreError = lazy ? () => {
   } : initOnError();
@@ -8560,7 +8665,7 @@ Store.prototype.dispatch = function dispatch(_type, _payload) {
   var result = entry.length > 1 ? Promise.all(entry.map(function(handler) {
     return handler(payload);
   })) : entry[0](payload);
-  return new Promise(function(resolve, reject) {
+  return new Promise(function(resolve2, reject) {
     result.then(function(res) {
       try {
         this$1$1._actionSubscribers.filter(function(sub) {
@@ -8574,7 +8679,7 @@ Store.prototype.dispatch = function dispatch(_type, _payload) {
           console.error(e2);
         }
       }
-      resolve(res);
+      resolve2(res);
     }, function(error) {
       try {
         this$1$1._actionSubscribers.filter(function(sub) {
@@ -9718,7 +9823,7 @@ const pages = [
   {
     path: "pages/tabBar/discount/discount",
     style: {
-      navigationBarTitleText: "优惠中心",
+      navigationBarTitleText: "热门活动",
       navigationBarBackgroundColor: "#FF69B4",
       navigationBarTextStyle: "white",
       "app-plus": {
@@ -9814,6 +9919,26 @@ const pages = [
         }
       }
     }
+  },
+  {
+    path: "pages/order-detail/order-detail",
+    style: {
+      navigationBarTitleText: "订单详情",
+      navigationBarBackgroundColor: "#FF69B4",
+      navigationBarTextStyle: "white",
+      "app-plus": {
+        titleNView: {
+          buttons: [
+            {
+              text: "",
+              fontSrc: "/static/uni.ttf",
+              fontSize: "22px",
+              color: "#FFFFFF"
+            }
+          ]
+        }
+      }
+    }
   }
 ];
 const globalStyle = {
@@ -9838,7 +9963,7 @@ const tabBar = {
       pagePath: "pages/tabBar/discount/discount",
       iconPath: "static/image/day/优惠.png",
       selectedIconPath: "static/image/day/优惠.png",
-      text: "优惠中心"
+      text: "热门活动"
     },
     {
       pagePath: "pages/tabBar/booking/booking",
@@ -10189,7 +10314,7 @@ function T(e2) {
 const b = true, E = "mp-weixin", A = T(define_process_env_UNI_SECURE_NETWORK_CONFIG_default), P = E, C = T(""), O = T("[]") || [];
 let N = "";
 try {
-  N = "";
+  N = "wx6d764013e44997e8";
 } catch (e2) {
 }
 let L = {};
@@ -12709,7 +12834,7 @@ let er = new class {
 })();
 var tr = er;
 var define_process_env_UNI_STATISTICS_CONFIG_default = { version: "2", enable: true };
-var define_process_env_UNI_STAT_TITLE_JSON_default = { "pages/tabBar/component/component": "内置组件", "pages/tabBar/API/API": "接口", "pages/tabBar/template/template": "模版", "pages/tabBar/extUI/extUI": "扩展组件", "pages/component/view/view": "view", "pages/component/scroll-view/scroll-view": "scroll-view", "pages/component/swiper/swiper": "swiper", "pages/component/cover-view/cover-view": "cover-view", "pages/component/movable-view/movable-view": "movable-view", "pages/component/text/text": "text", "pages/component/rich-text/rich-text": "rich-text", "pages/component/progress/progress": "progress", "pages/component/button/button": "button", "pages/component/checkbox/checkbox": "checkbox", "pages/component/form/form": "form", "pages/component/input/input": "input", "pages/component/label/label": "label", "pages/component/picker/picker": "picker", "pages/component/picker-view/picker-view": "picker-view", "pages/component/radio/radio": "radio", "pages/component/slider/slider": "slider", "pages/component/switch/switch": "switch", "pages/component/textarea/textarea": "textarea", "pages/component/editor/editor": "editor", "pages/component/navigator/navigator": "navigator", "pages/component/navigator/navigate/navigate": "navigatePage", "pages/component/navigator/redirect/redirect": "redirectPage", "pages/component/image/image": "image", "pages/component/video/video": "video", "pages/component/map/map": "map", "pages/component/canvas/canvas": "canvas", "pages/component/web-view/web-view": "web-view", "pages/API/login/login": "授权登录", "pages/API/get-user-info/get-user-info": "获取用户信息", "pages/API/request-payment/request-payment": "发起支付", "pages/API/share/share": "分享", "pages/API/set-navigation-bar-title/set-navigation-bar-title": "设置界面标题", "pages/API/show-loading/show-loading": "加载提示框", "pages/API/navigator/navigator": "页面跳转", "pages/API/navigator/new-page/new-vue-page-1": "新VUE页面1", "pages/API/navigator/new-page/new-vue-page-2": "新VUE页面2", "pages/API/pull-down-refresh/pull-down-refresh": "下拉刷新", "pages/API/animation/animation": "创建动画", "pages/API/get-node-info/get-node-info": "节点信息", "pages/API/intersection-observer/intersection-observer": "节点布局相交状态", "pages/API/canvas/canvas": "创建绘画", "pages/API/action-sheet/action-sheet": "操作菜单", "pages/API/modal/modal": "模态弹窗", "pages/API/toast/toast": "消息提示框", "pages/API/get-network-type/get-network-type": "获取设备网络状态", "pages/API/get-system-info/get-system-info": "获取设备系统信息", "pages/API/add-phone-contact/add-phone-contact": "添加手机联系人", "pages/API/on-accelerometer-change/on-accelerometer-change": "监听加速度计数据", "pages/API/on-compass-change/on-compass-change": "监听罗盘数据", "pages/API/make-phone-call/make-phone-call": "打电话", "pages/API/scan-code/scan-code": "扫码", "pages/API/clipboard/clipboard": "剪贴板", "pages/API/request/request": "网络请求", "pages/API/upload-file/upload-file": "上传文件", "pages/API/download-file/download-file": "下载文件", "pages/API/image/image": "图片", "pages/API/voice/voice": "录音", "pages/API/inner-audio/inner-audio": "音频", "pages/API/background-audio/background-audio": "背景音频", "pages/API/video/video": "视频", "pages/API/file/file": "文件", "pages/API/map/map": "map", "pages/API/get-location/get-location": "获取位置", "pages/API/open-location/open-location": "查看位置", "pages/API/choose-location/choose-location": "使用地图选择位置", "pages/API/storage/storage": "数据存储", "pages/API/sqlite/sqlite": "SQLite", "pages/API/rewarded-video-ad/rewarded-video-ad": "激励视频广告", "pages/API/brightness/brightness": "屏幕亮度", "pages/API/save-media/save-media": "保存媒体到本地", "pages/API/bluetooth/bluetooth": "蓝牙", "pages/API/soter/soter": "生物认证", "pages/API/ibeacon/ibeacon": "iBeacon", "pages/API/vibrate/vibrate": "震动", "pages/API/websocket-socketTask/websocket-socketTask": "websocket-socketTask", "pages/API/websocket-global/websocket-global": "websocket-global", "pages/extUI/forms/forms": "Form 表单", "pages/extUI/group/group": "Group 分组", "pages/extUI/badge/badge": "Badge 数字角标", "pages/extUI/breadcrumb/breadcrumb": "Breadcrumb 面包屑", "pages/extUI/countdown/countdown": "Countdown 倒计时", "pages/extUI/drawer/drawer": "Drawer 抽屉", "pages/extUI/icons/icons": "Icons 图标", "pages/extUI/load-more/load-more": "LoadMore 加载更多", "pages/extUI/nav-bar/nav-bar": "NavBar 导航栏", "pages/extUI/number-box/number-box": "NumberBox 数字输入框", "pages/extUI/popup/popup": "Popup 弹出层", "pages/extUI/segmented-control/segmented-control": "SegmentedControl 分段器", "pages/extUI/tag/tag": "Tag 标签", "pages/extUI/list/list": "List 列表", "pages/extUI/card/card": "Card 卡片", "pages/extUI/collapse/collapse": "Collapse 折叠面板", "pages/extUI/pagination/pagination": "Pagination 分页器", "pages/extUI/swiper-dot/swiper-dot": "SwiperDot 轮播图指示点", "pages/extUI/grid/grid": "Grid 宫格", "pages/extUI/rate/rate": "Rate 评分", "pages/extUI/steps/steps": "Steps 步骤条", "pages/extUI/notice-bar/notice-bar": "NoticeBar 通告栏", "pages/extUI/swipe-action/swipe-action": "SwipeAction 滑动操作", "pages/extUI/search-bar/search-bar": "SearchBar 搜索栏", "pages/extUI/calendar/calendar": "Calendar 日历", "pages/extUI/indexed-list/indexed-list": "IndexedList 索引列表", "pages/extUI/fab/fab": "Fab 悬浮按钮", "pages/extUI/fav/fav": "Fav 收藏按钮", "pages/extUI/goods-nav/goods-nav": "GoodsNav 商品导航", "pages/extUI/section/section": "Section 标题栏", "pages/extUI/transition/transition": "Transition 过渡动画", "pages/extUI/title/title": "Title 章节标题", "pages/extUI/tooltip/tooltip": "Tooltip 文字提示", "pages/extUI/link/link": "Link 链接", "pages/extUI/combox/combox": "Combox 组合框", "pages/extUI/dateformat/dateformat": "Dateformat 日期格式化", "pages/extUI/data-checkbox/data-checkbox": "DataCheckbox 单选复选框", "pages/extUI/easyinput/easyinput": "Easyinput 增强输入框", "pages/extUI/data-picker/data-picker": "DataPicker 级联选择", "pages/extUI/data-select/data-select": "DataSelect 下拉框", "pages/extUI/datetime-picker/datetime-picker": "DatetimePicker 日期时间", "pages/extUI/row/row": "Layout 布局", "pages/extUI/file-picker/file-picker": "FilePicker 文件选择上传", "pages/extUI/space/space": "间距", "pages/extUI/font/font": "字体", "pages/extUI/color/color": "颜色", "pages/extUI/radius/radius": "圆角", "pages/template/nav-default/nav-default": "默认导航栏", "pages/template/component-communication/component-communication": "组件通讯", "pages/template/list2detail-list/list2detail-list": "列表到详情示例", "pages/template/list2detail-detail/list2detail-detail": "详情", "pages/template/tabbar/tabbar": "可拖动顶部选项卡", "pages/template/tabbar/detail/detail": "详情页面", "pages/template/swiper-vertical/swiper-vertical": "上下滑动切换视频", "pages/template/swiper-list/swiper-list": "swiper-list", "pages/template/scheme/scheme": "打开外部应用", "pages/template/global/global": "GlobalData和vuex", "pages/template/pinia/pinia": "pinia", "pages/template/vuex-vue/vuex-vue": "vuex-vue", "pages/template/crypto-api/crypto-api": "crypto" };
+var define_process_env_UNI_STAT_TITLE_JSON_default = { "pages/tabBar/home/home": "首页", "pages/tabBar/discount/discount": "优惠中心", "pages/tabBar/booking/booking": "我的预订", "pages/tabBar/profile/profile": "个人中心", "pages/tabBar/experience/experience": "体验馆", "pages/tabBar/booking-detail/booking-detail": "预订详情" };
 var define_process_env_UNI_STAT_UNI_CLOUD_default = {};
 const sys = index$1.getSystemInfoSync();
 const STAT_VERSION = "4.76";
@@ -12719,7 +12844,7 @@ const PAGE_PVER_TIME = 1800;
 const APP_PVER_TIME = 300;
 const OPERATING_TIME = 10;
 const DIFF_TIME = 60 * 1e3 * 60 * 24;
-const appid = "";
+const appid = "wx6d764013e44997e8";
 const dbSet = (name, value) => {
   let data = index$1.getStorageSync("$$STAT__DBDATA:" + appid) || {};
   if (!data) {
@@ -12757,7 +12882,7 @@ const dbRemove = (name) => {
 };
 const uniStatisticsConfig = define_process_env_UNI_STATISTICS_CONFIG_default;
 let statConfig = {
-  appid: ""
+  appid: "wx6d764013e44997e8"
 };
 let titleJsons = {};
 titleJsons = define_process_env_UNI_STAT_TITLE_JSON_default;
@@ -12986,7 +13111,7 @@ const get_page_name = (routepath) => {
 const Report_Data_Time = "Report_Data_Time";
 const Report_Status = "Report_Status";
 const is_report_data = () => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve2, reject) => {
     let start_time = "";
     let end_time = (/* @__PURE__ */ new Date()).getTime();
     let diff_time = DIFF_TIME;
@@ -13003,13 +13128,13 @@ const is_report_data = () => {
         index$1.setStorageSync(Report_Data_Time, end_time);
         index$1.setStorageSync(Report_Status, enable);
         if (enable === 1) {
-          resolve();
+          resolve2();
         }
       });
       return;
     }
     if (report_status === 1) {
-      resolve();
+      resolve2();
     }
     if (!start_time) {
       index$1.setStorageSync(Report_Data_Time, end_time);
@@ -13024,7 +13149,7 @@ const is_report_data = () => {
   });
 };
 const requestData = (done) => {
-  const appid2 = "";
+  const appid2 = "wx6d764013e44997e8";
   let formData = {
     usv: STAT_VERSION,
     conf: JSON.stringify({
@@ -13870,8 +13995,11 @@ exports.e = e$1;
 exports.f = f$1;
 exports.index = index$1;
 exports.index$1 = index;
-exports.mapMutations = mapMutations;
 exports.n = n$1;
 exports.o = o$1;
+exports.p = p$1;
+exports.resolveComponent = resolveComponent;
+exports.s = s$1;
+exports.sr = sr;
 exports.t = t$1;
 //# sourceMappingURL=../../.sourcemap/mp-weixin/common/vendor.js.map

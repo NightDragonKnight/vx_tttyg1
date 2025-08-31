@@ -28,6 +28,91 @@
   min-height: 100vh;
 }
 
+/* 公告弹窗样式 */
+.announcement-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: overlayShow 0.3s ease-out;
+}
+@keyframes overlayShow {
+0% {
+    opacity: 0;
+}
+100% {
+    opacity: 1;
+}
+}
+.announcement-popup {
+  width: 90%;
+  max-width: 600rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  overflow: hidden;
+  animation: popupShow 0.3s ease-out;
+}
+@keyframes popupShow {
+0% {
+    opacity: 0;
+    transform: scale(0.8);
+}
+100% {
+    opacity: 1;
+    transform: scale(1);
+}
+}
+.announcement-header {
+  background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+  padding: 30rpx;
+  text-align: center;
+}
+.announcement-header .announcement-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #fff;
+}
+.announcement-content {
+  padding: 30rpx;
+  max-height: 500rpx;
+  overflow-y: auto;
+}
+.announcement-content .announcement-text {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.8;
+  white-space: pre-line;
+}
+.announcement-footer {
+  padding: 20rpx 30rpx 30rpx;
+  text-align: center;
+  border-top: 1rpx solid #f0f0f0;
+  background-color: #fafafa;
+}
+.announcement-footer .read-btn {
+  background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+  color: #fff;
+  padding: 20rpx 60rpx;
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 6rpx 15rpx rgba(255, 105, 180, 0.3);
+  transition: all 0.2s ease;
+}
+.announcement-footer .read-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 3rpx 8rpx rgba(255, 105, 180, 0.4);
+}
+
 /* 轮播图样式 */
 .swiper-section .swiper {
   height: 400rpx;
@@ -45,7 +130,7 @@
   border-radius: 16rpx;
   border: 1rpx solid #ffe4e8;
   /* 体验馆大功能 */
-  /* 三个小功能 */
+  /* 爆款推荐功能 */
 }
 .main-functions .main-function {
   display: flex;
@@ -74,45 +159,31 @@
   font-weight: bold;
   color: #fff;
 }
-.main-functions .sub-functions {
+.main-functions .hot-recommend .recommend-function {
   display: flex;
-  justify-content: space-between;
-}
-.main-functions .sub-functions .sub-function {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 20rpx;
-  background-color: #fff0f5;
-  border-radius: 12rpx;
-  margin: 0 10rpx;
-  border: 1rpx solid #ffe4e8;
+  padding: 30rpx;
+  background: linear-gradient(135deg, #FF6347 0%, #FF4500 100%);
+  border-radius: 16rpx;
 }
-.main-functions .sub-functions .sub-function:first-child {
-  margin-left: 0;
-}
-.main-functions .sub-functions .sub-function:last-child {
-  margin-right: 0;
-}
-.main-functions .sub-functions .sub-function .sub-function-icon {
-  width: 80rpx;
-  height: 80rpx;
-  background-color: #FF69B4;
+.main-functions .hot-recommend .recommend-function .recommend-function-icon {
+  width: 100rpx;
+  height: 100rpx;
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16rpx;
+  margin-right: 30rpx;
 }
-.main-functions .sub-functions .sub-function .sub-function-icon .iconfont {
+.main-functions .hot-recommend .recommend-function .recommend-function-icon .iconfont {
   color: #fff;
-  font-size: 50rpx;
+  font-size: 60rpx;
 }
-.main-functions .sub-functions .sub-function .sub-function-text {
-  font-size: 26rpx;
-  color: #333;
-  font-weight: 500;
+.main-functions .hot-recommend .recommend-function .recommend-function-text {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #fff;
 }
 
 /* 热门推荐样式 */
@@ -128,6 +199,16 @@
   font-weight: bold;
   color: #333;
   margin-bottom: 30rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.section .section-title .test-btn {
+  font-size: 24rpx;
+  padding: 10rpx;
+  background-color: rgba(255, 105, 180, 0.1);
+  border-radius: 50%;
+  color: #FF69B4;
 }
 .section .product-list {
   display: flex;

@@ -27,6 +27,8 @@
   background-color: #fef5f7;
   min-height: 100vh;
 }
+
+/* 用户信息头部 */
 .user-info {
   background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
   padding: 60rpx 40rpx 40rpx;
@@ -35,7 +37,6 @@
 .user-info .avatar-section {
   display: flex;
   align-items: center;
-  margin-bottom: 40rpx;
 }
 .user-info .avatar-section .avatar {
   width: 120rpx;
@@ -43,6 +44,9 @@
   border-radius: 50%;
   border: 4rpx solid rgba(255, 255, 255, 0.3);
   margin-right: 30rpx;
+}
+.user-info .avatar-section .user-details {
+  flex: 1;
 }
 .user-info .avatar-section .user-details .username {
   font-size: 36rpx;
@@ -54,23 +58,134 @@
   font-size: 26rpx;
   opacity: 0.8;
 }
-.user-info .stats-section {
+.user-info .avatar-section .login-tip {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+}
+.user-info .avatar-section .login-tip text {
+  font-size: 24rpx;
+}
+.user-info .avatar-section .share-commission-btn {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  color: #fff;
+  border: none;
+  border-radius: 24rpx;
+  padding: 12rpx 20rpx;
   display: flex;
-  justify-content: space-around;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 24rpx;
+  font-weight: bold;
+  box-shadow: 0 4rpx 12rpx rgba(255, 165, 0, 0.3);
 }
-.user-info .stats-section .stat-item {
-  text-align: center;
+.user-info .avatar-section .share-commission-btn .btn-icon {
+  font-size: 28rpx;
 }
-.user-info .stats-section .stat-item .stat-number {
+.user-info .avatar-section .share-commission-btn .btn-text {
+  font-size: 24rpx;
+}
+.user-info .avatar-section .share-commission-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2rpx 6rpx rgba(255, 165, 0, 0.3);
+}
+
+/* 账户信息卡片 */
+.account-section {
+  margin: 20rpx;
+}
+.account-section .account-card {
+  background-color: #fff8fa;
+  border-radius: 16rpx;
+  border: 1rpx solid #ffe4e8;
+  overflow: hidden;
+}
+.account-section .account-card .card-header {
+  padding: 30rpx 30rpx 20rpx;
+  border-bottom: 1rpx solid #ffe4e8;
+}
+.account-section .account-card .card-header .card-title {
   font-size: 32rpx;
   font-weight: bold;
+  color: #333;
+}
+.account-section .account-card .account-stats {
+  display: flex;
+  padding: 30rpx 0;
+}
+.account-section .account-card .account-stats .stat-item {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+.account-section .account-card .account-stats .stat-item .stat-number {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #FF69B4;
   display: block;
   margin-bottom: 8rpx;
 }
-.user-info .stats-section .stat-item .stat-label {
+.account-section .account-card .account-stats .stat-item .stat-label {
   font-size: 24rpx;
-  opacity: 0.8;
+  color: #666;
+  display: block;
+  margin-bottom: 8rpx;
 }
+.account-section .account-card .account-stats .stat-item .stat-action {
+  font-size: 22rpx;
+  color: #999;
+  padding: 4rpx 12rpx;
+  background-color: #f5f5f5;
+  border-radius: 12rpx;
+  display: inline-block;
+}
+.account-section .account-card .account-stats .stat-divider {
+  width: 1rpx;
+  background-color: #ffe4e8;
+  margin: 20rpx 0;
+}
+
+/* 快捷服务 */
+.quick-services {
+  margin: 20rpx;
+}
+.quick-services .service-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  padding: 0 10rpx;
+}
+.quick-services .service-grid {
+  display: flex;
+  background-color: #fff8fa;
+  border-radius: 16rpx;
+  border: 1rpx solid #ffe4e8;
+  padding: 30rpx 40rpx;
+  justify-content: space-around;
+}
+.quick-services .service-grid .service-item {
+  text-align: center;
+  min-width: 160rpx;
+}
+.quick-services .service-grid .service-item .service-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12rpx;
+}
+.quick-services .service-grid .service-item .service-icon .icon-text {
+  font-size: 36rpx;
+}
+.quick-services .service-grid .service-item .service-text {
+  font-size: 24rpx;
+  color: #333;
+}
+
+/* 功能菜单 */
 .menu-section {
   margin: 20rpx;
 }
@@ -99,8 +214,7 @@
   justify-content: center;
   margin-right: 20rpx;
 }
-.menu-section .menu-group .menu-item .menu-icon .iconfont {
-  color: #FF69B4;
+.menu-section .menu-group .menu-item .menu-icon .icon-text {
   font-size: 32rpx;
 }
 .menu-section .menu-group .menu-item .menu-text {
@@ -108,44 +222,22 @@
   font-size: 30rpx;
   color: #333;
 }
+.menu-section .menu-group .menu-item .menu-badge {
+  background-color: #ff6b35;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 4rpx 8rpx;
+  border-radius: 12rpx;
+  margin-right: 10rpx;
+  min-width: 32rpx;
+  text-align: center;
+}
 .menu-section .menu-group .menu-item .menu-arrow {
   font-size: 28rpx;
   color: #999;
 }
-.quick-actions {
-  margin: 20rpx;
-  background-color: #fff8fa;
-  border-radius: 16rpx;
-  padding: 30rpx;
-  border: 1rpx solid #ffe4e8;
-}
-.quick-actions .action-item {
-  display: flex;
-  align-items: center;
-  padding: 20rpx 0;
-  border-bottom: 1rpx solid #ffe4e8;
-}
-.quick-actions .action-item:last-child {
-  border-bottom: none;
-}
-.quick-actions .action-item .action-icon {
-  width: 50rpx;
-  height: 50rpx;
-  background-color: #fff0f5;
-  border-radius: 10rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 20rpx;
-}
-.quick-actions .action-item .action-icon .iconfont {
-  color: #FF69B4;
-  font-size: 28rpx;
-}
-.quick-actions .action-item .action-text {
-  font-size: 28rpx;
-  color: #333;
-}
+
+/* 退出登录 */
 .logout-section {
   margin: 40rpx 20rpx;
 }
