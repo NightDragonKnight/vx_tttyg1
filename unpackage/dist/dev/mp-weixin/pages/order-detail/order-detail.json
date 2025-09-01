@@ -1,6 +1,6 @@
 {
   "navigationBarTitleText": "订单详情",
-  "navigationBarBackgroundColor": "#FF69B4",
+  "navigationBarBackgroundColor": "#FFB6C1",
   "navigationBarTextStyle": "white",
   "usingComponents": {
     "uni-popup": "../../uni_modules/uni-popup/components/uni-popup/uni-popup"

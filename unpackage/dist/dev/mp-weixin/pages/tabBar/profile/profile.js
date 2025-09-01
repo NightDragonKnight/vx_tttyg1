@@ -32,27 +32,32 @@ const _sfc_main = {
         {
           text: "意见反馈",
           icon: "💬",
-          action: "feedback"
+          action: "feedback",
+          bgColor: "#FFF0F5"
         },
         {
           text: "关于我们",
           icon: "ℹ️",
-          action: "about"
+          action: "about",
+          bgColor: "#F0F8FF"
         },
         {
           text: "分佣收入",
           icon: "💎",
-          action: "commission"
+          action: "commission",
+          bgColor: "#FFF8DC"
         },
         {
           text: "加盟我们",
           icon: "🤝",
-          action: "franchise"
+          action: "franchise",
+          bgColor: "#F0FFF0"
         },
         {
           text: "保洁专区",
           icon: "🧽",
-          action: "cleaning"
+          action: "cleaning",
+          bgColor: "#F5F5DC"
         }
       ]
     };
@@ -70,7 +75,7 @@ const _sfc_main = {
       common_vendor.index.getUserProfile({
         desc: "用于完善个人资料",
         success: (res) => {
-          common_vendor.index.__f__("log", "at pages/tabBar/profile/profile.vue:155", "获取用户信息成功", res);
+          common_vendor.index.__f__("log", "at pages/tabBar/profile/profile.vue:170", "获取用户信息成功", res);
           this.userInfo = {
             nickName: res.userInfo.nickName,
             avatarUrl: res.userInfo.avatarUrl,
@@ -84,7 +89,7 @@ const _sfc_main = {
           });
         },
         fail: (err) => {
-          common_vendor.index.__f__("log", "at pages/tabBar/profile/profile.vue:172", "获取用户信息失败", err);
+          common_vendor.index.__f__("log", "at pages/tabBar/profile/profile.vue:187", "获取用户信息失败", err);
           common_vendor.index.showToast({
             title: "登录失败",
             icon: "none"
@@ -415,7 +420,7 @@ const _sfc_main = {
               common_vendor.index.makePhoneCall({
                 phoneNumber: "400-888-9999",
                 success: () => {
-                  common_vendor.index.__f__("log", "at pages/tabBar/profile/profile.vue:554", "拨打招商热线成功");
+                  common_vendor.index.__f__("log", "at pages/tabBar/profile/profile.vue:569", "拨打招商热线成功");
                 },
                 fail: () => {
                   common_vendor.index.showToast({
@@ -512,30 +517,30 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     k: common_vendor.o(($event) => $options.handleAccountAction("points")),
     l: common_vendor.t($data.accountInfo.pendingReviews),
     m: common_vendor.o(($event) => $options.handleAccountAction("reviews")),
-    n: common_vendor.f($data.quickServices, (item, index, i0) => {
+    n: common_vendor.t($data.quickServices[0].icon),
+    o: $data.quickServices[0].bgColor,
+    p: common_vendor.t($data.quickServices[0].text),
+    q: common_vendor.o(($event) => $options.handleServiceClick($data.quickServices[0])),
+    r: common_vendor.t($data.menuItems[2].icon),
+    s: $data.menuItems[2].bgColor,
+    t: common_vendor.t($data.menuItems[2].text),
+    v: common_vendor.o(($event) => $options.handleMenuClick($data.menuItems[2])),
+    w: common_vendor.t($data.quickServices[1].icon),
+    x: $data.quickServices[1].bgColor,
+    y: common_vendor.t($data.quickServices[1].text),
+    z: common_vendor.o(($event) => $options.handleServiceClick($data.quickServices[1])),
+    A: common_vendor.f([$data.menuItems[0], $data.menuItems[1], $data.menuItems[3], $data.menuItems[4]], (item, index, i0) => {
       return {
         a: common_vendor.t(item.icon),
         b: item.bgColor,
         c: common_vendor.t(item.text),
         d: index,
-        e: common_vendor.o(($event) => $options.handleServiceClick(item), index)
+        e: common_vendor.o(($event) => $options.handleMenuClick(item), index)
       };
     }),
-    o: common_vendor.f($data.menuItems, (item, index, i0) => {
-      return common_vendor.e({
-        a: common_vendor.t(item.icon),
-        b: common_vendor.t(item.text),
-        c: item.badge
-      }, item.badge ? {
-        d: common_vendor.t(item.badge)
-      } : {}, {
-        e: index,
-        f: common_vendor.o(($event) => $options.handleMenuClick(item), index)
-      });
-    }),
-    p: $data.userInfo.isLogin
+    B: $data.userInfo.isLogin
   }, $data.userInfo.isLogin ? {
-    q: common_vendor.o((...args) => $options.logout && $options.logout(...args))
+    C: common_vendor.o((...args) => $options.logout && $options.logout(...args))
   } : {});
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render]]);

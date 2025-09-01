@@ -163,6 +163,7 @@
   border: 1rpx solid #ffe4e8;
   padding: 30rpx 40rpx;
   justify-content: space-around;
+  margin-bottom: 20rpx;
 }
 .quick-services .service-grid .service-item {
   text-align: center;
@@ -183,58 +184,6 @@
 .quick-services .service-grid .service-item .service-text {
   font-size: 24rpx;
   color: #333;
-}
-
-/* 功能菜单 */
-.menu-section {
-  margin: 20rpx;
-}
-.menu-section .menu-group {
-  background-color: #fff8fa;
-  border-radius: 16rpx;
-  overflow: hidden;
-  border: 1rpx solid #ffe4e8;
-}
-.menu-section .menu-group .menu-item {
-  display: flex;
-  align-items: center;
-  padding: 30rpx;
-  border-bottom: 1rpx solid #ffe4e8;
-}
-.menu-section .menu-group .menu-item:last-child {
-  border-bottom: none;
-}
-.menu-section .menu-group .menu-item .menu-icon {
-  width: 60rpx;
-  height: 60rpx;
-  background-color: #fff0f5;
-  border-radius: 12rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 20rpx;
-}
-.menu-section .menu-group .menu-item .menu-icon .icon-text {
-  font-size: 32rpx;
-}
-.menu-section .menu-group .menu-item .menu-text {
-  flex: 1;
-  font-size: 30rpx;
-  color: #333;
-}
-.menu-section .menu-group .menu-item .menu-badge {
-  background-color: #ff6b35;
-  color: #fff;
-  font-size: 20rpx;
-  padding: 4rpx 8rpx;
-  border-radius: 12rpx;
-  margin-right: 10rpx;
-  min-width: 32rpx;
-  text-align: center;
-}
-.menu-section .menu-group .menu-item .menu-arrow {
-  font-size: 28rpx;
-  color: #999;
 }
 
 /* 退出登录 */

@@ -5,7 +5,13 @@
     "pages/tabBar/booking/booking",
     "pages/tabBar/profile/profile",
     "pages/tabBar/experience/experience",
-    "pages/tabBar/booking-detail/booking-detail"
+    "pages/tabBar/booking-detail/booking-detail",
+    "pages/shop/test",
+    "pages/shop/shop",
+    "pages/shop/product-detail",
+    "pages/shop/cart",
+    "pages/shop/checkout",
+    "pages/shop/order-detail"
   ],
   "window": {
     "backgroundTextStyle": "light",

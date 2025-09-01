@@ -286,7 +286,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     S: common_vendor.o(($event) => $data.refundRemark = $event.detail.value),
     T: common_vendor.o((...args) => $options.closeRefundPopup && $options.closeRefundPopup(...args)),
     U: common_vendor.o((...args) => $options.confirmRefund && $options.confirmRefund(...args)),
-    V: common_vendor.sr("refundPopup", "67732602-0"),
+    V: common_vendor.sr("refundPopup", "4a47f22a-0"),
     W: common_vendor.p({
       type: "center"
     })

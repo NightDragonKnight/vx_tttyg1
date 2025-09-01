@@ -48,27 +48,37 @@
 		
 		<!-- 快捷操作 -->
 		<view class="quick-services">
-			<view class="service-title">快捷服务</view>
+			<view class="service-title">快捷操作</view>
+			
+			<!-- 第一行：储值充值、分佣收入、我的评价 -->
 			<view class="service-grid">
-				<view class="service-item" v-for="(item, index) in quickServices" :key="index" @click="handleServiceClick(item)">
+				<view class="service-item" @click="handleServiceClick(quickServices[0])">
+					<view class="service-icon" :style="{backgroundColor: quickServices[0].bgColor}">
+						<text class="icon-text">{{quickServices[0].icon}}</text>
+					</view>
+					<text class="service-text">{{quickServices[0].text}}</text>
+				</view>
+				<view class="service-item" @click="handleMenuClick(menuItems[2])">
+					<view class="service-icon" :style="{backgroundColor: menuItems[2].bgColor}">
+						<text class="icon-text">{{menuItems[2].icon}}</text>
+					</view>
+					<text class="service-text">{{menuItems[2].text}}</text>
+				</view>
+				<view class="service-item" @click="handleServiceClick(quickServices[1])">
+					<view class="service-icon" :style="{backgroundColor: quickServices[1].bgColor}">
+						<text class="icon-text">{{quickServices[1].icon}}</text>
+					</view>
+					<text class="service-text">{{quickServices[1].text}}</text>
+				</view>
+			</view>
+			
+			<!-- 第二行：意见反馈、关于我们、加盟我们、保洁专区 -->
+			<view class="service-grid">
+				<view class="service-item" v-for="(item, index) in [menuItems[0], menuItems[1], menuItems[3], menuItems[4]]" :key="index" @click="handleMenuClick(item)">
 					<view class="service-icon" :style="{backgroundColor: item.bgColor}">
 						<text class="icon-text">{{item.icon}}</text>
 					</view>
 					<text class="service-text">{{item.text}}</text>
-				</view>
-			</view>
-		</view>
-		
-		<!-- 功能菜单 -->
-		<view class="menu-section">
-			<view class="menu-group">
-				<view class="menu-item" v-for="(item, index) in menuItems" :key="index" @click="handleMenuClick(item)">
-					<view class="menu-icon">
-						<text class="icon-text">{{item.icon}}</text>
-					</view>
-					<text class="menu-text">{{item.text}}</text>
-					<text class="menu-badge" v-if="item.badge">{{item.badge}}</text>
-					<text class="menu-arrow">></text>
 				</view>
 			</view>
 		</view>
@@ -113,27 +123,32 @@
 					{ 
 						text: '意见反馈', 
 						icon: '💬', 
-						action: 'feedback'
+						action: 'feedback',
+						bgColor: '#FFF0F5'
 					},
 					{ 
 						text: '关于我们', 
 						icon: 'ℹ️', 
-						action: 'about'
+						action: 'about',
+						bgColor: '#F0F8FF'
 					},
 					{ 
 						text: '分佣收入', 
 						icon: '💎', 
-						action: 'commission'
+						action: 'commission',
+						bgColor: '#FFF8DC'
 					},
 					{ 
 						text: '加盟我们', 
 						icon: '🤝', 
-						action: 'franchise'
+						action: 'franchise',
+						bgColor: '#F0FFF0'
 					},
 					{ 
 						text: '保洁专区', 
 						icon: '🧽', 
-						action: 'cleaning'
+						action: 'cleaning',
+						bgColor: '#F5F5DC'
 					}
 				]
 			}
@@ -800,6 +815,7 @@
 			border: 1rpx solid #ffe4e8;
 			padding: 30rpx 40rpx;
 			justify-content: space-around;
+			margin-bottom: 20rpx;
 			
 			.service-item {
 				text-align: center;
@@ -822,66 +838,6 @@
 				.service-text {
 					font-size: 24rpx;
 					color: #333;
-				}
-			}
-		}
-	}
-	
-	/* 功能菜单 */
-	.menu-section {
-		margin: 20rpx;
-		
-		.menu-group {
-			background-color: #fff8fa;
-			border-radius: 16rpx;
-			overflow: hidden;
-			border: 1rpx solid #ffe4e8;
-			
-			.menu-item {
-				display: flex;
-				align-items: center;
-				padding: 30rpx;
-				border-bottom: 1rpx solid #ffe4e8;
-				
-				&:last-child {
-					border-bottom: none;
-				}
-				
-				.menu-icon {
-					width: 60rpx;
-					height: 60rpx;
-					background-color: #fff0f5;
-					border-radius: 12rpx;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					margin-right: 20rpx;
-					
-					.icon-text {
-						font-size: 32rpx;
-					}
-				}
-				
-				.menu-text {
-					flex: 1;
-					font-size: 30rpx;
-					color: #333;
-				}
-				
-				.menu-badge {
-					background-color: #ff6b35;
-					color: #fff;
-					font-size: 20rpx;
-					padding: 4rpx 8rpx;
-					border-radius: 12rpx;
-					margin-right: 10rpx;
-					min-width: 32rpx;
-					text-align: center;
-				}
-				
-				.menu-arrow {
-					font-size: 28rpx;
-					color: #999;
 				}
 			}
 		}

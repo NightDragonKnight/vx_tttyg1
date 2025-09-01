@@ -1,0 +1,259 @@
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.content {
+  background-color: #fef8fa;
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+}
+
+/* 搜索栏 */
+.search-section {
+  padding: 20rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+.search-section .search-bar {
+  display: flex;
+  gap: 20rpx;
+}
+.search-section .search-bar .search-input {
+  flex: 1;
+  height: 80rpx;
+  background-color: #f8f8f8;
+  border-radius: 40rpx;
+  padding: 0 30rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+.search-section .search-bar .search-btn {
+  background-color: #FFB6C1;
+  color: #fff;
+  padding: 16rpx 32rpx;
+  border-radius: 40rpx;
+  font-size: 26rpx;
+}
+
+/* 分类选择 */
+.category-section {
+  background-color: #fff;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+.category-section .category-scroll {
+  white-space: nowrap;
+}
+.category-section .category-list {
+  display: flex;
+  padding: 0 20rpx;
+}
+.category-section .category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  margin-right: 20rpx;
+  border-radius: 16rpx;
+  background-color: #f8f8f8;
+  transition: all 0.3s ease;
+}
+.category-section .category-item.active {
+  background-color: #FFB6C1;
+  color: #fff;
+}
+.category-section .category-item .category-icon {
+  font-size: 40rpx;
+  margin-bottom: 8rpx;
+}
+.category-section .category-item .category-name {
+  font-size: 24rpx;
+}
+
+/* 商品区域 */
+.product-section {
+  padding: 20rpx;
+}
+.product-section .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+.product-section .section-header .section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+.product-section .section-header .sort-options {
+  display: flex;
+  gap: 20rpx;
+}
+.product-section .section-header .sort-options .sort-item {
+  font-size: 26rpx;
+  color: #666;
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  transition: all 0.3s ease;
+}
+.product-section .section-header .sort-options .sort-item.active {
+  background-color: #FFB6C1;
+  color: #fff;
+}
+.product-section .product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+}
+.product-section .product-grid .product-card {
+  background-color: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+.product-section .product-grid .product-card:active {
+  transform: scale(0.98);
+}
+.product-section .product-grid .product-card .product-image {
+  width: 100%;
+  height: 300rpx;
+}
+.product-section .product-grid .product-card .product-info {
+  padding: 20rpx;
+}
+.product-section .product-grid .product-card .product-info .product-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.product-section .product-grid .product-card .product-info .product-desc {
+  font-size: 24rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 12rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.product-section .product-grid .product-card .product-info .product-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+.product-section .product-grid .product-card .product-info .product-meta .product-sales, .product-section .product-grid .product-card .product-info .product-meta .product-rating {
+  font-size: 22rpx;
+  color: #999;
+}
+.product-section .product-grid .product-card .product-info .product-price-section {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin-bottom: 15rpx;
+}
+.product-section .product-grid .product-card .product-info .product-price-section .product-price {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #FFB6C1;
+}
+.product-section .product-grid .product-card .product-info .product-price-section .product-original-price {
+  font-size: 24rpx;
+  color: #999;
+  text-decoration: line-through;
+}
+.product-section .product-grid .product-card .product-actions {
+  display: flex;
+  gap: 10rpx;
+  padding: 0 20rpx 20rpx;
+}
+.product-section .product-grid .product-card .product-actions .buy-btn {
+  flex: 1;
+  height: 60rpx;
+  background-color: #FFB6C1;
+  color: #fff;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+}
+.product-section .product-grid .product-card .product-actions .cart-btn {
+  width: 60rpx;
+  height: 60rpx;
+  background-color: #f0f0f0;
+  border-radius: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.product-section .product-grid .product-card .product-actions .cart-btn .cart-icon {
+  font-size: 28rpx;
+}
+
+/* 购物车悬浮按钮 */
+.cart-float {
+  position: fixed;
+  bottom: 120rpx;
+  right: 30rpx;
+  width: 100rpx;
+  height: 100rpx;
+  background-color: #FFB6C1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 20rpx rgba(255, 182, 193, 0.3);
+  z-index: 999;
+}
+.cart-float .cart-icon {
+  font-size: 40rpx;
+  color: #fff;
+}
+.cart-float .cart-badge {
+  position: absolute;
+  top: -8rpx;
+  right: -8rpx;
+  background-color: #ff4757;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 4rpx 8rpx;
+  border-radius: 20rpx;
+  min-width: 32rpx;
+  text-align: center;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+}
+.empty-state .empty-text {
+  font-size: 28rpx;
+  color: #999;
+}

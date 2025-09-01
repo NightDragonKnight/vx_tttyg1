@@ -1,1 +1,1 @@
-{"version":3,"file":"assets.js","sources":["D:/static/image/empty.png"],"sourcesContent":["export default \"/static/image/empty.png\""],"names":[],"mappings":";AAAA,MAAe,aAAA;;"}
+{"version":3,"file":"assets.js","sources":["static/image/day/体验馆.png","../../../../../static/image/empty.png"],"sourcesContent":["export default \"__VITE_ASSET__4c8e86e6__\"","export default \"/static/image/empty.png\""],"names":[],"mappings":";AAAA,MAAe,eAAA;ACAf,MAAe,aAAA;;;"}

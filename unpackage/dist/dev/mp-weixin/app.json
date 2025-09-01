@@ -6,17 +6,22 @@
     "pages/tabBar/profile/profile",
     "pages/tabBar/experience/experience",
     "pages/tabBar/booking-detail/booking-detail",
-    "pages/order-detail/order-detail"
+    "pages/order-detail/order-detail",
+    "pages/shop/shop",
+    "pages/shop/product-detail",
+    "pages/shop/cart",
+    "pages/shop/checkout",
+    "pages/shop/order-detail"
   ],
   "window": {
     "navigationBarTextStyle": "white",
     "navigationBarTitleText": "天天体验馆",
-    "navigationBarBackgroundColor": "#FF69B4",
-    "backgroundColor": "#fef5f7"
+    "navigationBarBackgroundColor": "#FFB6C1",
+    "backgroundColor": "#fef8fa"
   },
   "tabBar": {
     "color": "#7A7E83",
-    "selectedColor": "#FF69B4",
+    "selectedColor": "#FFB6C1",
     "borderStyle": "black",
     "backgroundColor": "#ffffff",
     "list": [

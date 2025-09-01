@@ -24,7 +24,7 @@
 /* 透明度 */
 /* 文章场景相关 */
 .content {
-  background-color: #fef5f7;
+  background-color: #fef8fa;
   min-height: 100vh;
 }
 
@@ -71,7 +71,7 @@
 }
 }
 .announcement-header {
-  background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+  background: linear-gradient(135deg, #FFB6C1 0%, #FFC0CB 100%);
   padding: 30rpx;
   text-align: center;
 }
@@ -98,22 +98,27 @@
   background-color: #fafafa;
 }
 .announcement-footer .read-btn {
-  background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+  background: linear-gradient(135deg, #FFB6C1 0%, #FFC0CB 100%);
   color: #fff;
   padding: 20rpx 60rpx;
   border-radius: 50rpx;
   font-size: 28rpx;
   font-weight: bold;
   border: none;
-  box-shadow: 0 6rpx 15rpx rgba(255, 105, 180, 0.3);
+  box-shadow: 0 6rpx 15rpx rgba(255, 182, 193, 0.3);
   transition: all 0.2s ease;
 }
 .announcement-footer .read-btn:active {
   transform: scale(0.95);
-  box-shadow: 0 3rpx 8rpx rgba(255, 105, 180, 0.4);
+  box-shadow: 0 3rpx 8rpx rgba(255, 182, 193, 0.4);
 }
 
 /* 轮播图样式 */
+.swiper-section {
+  position: relative;
+  /* 轮播图信息覆盖层 */
+  /* 轮播图指示器 */
+}
 .swiper-section .swiper {
   height: 400rpx;
 }
@@ -121,78 +126,117 @@
   width: 100%;
   height: 100%;
 }
+.swiper-section .banner-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  padding: 40rpx 30rpx 30rpx;
+  color: #fff;
+}
+.swiper-section .banner-info .banner-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8rpx;
+}
+.swiper-section .banner-info .banner-desc {
+  font-size: 24rpx;
+  opacity: 0.9;
+  display: block;
+}
+.swiper-section .swiper-indicator {
+  position: absolute;
+  bottom: 20rpx;
+  right: 30rpx;
+  display: flex;
+  gap: 12rpx;
+}
+.swiper-section .swiper-indicator .indicator-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+.swiper-section .swiper-indicator .indicator-dot.active {
+  background-color: #FFB6C1;
+  transform: scale(1.2);
+}
 
 /* 主要功能区域样式 */
 .main-functions {
   padding: 30rpx 20rpx;
-  background-color: #fff8fa;
+  background-color: #fef8fa;
   margin: 20rpx;
   border-radius: 16rpx;
-  border: 1rpx solid #ffe4e8;
+  border: 1rpx solid #ffe8ec;
+  /* 商品出售功能 */
   /* 体验馆大功能 */
-  /* 爆款推荐功能 */
+}
+.main-functions .shop-section {
+  margin-bottom: 40rpx;
+  background-color: #f0f8ff;
+  border-radius: 16rpx;
+  padding: 30rpx 0;
+  border: 2rpx solid #FFB6C1;
+}
+.main-functions .shop-section .category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15rpx;
+  padding: 0 20rpx;
+}
+.main-functions .shop-section .category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 25rpx 15rpx;
+  background-color: transparent;
+  border-radius: 8rpx;
+  box-shadow: none;
+  transition: all 0.3s ease;
+  aspect-ratio: 1;
+}
+.main-functions .shop-section .category-item:active {
+  transform: scale(0.95);
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.main-functions .shop-section .category-item .category-icon {
+  font-size: 50rpx;
+  color: #FFB6C1;
+  margin-bottom: 8rpx;
+}
+.main-functions .shop-section .category-item .category-text {
+  font-size: 24rpx;
+  color: #333;
+  text-align: center;
+  font-weight: 500;
 }
 .main-functions .main-function {
-  display: flex;
-  align-items: center;
-  padding: 30rpx;
-  background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+  position: relative;
+  width: 100%;
+  height: 300rpx;
   border-radius: 16rpx;
+  overflow: hidden;
   margin-bottom: 30rpx;
+  border: 2rpx solid #FFB6C1;
 }
-.main-functions .main-function .main-function-icon {
-  width: 100rpx;
-  height: 100rpx;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 30rpx;
-}
-.main-functions .main-function .main-function-icon .iconfont {
-  color: #fff;
-  font-size: 60rpx;
-}
-.main-functions .main-function .main-function-text {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #fff;
-}
-.main-functions .hot-recommend .recommend-function {
-  display: flex;
-  align-items: center;
-  padding: 30rpx;
-  background: linear-gradient(135deg, #FF6347 0%, #FF4500 100%);
+.main-functions .main-function .function-bg-image {
+  width: 100%;
+  height: 100%;
   border-radius: 16rpx;
-}
-.main-functions .hot-recommend .recommend-function .recommend-function-icon {
-  width: 100rpx;
-  height: 100rpx;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 30rpx;
-}
-.main-functions .hot-recommend .recommend-function .recommend-function-icon .iconfont {
-  color: #fff;
-  font-size: 60rpx;
-}
-.main-functions .hot-recommend .recommend-function .recommend-function-text {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #fff;
 }
 
 /* 热门推荐样式 */
 .section {
-  background-color: #fff8fa;
+  background-color: #fef8fa;
   border-radius: 16rpx;
   padding: 30rpx;
   margin: 20rpx;
-  border: 1rpx solid #ffe4e8;
+  border: 1rpx solid #ffe8ec;
 }
 .section .section-title {
   font-size: 32rpx;
@@ -206,9 +250,9 @@
 .section .section-title .test-btn {
   font-size: 24rpx;
   padding: 10rpx;
-  background-color: rgba(255, 105, 180, 0.1);
+  background-color: rgba(255, 182, 193, 0.1);
   border-radius: 50%;
-  color: #FF69B4;
+  color: #FFB6C1;
 }
 .section .product-list {
   display: flex;
@@ -220,8 +264,12 @@
   margin-bottom: 20rpx;
   border-radius: 12rpx;
   overflow: hidden;
-  background-color: #fff0f5;
-  border: 1rpx solid #ffe4e8;
+  background-color: #fef8fa;
+  border: 1rpx solid #ffe8ec;
+  transition: all 0.3s ease;
+}
+.section .product-list .product-item:active {
+  transform: scale(0.95);
 }
 .section .product-list .product-item .product-image {
   width: 100%;
@@ -238,6 +286,6 @@
 }
 .section .product-list .product-item .product-info .product-price {
   font-size: 32rpx;
-  color: #ff6b35;
+  color: #FFB6C1;
   font-weight: bold;
 }

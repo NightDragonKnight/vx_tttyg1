@@ -16,7 +16,7 @@
 			"path": "pages/tabBar/home/home",
 			"style": {
 				"navigationBarTitleText": "首页",
-				"navigationBarBackgroundColor": "#FF69B4",
+				"navigationBarBackgroundColor": "#FFB6C1",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"bounce": "vertical",
@@ -35,7 +35,7 @@
 			"path": "pages/tabBar/discount/discount",
 			"style": {
 				"navigationBarTitleText": "热门活动",
-				"navigationBarBackgroundColor": "#FF69B4",
+				"navigationBarBackgroundColor": "#FFB6C1",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": {
@@ -53,7 +53,7 @@
 			"path": "pages/tabBar/booking/booking",
 			"style": {
 				"navigationBarTitleText": "我的预订",
-				"navigationBarBackgroundColor": "#FF69B4",
+				"navigationBarBackgroundColor": "#FFB6C1",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": {
@@ -71,7 +71,7 @@
 			"path": "pages/tabBar/profile/profile",
 			"style": {
 				"navigationBarTitleText": "个人中心",
-				"navigationBarBackgroundColor": "#FF69B4",
+				"navigationBarBackgroundColor": "#FFB6C1",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": {
@@ -89,25 +89,25 @@
 			"path": "pages/tabBar/experience/experience",
 			"style": {
 				"navigationBarTitleText": "体验馆",
-				"navigationBarBackgroundColor": "#FF69B4",
+				"navigationBarBackgroundColor": "#FFB6C1",
 				"navigationBarTextStyle": "white",
-						"app-plus": {
-							"titleNView": {
-								"buttons": [{
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
 							"text": "\ue534",
 							"fontSrc": "/static/uni.ttf",
 							"fontSize": "22px",
 							"color": "#FFFFFF"
-								}]
-							}
-						}
+						}]
 					}
-				},
-				{
+				}
+			}
+		},
+		{
 			"path": "pages/tabBar/booking-detail/booking-detail",
 			"style": {
 				"navigationBarTitleText": "预订详情",
-				"navigationBarBackgroundColor": "#FF69B4",
+				"navigationBarBackgroundColor": "#FFB6C1",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": {
@@ -125,7 +125,7 @@
 			"path": "pages/order-detail/order-detail",
 			"style": {
 				"navigationBarTitleText": "订单详情",
-				"navigationBarBackgroundColor": "#FF69B4",
+				"navigationBarBackgroundColor": "#FFB6C1",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": {
@@ -138,17 +138,57 @@
 					}
 				}
 			}
+		},
+		{
+			"path": "pages/shop/shop",
+			"style": {
+				"navigationBarTitleText": "商品出售",
+				"navigationBarBackgroundColor": "#FFB6C1",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/shop/product-detail",
+			"style": {
+				"navigationBarTitleText": "商品详情",
+				"navigationBarBackgroundColor": "#FFB6C1",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/shop/cart",
+			"style": {
+				"navigationBarTitleText": "购物车",
+				"navigationBarBackgroundColor": "#FFB6C1",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/shop/checkout",
+			"style": {
+				"navigationBarTitleText": "订单结算",
+				"navigationBarBackgroundColor": "#FFB6C1",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/shop/order-detail",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"navigationBarBackgroundColor": "#FFB6C1",
+				"navigationBarTextStyle": "white"
+			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "天天体验馆",
-		"navigationBarBackgroundColor": "#FF69B4",
-		"backgroundColor": "#fef5f7"
+		"navigationBarBackgroundColor": "#FFB6C1",
+		"backgroundColor": "#fef8fa"
 	},
 	"tabBar": {
 		"color": "#7A7E83",
-		"selectedColor": "#FF69B4",
+		"selectedColor": "#FFB6C1",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [

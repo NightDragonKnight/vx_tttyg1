@@ -18,30 +18,69 @@
 		<!-- 轮播图 -->
 		<view class="swiper-section">
 			<swiper class="swiper" circular autoplay interval="3000" duration="500">
-				<swiper-item v-for="(item, index) in banners" :key="index">
+				<swiper-item v-for="(item, index) in banners" :key="index" @click="onBannerClick(item)">
 					<image :src="item.image" mode="aspectFill" class="swiper-image"></image>
+					<!-- 轮播图标题和描述 -->
+					<view class="banner-info" v-if="item.title || item.description">
+						<text class="banner-title" v-if="item.title">{{item.title}}</text>
+						<text class="banner-desc" v-if="item.description">{{item.description}}</text>
+					</view>
 				</swiper-item>
 			</swiper>
+			<!-- 轮播图指示器 -->
+			<view class="swiper-indicator">
+				<view 
+					class="indicator-dot" 
+					v-for="(item, index) in banners" 
+					:key="index"
+					:class="{ active: currentBannerIndex === index }"
+				></view>
+			</view>
 		</view>
 		
 		<!-- 主要功能区域 -->
 		<view class="main-functions">
-			<!-- 体验馆大功能 -->
-			<view class="main-function" @click="navigateToMainFunction">
-				<view class="main-function-icon">
-					<text class="iconfont">🏠</text>
+			<!-- 商品出售功能 -->
+			<view class="shop-section">
+				<view class="category-grid">
+					<view class="category-item" @click="navigateToShop('clothing')">
+						<view class="category-icon">👕</view>
+						<text class="category-text">服装</text>
+					</view>
+					<view class="category-item" @click="navigateToShop('electronics')">
+						<view class="category-icon">📱</view>
+						<text class="category-text">数码</text>
+					</view>
+					<view class="category-item" @click="navigateToShop('beauty')">
+						<view class="category-icon">💄</view>
+						<text class="category-text">美妆</text>
+					</view>
+					<view class="category-item" @click="navigateToShop('home')">
+						<view class="category-icon">🏠</view>
+						<text class="category-text">家居</text>
+					</view>
+					<view class="category-item" @click="navigateToShop('food')">
+						<view class="category-icon">🍎</view>
+						<text class="category-text">食品</text>
+					</view>
+					<view class="category-item" @click="navigateToShop('sports')">
+						<view class="category-icon">⚽</view>
+						<text class="category-text">运动</text>
+					</view>
+					<view class="category-item" @click="navigateToShop('books')">
+						<view class="category-icon">📚</view>
+						<text class="category-text">图书</text>
+					</view>
+					<view class="category-item" @click="navigateToShop('all')">
+						<view class="category-icon">🛍️</view>
+						<text class="category-text">全部</text>
+					</view>
 				</view>
-				<text class="main-function-text">体验馆</text>
 			</view>
 			
-			<!-- 爆款推荐功能 -->
-			<view class="hot-recommend">
-				<view class="recommend-function" @click="navigateToHotRecommend">
-					<view class="recommend-function-icon">
-						<text class="iconfont">🔥</text>
-					</view>
-					<text class="recommend-function-text">爆款推荐</text>
-				</view>
+			<!-- 体验馆大功能 -->
+			<view class="main-function" @click="navigateToMainFunction">
+				<image src="/static/image/day/体验馆.png" class="function-bg-image" mode="aspectFill"></image>
 			</view>
 		</view>
 		
@@ -53,7 +92,7 @@
 				<text class="test-btn" @click="showTestAnnouncement">📢</text>
 			</view>
 			<view class="product-list">
-				<view class="product-item" v-for="(item, index) in products" :key="index">
+				<view class="product-item" v-for="(item, index) in products" :key="index" @click="viewProduct(item)">
 					<image :src="item.image" mode="aspectFill" class="product-image"></image>
 					<view class="product-info">
 						<text class="product-name">{{item.name}}</text>
@@ -70,6 +109,7 @@
 		data() {
 			return {
 				showAnnouncement: false, // 控制公告显示
+				currentBannerIndex: 0, // 当前轮播图索引
 				announcementContent: `欢迎来到天天体验馆！
 
 📢 重要公告：
@@ -90,10 +130,40 @@
 • 连续签到7天送神秘礼品
 
 祝您体验愉快！`,
+				// 轮播图数据 - 后台可维护
 				banners: [
-					{ image: '/static/image/day/轮播图1.jpg' },
-					{ image: '/static/image/day/轮播图2.jpg' },
-					{ image: '/static/image/day/轮播图3.jpg' }
+					{ 
+						id: 1,
+						image: '/static/image/day/轮播图1.jpg',
+						title: '新店开业大酬宾',
+						description: '全场8折优惠，新用户首次体验更享特价！',
+						linkType: 'activity', // 链接类型：activity-活动, product-商品, url-外部链接
+						linkData: 'new_store_promotion' // 链接数据
+					},
+					{ 
+						id: 2,
+						image: '/static/image/day/轮播图2.jpg',
+						title: 'VR体验专区',
+						description: '沉浸式虚拟现实体验，带你进入全新世界',
+						linkType: 'product',
+						linkData: 'vr_experience'
+					},
+					{ 
+						id: 3,
+						image: '/static/image/day/轮播图3.jpg',
+						title: '密室逃脱挑战',
+						description: '惊险刺激的解密游戏，考验你的智慧',
+						linkType: 'product',
+						linkData: 'escape_room'
+					},
+					{ 
+						id: 4,
+						image: '/static/image/day/VR体验馆.jpg',
+						title: '周末狂欢夜',
+						description: '每周末特色体验项目限时开放',
+						linkType: 'activity',
+						linkData: 'weekend_party'
+					}
 				],
 
 				products: [
@@ -107,8 +177,102 @@
 		onLoad() {
 			// 页面加载时检查是否需要显示公告
 			this.checkAndShowAnnouncement();
+			// 加载轮播图数据
+			this.loadBanners();
 		},
 		methods: {
+			// 加载轮播图数据（从后台获取）
+			loadBanners() {
+				// 导入API接口
+				import('@/api/banner.js').then(module => {
+					const { getHomeBanners, getMockBanners } = module;
+					
+					// 判断是否为开发环境
+					const isDev = process.env.NODE_ENV === 'development';
+					
+					if (isDev) {
+						// 开发环境使用模拟数据
+						getMockBanners().then(res => {
+							if (res.success) {
+								this.banners = res.data;
+							}
+						}).catch(err => {
+							console.error('加载模拟轮播图失败:', err);
+							// 使用默认数据
+						});
+					} else {
+						// 生产环境使用真实API
+						getHomeBanners().then(res => {
+							if (res.success) {
+								this.banners = res.data;
+							}
+						}).catch(err => {
+							console.error('加载轮播图失败:', err);
+							// 使用默认数据
+						});
+					}
+				}).catch(err => {
+					console.error('导入API模块失败:', err);
+					// 使用默认数据
+				});
+			},
+			
+			// 轮播图点击事件
+			onBannerClick(banner) {
+				console.log('点击轮播图:', banner);
+				
+				switch(banner.linkType) {
+					case 'activity':
+						// 跳转到活动页面
+						this.navigateToActivity(banner.linkData);
+						break;
+					case 'product':
+						// 跳转到商品详情
+						this.navigateToProduct(banner.linkData);
+						break;
+					case 'url':
+						// 打开外部链接
+						this.openExternalUrl(banner.linkData);
+						break;
+					default:
+						// 默认跳转到体验馆
+						this.navigateToMainFunction();
+						break;
+				}
+			},
+			
+			// 跳转到活动页面
+			navigateToActivity(activityId) {
+				uni.navigateTo({
+					url: `/pages/tabBar/discount/discount?activity=${activityId}`
+				});
+			},
+			
+			// 跳转到商品详情
+			navigateToProduct(productId) {
+				uni.navigateTo({
+					url: `/pages/tabBar/booking-detail/booking-detail?product=${productId}`
+				});
+			},
+			
+			// 打开外部链接
+			openExternalUrl(url) {
+				// #ifdef H5
+				window.open(url, '_blank');
+				// #endif
+				
+				// #ifdef APP-PLUS
+				plus.runtime.openURL(url);
+				// #endif
+				
+				// #ifdef MP
+				uni.showToast({
+					title: '请在浏览器中打开',
+					icon: 'none'
+				});
+				// #endif
+			},
+			
 			checkAndShowAnnouncement() {
 				// 检查本次会话是否已经显示过公告
 				const app = getApp();
@@ -130,10 +294,16 @@
 					url: '/pages/tabBar/experience/experience'
 				});
 			},
-			navigateToHotRecommend() {
-				uni.showToast({
-					title: '进入爆款推荐',
-					icon: 'none'
+			// 跳转到商品出售页面
+			navigateToShop(category) {
+				uni.navigateTo({
+					url: `/pages/shop/shop?category=${category}`
+				});
+			},
+			// 查看商品详情
+			viewProduct(product) {
+				uni.navigateTo({
+					url: `/pages/shop/product-detail?product=${encodeURIComponent(JSON.stringify(product))}`
 				});
 			},
 			// 测试方法：重新显示公告（开发调试用）
@@ -146,7 +316,7 @@
 
 <style lang="scss">
 	.content {
-		background-color: #fef5f7;
+		background-color: #fef8fa; // 更淡的浅粉色背景
 		min-height: 100vh;
 	}
 	
@@ -197,7 +367,7 @@
 	}
 	
 	.announcement-header {
-		background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+		background: linear-gradient(135deg, #FFB6C1 0%, #FFC0CB 100%); // 更淡的粉色渐变
 		padding: 30rpx;
 		text-align: center;
 		
@@ -228,25 +398,27 @@
 		background-color: #fafafa;
 		
 		.read-btn {
-			background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+			background: linear-gradient(135deg, #FFB6C1 0%, #FFC0CB 100%); // 更淡的粉色渐变
 			color: #fff;
 			padding: 20rpx 60rpx;
 			border-radius: 50rpx;
 			font-size: 28rpx;
 			font-weight: bold;
 			border: none;
-			box-shadow: 0 6rpx 15rpx rgba(255, 105, 180, 0.3);
+			box-shadow: 0 6rpx 15rpx rgba(255, 182, 193, 0.3); // 更淡的阴影
 			transition: all 0.2s ease;
 		}
 		
 		.read-btn:active {
 			transform: scale(0.95);
-			box-shadow: 0 3rpx 8rpx rgba(255, 105, 180, 0.4);
+			box-shadow: 0 3rpx 8rpx rgba(255, 182, 193, 0.4);
 		}
 	}
 	
 	/* 轮播图样式 */
 	.swiper-section {
+		position: relative;
+		
 		.swiper {
 			height: 400rpx;
 			
@@ -255,89 +427,132 @@
 				height: 100%;
 			}
 		}
-	}
-	
-			/* 主要功能区域样式 */
-	.main-functions {
-		padding: 30rpx 20rpx;
-		background-color: #fff8fa;
-		margin: 20rpx;
-		border-radius: 16rpx;
-		border: 1rpx solid #ffe4e8;
 		
-		/* 体验馆大功能 */
-		.main-function {
-			display: flex;
-			align-items: center;
-			padding: 30rpx;
-			background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
-			border-radius: 16rpx;
-			margin-bottom: 30rpx;
+		/* 轮播图信息覆盖层 */
+		.banner-info {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+			padding: 40rpx 30rpx 30rpx;
+			color: #fff;
 			
-			.main-function-icon {
-				width: 100rpx;
-				height: 100rpx;
-				background-color: rgba(255, 255, 255, 0.2);
-				border-radius: 50%;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				margin-right: 30rpx;
-				
-				.iconfont {
-					color: #fff;
-					font-size: 60rpx;
-				}
+			.banner-title {
+				font-size: 32rpx;
+				font-weight: bold;
+				display: block;
+				margin-bottom: 8rpx;
 			}
 			
-			.main-function-text {
-				font-size: 36rpx;
-				font-weight: bold;
-				color: #fff;
+			.banner-desc {
+				font-size: 24rpx;
+				opacity: 0.9;
+				display: block;
 			}
 		}
 		
-		/* 爆款推荐功能 */
-		.hot-recommend {
-			.recommend-function {
+		/* 轮播图指示器 */
+		.swiper-indicator {
+			position: absolute;
+			bottom: 20rpx;
+			right: 30rpx;
+			display: flex;
+			gap: 12rpx;
+			
+			.indicator-dot {
+				width: 16rpx;
+				height: 16rpx;
+				border-radius: 50%;
+				background-color: rgba(255, 255, 255, 0.5);
+				transition: all 0.3s ease;
+				
+				&.active {
+					background-color: #FFB6C1; // 更淡的粉色
+					transform: scale(1.2);
+				}
+			}
+		}
+	}
+	
+	/* 主要功能区域样式 */
+	.main-functions {
+		padding: 30rpx 20rpx;
+		background-color: #fef8fa; // 更淡的浅粉色背景
+		margin: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe8ec; // 更淡的边框色
+		
+		/* 商品出售功能 */
+		.shop-section {
+			margin-bottom: 40rpx;
+			background-color: #f0f8ff;
+			border-radius: 16rpx;
+			padding: 30rpx 0;
+			border: 2rpx solid #FFB6C1;
+			
+			.category-grid {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: 15rpx;
+				padding: 0 20rpx;
+			}
+			.category-item {
 				display: flex;
+				flex-direction: column;
 				align-items: center;
-				padding: 30rpx;
-				background: linear-gradient(135deg, #FF6347 0%, #FF4500 100%);
+				justify-content: center;
+				padding: 25rpx 15rpx;
+				background-color: transparent;
+				border-radius: 8rpx;
+				box-shadow: none;
+				transition: all 0.3s ease;
+				aspect-ratio: 1;
+				
+				&:active {
+					transform: scale(0.95);
+					background-color: rgba(255, 255, 255, 0.3);
+				}
+				
+				.category-icon {
+					font-size: 50rpx;
+					color: #FFB6C1;
+					margin-bottom: 8rpx;
+				}
+				.category-text {
+					font-size: 24rpx;
+					color: #333;
+					text-align: center;
+					font-weight: 500;
+				}
+			}
+		}
+		
+		/* 体验馆大功能 */
+		.main-function {
+			position: relative;
+			width: 100%;
+			height: 300rpx;
+			border-radius: 16rpx;
+			overflow: hidden;
+			margin-bottom: 30rpx;
+			border: 2rpx solid #FFB6C1;
+			
+			.function-bg-image {
+				width: 100%;
+				height: 100%;
 				border-radius: 16rpx;
-				
-				.recommend-function-icon {
-					width: 100rpx;
-					height: 100rpx;
-					background-color: rgba(255, 255, 255, 0.2);
-					border-radius: 50%;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					margin-right: 30rpx;
-					
-					.iconfont {
-						color: #fff;
-						font-size: 60rpx;
-					}
-				}
-				
-				.recommend-function-text {
-					font-size: 36rpx;
-					font-weight: bold;
-					color: #fff;
-				}
 			}
 		}
 	}
 	
 	/* 热门推荐样式 */
 	.section {
-		background-color: #fff8fa;
+		background-color: #fef8fa; // 更淡的浅粉色背景
 		border-radius: 16rpx;
 		padding: 30rpx;
 		margin: 20rpx;
-		border: 1rpx solid #ffe4e8;
+		border: 1rpx solid #ffe8ec; // 更淡的边框色
 		
 		.section-title {
 			font-size: 32rpx;
@@ -351,9 +566,9 @@
 			.test-btn {
 				font-size: 24rpx;
 				padding: 10rpx;
-				background-color: rgba(255, 105, 180, 0.1);
+				background-color: rgba(255, 182, 193, 0.1); // 更淡的背景色
 				border-radius: 50%;
-				color: #FF69B4;
+				color: #FFB6C1; // 更淡的粉色
 			}
 		}
 		
@@ -367,8 +582,13 @@
 				margin-bottom: 20rpx;
 				border-radius: 12rpx;
 				overflow: hidden;
-				background-color: #fff0f5;
-				border: 1rpx solid #ffe4e8;
+				background-color: #fef8fa; // 更淡的浅粉色背景
+				border: 1rpx solid #ffe8ec; // 更淡的边框色
+				transition: all 0.3s ease;
+				
+				&:active {
+					transform: scale(0.95);
+				}
 				
 				.product-image {
 					width: 100%;
@@ -387,7 +607,7 @@
 					
 					.product-price {
 						font-size: 32rpx;
-						color: #ff6b35;
+						color: #FFB6C1; // 更淡的粉色
 						font-weight: bold;
 					}
 				}

@@ -7118,9 +7118,9 @@ function isConsoleWritable() {
   return isWritable;
 }
 function initRuntimeSocketService() {
-  const hosts = "198.18.0.1,192.168.1.3,192.168.157.1,192.168.23.1,127.0.0.1";
+  const hosts = "198.18.0.1,192.168.62.47,127.0.0.1";
   const port = "8090";
-  const id = "mp-weixin_-zXka4";
+  const id = "mp-weixin_jhlZRR";
   const lazy = typeof swan !== "undefined";
   let restoreError = lazy ? () => {
   } : initOnError();
@@ -9803,7 +9803,7 @@ const pages = [
     path: "pages/tabBar/home/home",
     style: {
       navigationBarTitleText: "首页",
-      navigationBarBackgroundColor: "#FF69B4",
+      navigationBarBackgroundColor: "#FFB6C1",
       navigationBarTextStyle: "white",
       "app-plus": {
         bounce: "vertical",
@@ -9824,7 +9824,7 @@ const pages = [
     path: "pages/tabBar/discount/discount",
     style: {
       navigationBarTitleText: "热门活动",
-      navigationBarBackgroundColor: "#FF69B4",
+      navigationBarBackgroundColor: "#FFB6C1",
       navigationBarTextStyle: "white",
       "app-plus": {
         titleNView: {
@@ -9844,7 +9844,7 @@ const pages = [
     path: "pages/tabBar/booking/booking",
     style: {
       navigationBarTitleText: "我的预订",
-      navigationBarBackgroundColor: "#FF69B4",
+      navigationBarBackgroundColor: "#FFB6C1",
       navigationBarTextStyle: "white",
       "app-plus": {
         titleNView: {
@@ -9864,7 +9864,7 @@ const pages = [
     path: "pages/tabBar/profile/profile",
     style: {
       navigationBarTitleText: "个人中心",
-      navigationBarBackgroundColor: "#FF69B4",
+      navigationBarBackgroundColor: "#FFB6C1",
       navigationBarTextStyle: "white",
       "app-plus": {
         titleNView: {
@@ -9884,7 +9884,7 @@ const pages = [
     path: "pages/tabBar/experience/experience",
     style: {
       navigationBarTitleText: "体验馆",
-      navigationBarBackgroundColor: "#FF69B4",
+      navigationBarBackgroundColor: "#FFB6C1",
       navigationBarTextStyle: "white",
       "app-plus": {
         titleNView: {
@@ -9904,7 +9904,7 @@ const pages = [
     path: "pages/tabBar/booking-detail/booking-detail",
     style: {
       navigationBarTitleText: "预订详情",
-      navigationBarBackgroundColor: "#FF69B4",
+      navigationBarBackgroundColor: "#FFB6C1",
       navigationBarTextStyle: "white",
       "app-plus": {
         titleNView: {
@@ -9924,7 +9924,7 @@ const pages = [
     path: "pages/order-detail/order-detail",
     style: {
       navigationBarTitleText: "订单详情",
-      navigationBarBackgroundColor: "#FF69B4",
+      navigationBarBackgroundColor: "#FFB6C1",
       navigationBarTextStyle: "white",
       "app-plus": {
         titleNView: {
@@ -9939,17 +9939,57 @@ const pages = [
         }
       }
     }
+  },
+  {
+    path: "pages/shop/shop",
+    style: {
+      navigationBarTitleText: "商品出售",
+      navigationBarBackgroundColor: "#FFB6C1",
+      navigationBarTextStyle: "white"
+    }
+  },
+  {
+    path: "pages/shop/product-detail",
+    style: {
+      navigationBarTitleText: "商品详情",
+      navigationBarBackgroundColor: "#FFB6C1",
+      navigationBarTextStyle: "white"
+    }
+  },
+  {
+    path: "pages/shop/cart",
+    style: {
+      navigationBarTitleText: "购物车",
+      navigationBarBackgroundColor: "#FFB6C1",
+      navigationBarTextStyle: "white"
+    }
+  },
+  {
+    path: "pages/shop/checkout",
+    style: {
+      navigationBarTitleText: "订单结算",
+      navigationBarBackgroundColor: "#FFB6C1",
+      navigationBarTextStyle: "white"
+    }
+  },
+  {
+    path: "pages/shop/order-detail",
+    style: {
+      navigationBarTitleText: "订单详情",
+      navigationBarBackgroundColor: "#FFB6C1",
+      navigationBarTextStyle: "white"
+    }
   }
 ];
 const globalStyle = {
   navigationBarTextStyle: "white",
   navigationBarTitleText: "天天体验馆",
-  navigationBarBackgroundColor: "#FF69B4",
-  backgroundColor: "#fef5f7"
+  navigationBarBackgroundColor: "#FFB6C1",
+  backgroundColor: "#fef8fa"
 };
 const tabBar = {
   color: "#7A7E83",
-  selectedColor: "#FF69B4",
+  selectedColor: "#FFB6C1",
   borderStyle: "black",
   backgroundColor: "#ffffff",
   list: [
@@ -12834,7 +12874,7 @@ let er = new class {
 })();
 var tr = er;
 var define_process_env_UNI_STATISTICS_CONFIG_default = { version: "2", enable: true };
-var define_process_env_UNI_STAT_TITLE_JSON_default = { "pages/tabBar/home/home": "首页", "pages/tabBar/discount/discount": "优惠中心", "pages/tabBar/booking/booking": "我的预订", "pages/tabBar/profile/profile": "个人中心", "pages/tabBar/experience/experience": "体验馆", "pages/tabBar/booking-detail/booking-detail": "预订详情" };
+var define_process_env_UNI_STAT_TITLE_JSON_default = { "pages/tabBar/home/home": "首页", "pages/tabBar/discount/discount": "热门活动", "pages/tabBar/booking/booking": "我的预订", "pages/tabBar/profile/profile": "个人中心", "pages/tabBar/experience/experience": "体验馆", "pages/tabBar/booking-detail/booking-detail": "预订详情", "pages/order-detail/order-detail": "订单详情", "pages/shop/shop": "商品出售", "pages/shop/product-detail": "商品详情", "pages/shop/cart": "购物车", "pages/shop/checkout": "订单结算", "pages/shop/order-detail": "订单详情" };
 var define_process_env_UNI_STAT_UNI_CLOUD_default = {};
 const sys = index$1.getSystemInfoSync();
 const STAT_VERSION = "4.76";

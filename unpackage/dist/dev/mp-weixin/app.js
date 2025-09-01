@@ -10,6 +10,11 @@ if (!Math) {
   "./pages/tabBar/experience/experience.js";
   "./pages/tabBar/booking-detail/booking-detail.js";
   "./pages/order-detail/order-detail.js";
+  "./pages/shop/shop.js";
+  "./pages/shop/product-detail.js";
+  "./pages/shop/cart.js";
+  "./pages/shop/checkout.js";
+  "./pages/shop/order-detail.js";
 }
 const pages = [
   "pages/tabBar/home/home",
@@ -17,7 +22,13 @@ const pages = [
   "pages/tabBar/booking/booking",
   "pages/tabBar/profile/profile",
   "pages/tabBar/experience/experience",
-  "pages/tabBar/booking-detail/booking-detail"
+  "pages/tabBar/booking-detail/booking-detail",
+  "pages/shop/test",
+  "pages/shop/shop",
+  "pages/shop/product-detail",
+  "pages/shop/cart",
+  "pages/shop/checkout",
+  "pages/shop/order-detail"
 ];
 const window = {
   backgroundTextStyle: "light",
