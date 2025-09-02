@@ -9,9 +9,10 @@
     "pages/order-detail/order-detail",
     "pages/shop/shop",
     "pages/shop/product-detail",
-    "pages/shop/cart",
-    "pages/shop/checkout",
-    "pages/shop/order-detail"
+    "pages/shop/purchase",
+    "pages/shop/orders",
+    "pages/shop/order-detail",
+    "pages/area-selection/area-selection"
   ],
   "window": {
     "navigationBarTextStyle": "white",

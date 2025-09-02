@@ -12,9 +12,10 @@ if (!Math) {
   "./pages/order-detail/order-detail.js";
   "./pages/shop/shop.js";
   "./pages/shop/product-detail.js";
-  "./pages/shop/cart.js";
-  "./pages/shop/checkout.js";
+  "./pages/shop/purchase.js";
+  "./pages/shop/orders.js";
   "./pages/shop/order-detail.js";
+  "./pages/area-selection/area-selection.js";
 }
 const pages = [
   "pages/tabBar/home/home",

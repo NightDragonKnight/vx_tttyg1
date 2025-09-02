@@ -1,0 +1,31 @@
+
+.content { background-color: #fef5f7; min-height: 100vh;
+}
+.header { background-color: #fff8fa; padding: 30rpx; border-bottom: 1rpx solid #ffe4e8;
+}
+.header .title { font-size: 36rpx; font-weight: bold; color: #333;
+}
+.city-wrapper { height: calc(100vh - 120rpx);
+}
+	
+	/* 复用弹窗样式，已去除嵌套写法，兼容WXSS */
+.district-popup-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.5); z-index: 999; display: flex; align-items: flex-end; justify-content: center;
+}
+.district-popup { background-color: #fff; border-radius: 20rpx 20rpx 0 0; overflow: hidden; width: 100%; max-height: 80vh;
+}
+.popup-header { padding: 30rpx; text-align: center; border-bottom: 1rpx solid #f0f0f0; position: relative;
+}
+.popup-title { font-size: 32rpx; font-weight: bold; color: #333;
+}
+.popup-close { position: absolute; right: 30rpx; top: 30rpx; font-size: 32rpx; color: #999; width: 40rpx; height: 40rpx; display: flex; align-items: center; justify-content: center; border-radius: 50%;
+}
+.popup-content { max-height: 60vh; overflow-y: auto;
+}
+.district-list { padding: 20rpx;
+}
+.district-item { padding: 25rpx 30rpx; border-bottom: 1rpx solid #f0f0f0;
+}
+.district-item:last-child { border-bottom: none;
+}
+.district-name { font-size: 28rpx; color: #333;
+}

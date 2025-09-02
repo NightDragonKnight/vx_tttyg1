@@ -36,7 +36,7 @@ const _sfc_main = {
         const productData = JSON.parse(decodeURIComponent(options.product));
         this.product = { ...this.product, ...productData };
       } catch (e) {
-        common_vendor.index.__f__("error", "at pages/shop/product-detail.vue:121", "解析商品数据失败:", e);
+        common_vendor.index.__f__("error", "at pages/shop/product-detail.vue:113", "解析商品数据失败:", e);
       }
     }
   },
@@ -72,46 +72,17 @@ const _sfc_main = {
       const specPrice = selectedSpec ? selectedSpec.price : 0;
       return (basePrice + specPrice) * this.quantity;
     },
-    // 添加到购物车
-    addToCart() {
-      var _a;
-      const selectedSpec = (_a = this.product.specs) == null ? void 0 : _a.find((s) => s.value === this.selectedSpec);
-      const cartItem = {
-        ...this.product,
-        selectedSpec: this.selectedSpec,
-        specName: selectedSpec ? selectedSpec.name : "标准版",
-        quantity: this.quantity,
-        totalPrice: this.calculateTotalPrice()
-      };
-      let cart = common_vendor.index.getStorageSync("cart") || [];
-      const existingIndex = cart.findIndex(
-        (item) => item.id === cartItem.id && item.selectedSpec === cartItem.selectedSpec
-      );
-      if (existingIndex >= 0) {
-        cart[existingIndex].quantity += this.quantity;
-        cart[existingIndex].totalPrice = cart[existingIndex].price * cart[existingIndex].quantity;
-      } else {
-        cart.push(cartItem);
-      }
-      common_vendor.index.setStorageSync("cart", cart);
-      common_vendor.index.showToast({
-        title: "已添加到购物车",
-        icon: "success"
-      });
-    },
     // 立即购买
     buyNow() {
       var _a;
       const selectedSpec = (_a = this.product.specs) == null ? void 0 : _a.find((s) => s.value === this.selectedSpec);
-      const orderItem = {
+      const orderData = {
         ...this.product,
-        selectedSpec: this.selectedSpec,
         specName: selectedSpec ? selectedSpec.name : "标准版",
-        quantity: this.quantity,
-        totalPrice: this.calculateTotalPrice()
+        specPrice: selectedSpec ? selectedSpec.price : 0
       };
       common_vendor.index.navigateTo({
-        url: `/pages/shop/checkout?items=${encodeURIComponent(JSON.stringify([orderItem]))}&type=buy_now`
+        url: `/pages/shop/purchase?product=${encodeURIComponent(JSON.stringify(orderData))}`
       });
     }
   }
@@ -159,8 +130,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     q: common_vendor.o((...args) => $options.increaseQuantity && $options.increaseQuantity(...args)),
     r: $data.quantity >= $data.product.stock,
     s: common_vendor.t($data.product.detail || "暂无详细信息"),
-    t: common_vendor.o((...args) => $options.addToCart && $options.addToCart(...args)),
-    v: common_vendor.o((...args) => $options.buyNow && $options.buyNow(...args))
+    t: common_vendor.o((...args) => $options.buyNow && $options.buyNow(...args))
   });
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render]]);

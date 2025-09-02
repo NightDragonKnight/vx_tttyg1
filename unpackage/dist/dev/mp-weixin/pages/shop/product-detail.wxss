@@ -11,7 +11,7 @@
  * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
  */
 /* 颜色变量 */
-/* 行为相关颜色 */
+/* 主题颜色 - 淡淡的浅粉色 */
 /* 文字基本颜色 */
 /* 背景颜色 */
 /* 边框颜色 */
@@ -198,33 +198,9 @@
   border-top: 1rpx solid #f0f0f0;
   display: flex;
   align-items: center;
-  gap: 20rpx;
-}
-.bottom-bar .left-actions {
-  flex: 1;
-}
-.bottom-bar .left-actions .action-btn {
-  width: 100%;
-  height: 80rpx;
-  background-color: #fef8fa;
-  color: #FFB6C1;
-  border: 2rpx solid #FFB6C1;
-  border-radius: 40rpx;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 10rpx;
 }
-.bottom-bar .left-actions .action-btn .btn-icon {
-  font-size: 32rpx;
-}
-.bottom-bar .left-actions .action-btn .btn-text {
-  font-size: 28rpx;
-}
-.bottom-bar .right-actions {
-  flex: 1;
-}
-.bottom-bar .right-actions .buy-btn {
+.bottom-bar .buy-btn {
   width: 100%;
   height: 80rpx;
   background-color: #FFB6C1;

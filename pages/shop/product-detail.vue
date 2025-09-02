@@ -68,15 +68,7 @@
 		
 		<!-- 底部操作栏 -->
 		<view class="bottom-bar">
-			<view class="left-actions">
-				<button class="action-btn cart" @click="addToCart">
-					<text class="btn-icon">🛒</text>
-					<text class="btn-text">加入购物车</text>
-				</button>
-			</view>
-			<view class="right-actions">
-				<button class="buy-btn" @click="buyNow">立即购买</button>
-			</view>
+			<button class="buy-btn" @click="buyNow">立即购买</button>
 		</view>
 	</view>
 </template>
@@ -157,52 +149,17 @@
 				return (basePrice + specPrice) * this.quantity;
 			},
 			
-			// 添加到购物车
-			addToCart() {
-				const selectedSpec = this.product.specs?.find(s => s.value === this.selectedSpec);
-				const cartItem = {
-					...this.product,
-					selectedSpec: this.selectedSpec,
-					specName: selectedSpec ? selectedSpec.name : '标准版',
-					quantity: this.quantity,
-					totalPrice: this.calculateTotalPrice()
-				};
-				
-				let cart = uni.getStorageSync('cart') || [];
-				
-				// 检查是否已存在相同商品和规格
-				const existingIndex = cart.findIndex(item => 
-					item.id === cartItem.id && item.selectedSpec === cartItem.selectedSpec
-				);
-				
-				if (existingIndex >= 0) {
-					cart[existingIndex].quantity += this.quantity;
-					cart[existingIndex].totalPrice = cart[existingIndex].price * cart[existingIndex].quantity;
-				} else {
-					cart.push(cartItem);
-				}
-				
-				uni.setStorageSync('cart', cart);
-				
-				uni.showToast({
-					title: '已添加到购物车',
-					icon: 'success'
-				});
-			},
-			
 			// 立即购买
 			buyNow() {
 				const selectedSpec = this.product.specs?.find(s => s.value === this.selectedSpec);
-				const orderItem = {
+				const orderData = {
 					...this.product,
-					selectedSpec: this.selectedSpec,
 					specName: selectedSpec ? selectedSpec.name : '标准版',
-					quantity: this.quantity,
-					totalPrice: this.calculateTotalPrice()
+					specPrice: selectedSpec ? selectedSpec.price : 0
 				};
 				
 				uni.navigateTo({
-					url: `/pages/shop/checkout?items=${encodeURIComponent(JSON.stringify([orderItem]))}&type=buy_now`
+					url: `/pages/shop/purchase?product=${encodeURIComponent(JSON.stringify(orderData))}`
 				});
 			}
 		}
@@ -411,45 +368,16 @@
 		border-top: 1rpx solid #f0f0f0;
 		display: flex;
 		align-items: center;
-		gap: 20rpx;
+		justify-content: center;
 		
-		.left-actions {
-			flex: 1;
-			
-			.action-btn {
-				width: 100%;
-				height: 80rpx;
-				background-color: #fef8fa; // 更淡的浅粉色背景
-				color: #FFB6C1; // 更淡的粉色
-				border: 2rpx solid #FFB6C1; // 更淡的粉色
-				border-radius: 40rpx;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				gap: 10rpx;
-				
-				.btn-icon {
-					font-size: 32rpx;
-				}
-				
-				.btn-text {
-					font-size: 28rpx;
-				}
-			}
-		}
-		
-		.right-actions {
-			flex: 1;
-			
-			.buy-btn {
-				width: 100%;
-				height: 80rpx;
-				background-color: #FFB6C1; // 更淡的粉色
-				color: #fff;
-				border-radius: 40rpx;
-				font-size: 28rpx;
-				font-weight: bold;
-			}
+		.buy-btn {
+			width: 100%;
+			height: 80rpx;
+			background-color: #FFB6C1; // 更淡的粉色
+			color: #fff;
+			border-radius: 40rpx;
+			font-size: 28rpx;
+			font-weight: bold;
 		}
 	}
 </style> 

@@ -1,282 +1,288 @@
 <template>
 	<view class="content">
-		<!-- 门店信息 -->
-		<view class="store-info">
-			<view class="store-header">
-				<view class="store-name">{{storeInfo.name}}</view>
-				<view class="store-address">{{storeInfo.address}}</view>
-			</view>
-			<view class="store-actions">
-				<button class="action-btn" @click="navigateToStore">
-					<text class="icon">📍</text>
-					<text>导航</text>
-				</button>
-				<button class="action-btn" @click="callStore">
-					<text class="icon">📞</text>
-					<text>电话</text>
-				</button>
+		<!-- 页面标题 -->
+		<view class="page-header">
+			<view class="page-title">{{currentStep === 1 ? '产品展示' : '选择预订'}}</view>
+			<view class="step-indicator">
+				<view class="step" :class="{ active: currentStep === 1 }">1</view>
+				<view class="step-line"></view>
+				<view class="step" :class="{ active: currentStep === 2 }">2</view>
 			</view>
 		</view>
 		
-		<!-- 产品视频 -->
-		<view class="video-section">
-			<view class="section-title">产品视频</view>
-			<video 
-				:src="currentProduct.videoUrl" 
-				class="product-video"
-				controls
-				:poster="currentProduct.videoPoster"
-			></video>
-		</view>
-		
-		<!-- 产品轮播图 -->
-		<view class="swiper-section">
-			<swiper 
-				class="product-swiper" 
-				:indicator-dots="true" 
-				:autoplay="true" 
-				:interval="3000" 
-				:duration="500"
-				indicator-color="rgba(255,255,255,0.6)"
-				indicator-active-color="#FF69B4"
-			>
-				<swiper-item v-for="(image, index) in currentProduct.images" :key="index">
-					<image :src="image" class="swiper-image" mode="aspectFill"></image>
-				</swiper-item>
-			</swiper>
-		</view>
-		
-		<!-- 产品选择 -->
-		<view class="product-section">
-			<view class="section-title">选择产品</view>
-			<view class="product-list">
-				<view 
-					class="product-item" 
-					v-for="product in products" 
-					:key="product.id"
-					:class="{ selected: selectedProduct === product.id }"
-					@click="selectProduct(product)"
-				>
-					<image :src="product.thumbnail" class="product-thumbnail" mode="aspectFill"></image>
-					<view class="product-info">
-						<text class="product-name">{{product.name}}</text>
-						<text class="product-desc">{{product.description}}</text>
-						<text class="product-price">¥{{product.price}}/人</text>
-					</view>
-				</view>
-			</view>
-		</view>
-		
-		<!-- 选择提示 -->
-		<view class="tip-section" v-if="!selectedProduct">
-			<view class="tip-content">
-				<text class="tip-text">👆 请先选择您想要体验的产品</text>
-			</view>
-		</view>
-		
-		<!-- 房间选择 -->
-		<view class="room-section" v-if="selectedProduct">
-			<view class="section-title">选择房间</view>
-			<view class="room-list">
-				<view 
-					class="room-item" 
-					v-for="room in availableRooms" 
-					:key="room.id"
-					:class="{ 
-						selected: selectedRoom === room.id,
-						unavailable: room.status === 'unavailable' 
-					}"
-					@click="selectRoom(room)"
-				>
-					<view class="room-info">
-						<text class="room-name">{{room.name}}</text>
-						<text class="room-capacity">容纳人数：{{room.capacity}}人</text>
-						<text class="room-features">设施：{{room.features.join('、')}}</text>
-					</view>
-					<view class="room-status" :class="room.status">
-						{{room.statusText}}
-					</view>
-				</view>
+		<!-- 第一页：产品展示 -->
+		<view v-if="currentStep === 1" class="product-detail-page">
+			
+			<!-- 产品视频 -->
+			<view class="video-section">
+				<view class="section-title">产品视频</view>
+				<video 
+					:src="currentProduct.videoUrl" 
+					class="product-video"
+					controls
+					:poster="currentProduct.videoPoster"
+				></video>
 			</view>
 			
-			<!-- 房间轮播图 -->
-			<view class="room-images" v-if="selectedRoom && currentRoom.images.length > 0">
-				<view class="section-subtitle">房间详情</view>
+			<!-- 产品轮播图 -->
+			<view class="swiper-section">
+				<view class="section-title">产品图片</view>
 				<swiper 
-					class="room-swiper" 
+					class="product-swiper" 
 					:indicator-dots="true" 
-					:autoplay="false"
+					:autoplay="true" 
+					:interval="3000" 
+					:duration="500"
 					indicator-color="rgba(255,255,255,0.6)"
 					indicator-active-color="#FF69B4"
 				>
-					<swiper-item v-for="(image, index) in currentRoom.images" :key="index">
+					<swiper-item v-for="(image, index) in currentProduct.images" :key="index">
 						<image :src="image" class="swiper-image" mode="aspectFill"></image>
 					</swiper-item>
 				</swiper>
 			</view>
-		</view>
-		
-		<!-- 选择房间提示 -->
-		<view class="tip-section" v-if="selectedProduct && !selectedRoom">
-			<view class="tip-content">
-				<text class="tip-text">👆 请选择房间</text>
+			
+			<!-- 产品选择 -->
+			<view class="product-selection-section">
+				<view class="section-title">选择产品</view>
+				<view class="product-grid">
+					<view 
+						class="product-grid-item" 
+						v-for="product in products" 
+						:key="product.id"
+						:class="{ selected: selectedProduct === product.id }"
+						@click="selectProductForDisplay(product)"
+					>
+						<image :src="product.thumbnail" class="product-grid-thumbnail" mode="aspectFill"></image>
+						<text class="product-grid-name">{{product.name}}</text>
+					</view>
+				</view>
+			</view>
+			
+			<!-- 产品价格信息 -->
+			<view class="price-info-section">
+				<view class="price-info-item">
+					<text class="price-label">产品单价：</text>
+					<text class="price-value">¥{{currentProduct.price}}/小时</text>
+				</view>
+				<view class="price-info-item">
+					<text class="price-label">套餐详情：</text>
+					<text class="price-desc">套餐一 ¥{{currentProduct.package1Price}}（基础体验） | 套餐二 ¥{{currentProduct.package2Price}}（进阶体验） | 套餐三 ¥{{currentProduct.package3Price}}（豪华体验）</text>
+				</view>
+			</view>
+			
+			<!-- 产品明细图片 -->
+			<view class="product-detail-images">
+				<view class="section-title">产品明细</view>
+				<view class="detail-images-grid">
+					<view class="detail-image-item" v-for="(detail, index) in currentProduct.detailImages" :key="index">
+						<image :src="detail.image" class="detail-image" mode="aspectFill"></image>
+						<text class="detail-image-name">{{detail.name}}</text>
+					</view>
+				</view>
+			</view>
+			
+			<!-- 下一步按钮 -->
+			<view class="next-step">
+				<button class="next-btn" @click="goToStep2">下一步：选择预订</button>
 			</view>
 		</view>
 		
-		<!-- 时间选择 -->
-		<view class="time-section" v-if="selectedRoom">
-			<view class="section-title">选择时间</view>
-			<view class="time-selector">
-				<view class="date-selector">
-					<text class="selector-label">选择日期</text>
-					<picker mode="date" :value="selectedDate" @change="onDateChange">
-						<view class="picker-btn">{{selectedDate}}</view>
-					</picker>
+		<!-- 第二页：选择预订 -->
+		<view v-if="currentStep === 2" class="booking-page">
+			<!-- 返回按钮 -->
+			<view class="back-btn" @click="goToStep1">
+				<text class="back-icon">←</text>
+				<text>返回产品详情</text>
+			</view>
+			
+			<!-- 选择按小时和套餐 -->
+			<view class="package-section">
+				<view class="section-title">选择按小时和套餐</view>
+				<!-- 调试信息 -->
+				<view style="background: #f0f0f0; padding: 10rpx; margin-bottom: 20rpx; font-size: 24rpx; color: #666;">
+					当前选中套餐: {{selectedPackageType || '未选择'}}
+				</view>
+				<view class="package-options">
+					<view class="package-option" @click="selectPackage('hourly')" :class="{ selected: selectedPackageType === 'hourly' }">
+						<view class="package-header">
+							<text class="package-name">按小时计费</text>
+							<text class="package-price">¥{{currentProduct.price}}/小时</text>
+						</view>
+						<text class="package-desc">灵活选择时间，按实际使用时长计费</text>
+					</view>
+					
+					<view class="package-option" @click="selectPackage('package1')" :class="{ selected: selectedPackageType === 'package1' }">
+						<view class="package-header">
+							<text class="package-name">套餐一：基础体验</text>
+							<text class="package-price">¥{{currentProduct.package1Price}}</text>
+						</view>
+						<text class="package-desc">包含2小时体验时间，适合初次体验</text>
+					</view>
+					
+					<view class="package-option" @click="selectPackage('package2')" :class="{ selected: selectedPackageType === 'package2' }">
+						<view class="package-header">
+							<text class="package-name">套餐二：进阶体验</text>
+							<text class="package-price">¥{{currentProduct.package2Price}}</text>
+						</view>
+						<text class="package-desc">包含4小时体验时间，深度体验推荐</text>
+					</view>
+					
+					<view class="package-option" @click="selectPackage('package3')" :class="{ selected: selectedPackageType === 'package3' }">
+						<view class="package-header">
+							<text class="package-name">套餐三：豪华体验</text>
+							<text class="package-price">¥{{currentProduct.package3Price}}</text>
+						</view>
+						<text class="package-desc">包含6小时体验时间，极致体验享受</text>
+					</view>
+				</view>
+			</view>
+			
+			<!-- 选择套餐提示 -->
+			<view class="tip-section" v-if="!selectedPackageType">
+				<view class="tip-content">
+					<text class="tip-text">👆 请先选择计费方式</text>
+				</view>
+			</view>
+			
+			<!-- 时间选择 -->
+			<view class="time-section" v-if="selectedPackageType">
+				<!-- 调试信息 -->
+				<view style="background: #f0f0f0; padding: 10rpx; margin-bottom: 20rpx; font-size: 24rpx; color: #666;">
+					调试信息: selectedPackageType = {{selectedPackageType}}
+				</view>
+				<view class="section-title">选择时间</view>
+				<view class="time-selector">
+					<view class="date-selector">
+						<text class="selector-label">选择日期</text>
+						<picker mode="date" :value="selectedDate" @change="onDateChange">
+							<view class="picker-btn">{{selectedDate}}</view>
+						</picker>
+					</view>
+					
+					<!-- 开始时间和结束时间选择 -->
+					<view class="time-range-section">
+						<view class="time-range-row">
+							<view class="time-picker-item">
+								<text class="selector-label">开始时间</text>
+								<picker :value="startTimeIndex" :range="availableStartTimes" @change="onStartTimeChange">
+									<view class="picker-btn" :class="{ placeholder: !selectedStartTime }">
+										{{selectedStartTime || '请选择开始时间'}}
+									</view>
+								</picker>
+							</view>
+							<view class="time-separator">
+								<text>至</text>
+							</view>
+							<view class="time-picker-item">
+								<text class="selector-label">结束时间</text>
+								<picker :value="endTimeIndex" :range="availableEndTimes" @change="onEndTimeChange" :disabled="!selectedStartTime">
+									<view class="picker-btn" :class="{ placeholder: !selectedEndTime, disabled: !selectedStartTime }">
+										{{selectedEndTime || (selectedStartTime ? '请选择结束时间' : '请先选择开始时间')}}
+									</view>
+								</picker>
+							</view>
+						</view>
+						
+						<!-- 时长显示 -->
+						<view class="duration-info" v-if="selectedStartTime && selectedEndTime">
+							<text class="duration-text">预计时长：{{durationHours}}小时</text>
+						</view>
+						
+						<!-- 24小时时间段可视化 -->
+						<view class="time-visual-section">
+							<text class="selector-label">时间段状态</text>
+							<view class="time-visual-grid">
+								<view 
+									class="time-visual-item" 
+									v-for="(hour, index) in hourlyTimeSlots" 
+									:key="index"
+									:class="getTimeSlotClass(hour)"
+									@click="selectHourlySlot(hour)"
+								>
+									<text class="hour-text">{{hour.hour}}:00</text>
+									<view class="status-dot" :class="hour.status"></view>
+								</view>
+							</view>
+							<view class="time-legend">
+								<view class="legend-item">
+									<view class="legend-dot available"></view>
+									<text class="legend-text">可预约</text>
+								</view>
+								<view class="legend-item">
+									<view class="legend-dot booked"></view>
+									<text class="legend-text">已预订</text>
+								</view>
+								<view class="legend-item">
+									<view class="legend-dot cleaning"></view>
+									<text class="legend-text">保洁时间</text>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			
+			<!-- 选择时间提示 -->
+			<view class="tip-section" v-if="selectedPackageType && (!selectedStartTime || !selectedEndTime)">
+				<view class="tip-content">
+					<text class="tip-text">👆 请选择时间</text>
+				</view>
+			</view>
+			
+			<!-- 房间选择 -->
+			<view class="room-section" v-if="selectedStartTime && selectedEndTime">
+				<view class="section-title">选择房间</view>
+				<view class="room-list">
+					<view 
+						class="room-item" 
+						v-for="room in availableRooms" 
+						:key="room.id"
+						:class="{ 
+							selected: selectedRoom === room.id,
+							unavailable: room.status === 'unavailable' 
+						}"
+						@click="selectRoom(room)"
+					>
+						<view class="room-info">
+							<text class="room-name">{{room.name}}</text>
+							<text class="room-capacity">容纳人数：{{room.capacity}}人</text>
+							<text class="room-features">设施：{{room.features.join('、')}}</text>
+						</view>
+						<view class="room-status" :class="room.status">
+							{{room.statusText}}
+						</view>
+					</view>
 				</view>
 				
-				<!-- 开始时间和结束时间选择 -->
-				<view class="time-range-section">
-					<view class="time-range-row">
-						<view class="time-picker-item">
-							<text class="selector-label">开始时间</text>
-							<picker :value="startTimeIndex" :range="availableStartTimes" @change="onStartTimeChange">
-								<view class="picker-btn" :class="{ placeholder: !selectedStartTime }">
-									{{selectedStartTime || '请选择开始时间'}}
-								</view>
-							</picker>
-						</view>
-						<view class="time-separator">
-							<text>至</text>
-						</view>
-						<view class="time-picker-item">
-							<text class="selector-label">结束时间</text>
-							<picker :value="endTimeIndex" :range="availableEndTimes" @change="onEndTimeChange" :disabled="!selectedStartTime">
-								<view class="picker-btn" :class="{ placeholder: !selectedEndTime, disabled: !selectedStartTime }">
-									{{selectedEndTime || (selectedStartTime ? '请选择结束时间' : '请先选择开始时间')}}
-								</view>
-							</picker>
-						</view>
-					</view>
-					
-					<!-- 时长显示 -->
-					<view class="duration-info" v-if="selectedStartTime && selectedEndTime">
-						<text class="duration-text">预计时长：{{durationHours}}小时</text>
-					</view>
-					
-					<!-- 24小时时间段可视化 -->
-					<view class="time-visual-section">
-						<text class="selector-label">时间段状态</text>
-						<view class="time-visual-grid">
-							<view 
-								class="time-visual-item" 
-								v-for="(hour, index) in hourlyTimeSlots" 
-								:key="index"
-								:class="getTimeSlotClass(hour)"
-								@click="selectHourlySlot(hour)"
-							>
-								<text class="hour-text">{{hour.hour}}:00</text>
-								<view class="status-dot" :class="hour.status"></view>
-							</view>
-						</view>
-						<view class="time-legend">
-							<view class="legend-item">
-								<view class="legend-dot available"></view>
-								<text class="legend-text">可预约</text>
-							</view>
-							<view class="legend-item">
-								<view class="legend-dot booked"></view>
-								<text class="legend-text">已预订</text>
-							</view>
-							<view class="legend-item">
-								<view class="legend-dot cleaning"></view>
-								<text class="legend-text">保洁时间</text>
-							</view>
-						</view>
-					</view>
+				<!-- 房间轮播图 -->
+				<view class="room-images" v-if="selectedRoom && currentRoom.images.length > 0">
+					<view class="section-subtitle">房间详情</view>
+					<swiper 
+						class="room-swiper" 
+						:indicator-dots="true" 
+						:autoplay="false"
+						indicator-color="rgba(255,255,255,0.6)"
+						indicator-active-color="#FF69B4"
+					>
+						<swiper-item v-for="(image, index) in currentRoom.images" :key="index">
+							<image :src="image" class="swiper-image" mode="aspectFill"></image>
+						</swiper-item>
+					</swiper>
 				</view>
 			</view>
-		</view>
-		
-		<!-- 选择时间提示 -->
-		<view class="tip-section" v-if="selectedRoom && (!selectedStartTime || !selectedEndTime)">
-			<view class="tip-content">
-				<text class="tip-text">👆 请选择预约时间</text>
-			</view>
-		</view>
-		
-		<!-- 套餐选择 -->
-		<view class="package-section" v-if="selectedStartTime && selectedEndTime">
-			<view class="section-title">选择套餐</view>
-			<view class="package-list">
-				<view 
-					class="package-item" 
-					v-for="pkg in availablePackages" 
-					:key="pkg.id"
-					:class="{ selected: selectedPackage === pkg.id }"
-					@click="selectPackage(pkg)"
-				>
-					<view class="package-info">
-						<text class="package-name">{{pkg.name}}</text>
-						<text class="package-desc">{{pkg.description}}</text>
-						<view class="package-includes">
-							<text class="includes-title">套餐包含：</text>
-							<text class="includes-content">{{pkg.includes.join('、')}}</text>
-						</view>
-					</view>
-					<view class="package-price">
-						<text class="price-text">¥{{pkg.price}}</text>
-						<text class="price-unit">/人</text>
-					</view>
+			
+			<!-- 选择房间提示 -->
+			<view class="tip-section" v-if="selectedStartTime && selectedEndTime && !selectedRoom">
+				<view class="tip-content">
+					<text class="tip-text">👆 请选择房间</text>
 				</view>
 			</view>
-		</view>
-		
-		<!-- 选择套餐提示 -->
-		<view class="tip-section" v-if="selectedStartTime && selectedEndTime && !selectedPackage">
-			<view class="tip-content">
-				<text class="tip-text">👆 请选择套餐</text>
+			
+			<!-- 确认预订按钮 -->
+			<view class="confirm-booking" v-if="canConfirm">
+				<button class="confirm-btn" @click="confirmBooking">确认预订</button>
 			</view>
-		</view>
-
-		
-		<!-- 价格信息 -->
-		<view class="price-section" v-if="selectedPackage">
-			<view class="price-item">
-				<text>产品费用</text>
-				<text class="price-value">¥{{productPrice}}</text>
-			</view>
-			<view class="price-item" v-if="packagePrice > 0">
-				<text>套餐费用</text>
-				<text class="price-value">¥{{packagePrice}}</text>
-			</view>
-			<view class="price-item total">
-				<text>合计</text>
-				<text class="final-price">¥{{totalPrice}}</text>
-			</view>
-		</view>
-		
-		<!-- 用户备注 -->
-		<view class="remark-section" v-if="selectedPackage">
-			<view class="section-title">用户备注</view>
-			<view class="remark-input-container">
-				<textarea 
-					class="remark-input" 
-					v-model="userRemark" 
-					placeholder="请输入您的备注信息（选填）" 
-					maxlength="200"
-					:show-confirm-bar="false"
-				></textarea>
-				<view class="char-count">{{userRemark.length}}/200</view>
-			</view>
-		</view>
-		
-		<!-- 底部操作栏 -->
-		<view class="bottom-bar">
-			<view class="price-summary">
-				<text class="summary-label">合计：</text>
-				<text class="summary-price">¥{{totalPrice}}</text>
-			</view>
-			<button class="pay-btn" @click="confirmBooking" :disabled="!canBook">立即预订</button>
 		</view>
 	</view>
 </template>
@@ -285,6 +291,8 @@
 	export default {
 		data() {
 			return {
+				currentStep: 1, // 当前页面步骤：1-产品详情，2-选择预订
+				selectedPackageType: '', // 选择的套餐类型：hourly, package1, package2, package3
 				storeInfo: {
 					name: '朝阳VR体验馆',
 					address: '北京市朝阳区建国路88号',
@@ -294,13 +302,22 @@
 					id: 1,
 					name: 'VR虚拟现实体验',
 					description: '沉浸式虚拟现实体验，带你进入全新的数字世界',
-					price: 80,
+					price: 199,
+					package1Price: 299,
+					package2Price: 399,
+					package3Price: 499,
 					videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
 					videoPoster: '/static/image/day/VR体验馆.jpg',
 					images: [
 						'/static/image/day/VR体验馆.jpg',
 						'/static/image/day/VR体验馆.jpg',
 						'/static/image/day/VR体验馆.jpg'
+					],
+					detailImages: [
+						{ image: '/static/image/day/vr-headset.jpg', name: 'VR头显设备' },
+						{ image: '/static/image/day/escape-room.jpg', name: '密室逃脱' },
+						{ image: '/static/image/day/gaming.jpg', name: '电玩设备' },
+						{ image: '/static/image/day/massage-chair.jpg', name: '按摩椅' }
 					]
 				},
 				products: [
@@ -316,13 +333,20 @@
 							'/static/image/day/VR体验馆.jpg',
 							'/static/componentIndex.png',
 							'/static/templateIndex.png'
+						],
+						detailImages: [
+							{ image: '/static/image/day/vr-headset.jpg', name: 'VR头显设备' },
+							{ image: '/static/image/day/escape-room.jpg', name: '密室逃脱' }
 						]
 					},
 					{
 						id: 2,
 						name: 'AR体验',
 						description: '增强现实',
-						price: 100,
+						price: 199,
+						package1Price: 299,
+						package2Price: 399,
+						package3Price: 499,
 						thumbnail: '/static/componentIndex.png',
 						videoUrl: 'https://www.w3schools.com/html/movie.mp4',
 						videoPoster: '/static/componentIndex.png',
@@ -330,13 +354,22 @@
 							'/static/componentIndex.png',
 							'/static/image/day/VR体验馆.jpg',
 							'/static/extuiIndex.png'
+						],
+						detailImages: [
+							{ image: '/static/image/day/ar-glasses.jpg', name: 'AR眼镜' },
+							{ image: '/static/image/day/ar-device.jpg', name: 'AR设备' },
+							{ image: '/static/image/day/ar-interaction.jpg', name: 'AR交互' },
+							{ image: '/static/image/day/ar-display.jpg', name: 'AR显示' }
 						]
 					},
 					{
 						id: 3,
 						name: 'MR体验',
 						description: '混合现实',
-						price: 120,
+						price: 199,
+						package1Price: 299,
+						package2Price: 399,
+						package3Price: 499,
 						thumbnail: '/static/extuiIndex.png',
 						videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
 						videoPoster: '/static/extuiIndex.png',
@@ -344,13 +377,22 @@
 							'/static/extuiIndex.png',
 							'/static/templateIndex.png',
 							'/static/image/day/VR体验馆.jpg'
+						],
+						detailImages: [
+							{ image: '/static/image/day/mr-device.jpg', name: 'MR设备' },
+							{ image: '/static/image/day/mr-interaction.jpg', name: 'MR交互' },
+							{ image: '/static/image/day/mr-display.jpg', name: 'MR显示' },
+							{ image: '/static/image/day/mr-sensor.jpg', name: 'MR传感器' }
 						]
 					},
 					{
 						id: 4,
 						name: '密室逃脱',
 						description: '解谜冒险',
-						price: 90,
+						price: 199,
+						package1Price: 299,
+						package2Price: 399,
+						package3Price: 499,
 						thumbnail: '/static/templateIndex.png',
 						videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
 						videoPoster: '/static/templateIndex.png',
@@ -358,13 +400,22 @@
 							'/static/templateIndex.png',
 							'/static/image/day/VR体验馆.jpg',
 							'/static/componentIndex.png'
+						],
+						detailImages: [
+							{ image: '/static/image/day/escape-room.jpg', name: '密室场景' },
+							{ image: '/static/image/day/puzzle-game.jpg', name: '解谜游戏' },
+							{ image: '/static/image/day/team-activity.jpg', name: '团队活动' },
+							{ image: '/static/image/day/escape-equipment.jpg', name: '逃脱设备' }
 						]
 					},
 					{
 						id: 5,
 						name: '剧本杀',
 						description: '角色扮演',
-						price: 110,
+						price: 199,
+						package1Price: 299,
+						package2Price: 399,
+						package3Price: 499,
 						thumbnail: '/static/extuiIndex.png',
 						videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
 						videoPoster: '/static/extuiIndex.png',
@@ -372,13 +423,22 @@
 							'/static/extuiIndex.png',
 							'/static/templateIndex.png',
 							'/static/image/day/VR体验馆.jpg'
+						],
+						detailImages: [
+							{ image: '/static/image/day/script-killing.jpg', name: '剧本场景' },
+							{ image: '/static/image/day/role-playing.jpg', name: '角色扮演' },
+							{ image: '/static/image/day/detective-game.jpg', name: '侦探游戏' },
+							{ image: '/static/image/day/team-building.jpg', name: '团队建设' }
 						]
 					},
 					{
 						id: 6,
 						name: '电竞游戏',
 						description: '竞技对战',
-						price: 70,
+						price: 199,
+						package1Price: 299,
+						package2Price: 399,
+						package3Price: 499,
 						thumbnail: '/static/componentIndex.png',
 						videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
 						videoPoster: '/static/componentIndex.png',
@@ -386,13 +446,22 @@
 							'/static/componentIndex.png',
 							'/static/image/day/VR体验馆.jpg',
 							'/static/extuiIndex.png'
+						],
+						detailImages: [
+							{ image: '/static/image/day/esports-gaming.jpg', name: '电竞设备' },
+							{ image: '/static/image/day/competitive-game.jpg', name: '竞技游戏' },
+							{ image: '/static/image/day/gaming-tournament.jpg', name: '游戏比赛' },
+							{ image: '/static/image/day/team-battle.jpg', name: '团队对战' }
 						]
 					},
 					{
 						id: 7,
 						name: 'KTV包厢',
 						description: '音乐娱乐',
-						price: 60,
+						price: 199,
+						package1Price: 299,
+						package2Price: 399,
+						package3Price: 499,
 						thumbnail: '/static/image/day/VR体验馆.jpg',
 						videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
 						videoPoster: '/static/image/day/VR体验馆.jpg',
@@ -400,13 +469,22 @@
 							'/static/image/day/VR体验馆.jpg',
 							'/static/componentIndex.png',
 							'/static/templateIndex.png'
+						],
+						detailImages: [
+							{ image: '/static/image/day/ktv-room.jpg', name: 'KTV包间' },
+							{ image: '/static/image/day/karaoke-system.jpg', name: '卡拉OK系统' },
+							{ image: '/static/image/day/music-entertainment.jpg', name: '音乐娱乐' },
+							{ image: '/static/image/day/party-room.jpg', name: '派对房间' }
 						]
 					},
 					{
 						id: 8,
 						name: '台球桌球',
 						description: '桌球运动',
-						price: 50,
+						price: 199,
+						package1Price: 299,
+						package2Price: 399,
+						package3Price: 499,
 						thumbnail: '/static/templateIndex.png',
 						videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
 						videoPoster: '/static/templateIndex.png',
@@ -414,13 +492,22 @@
 							'/static/templateIndex.png',
 							'/static/extuiIndex.png',
 							'/static/componentIndex.png'
+						],
+						detailImages: [
+							{ image: '/static/image/day/billiards-table.jpg', name: '台球桌' },
+							{ image: '/static/image/day/billiards-cues.jpg', name: '台球杆' },
+							{ image: '/static/image/day/sports-equipment.jpg', name: '运动设备' },
+							{ image: '/static/image/day/game-room.jpg', name: '游戏室' }
 						]
 					},
 					{
 						id: 9,
 						name: '棋牌室',
 						description: '棋牌娱乐',
-						price: 40,
+						price: 199,
+						package1Price: 299,
+						package2Price: 399,
+						package3Price: 499,
 						thumbnail: '/static/extuiIndex.png',
 						videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
 						videoPoster: '/static/extuiIndex.png',
@@ -428,13 +515,22 @@
 							'/static/extuiIndex.png',
 							'/static/image/day/VR体验馆.jpg',
 							'/static/templateIndex.png'
+						],
+						detailImages: [
+							{ image: '/static/image/day/chess-room.jpg', name: '棋牌室' },
+							{ image: '/static/image/day/chess-game.jpg', name: '棋类游戏' },
+							{ image: '/static/image/day/card-game.jpg', name: '卡牌游戏' },
+							{ image: '/static/image/day/leisure-entertainment.jpg', name: '休闲娱乐' }
 						]
 					},
 					{
 						id: 10,
 						name: '桌游室',
 						description: '桌面游戏',
-						price: 45,
+						price: 199,
+						package1Price: 299,
+						package2Price: 399,
+						package3Price: 499,
 						thumbnail: '/static/componentIndex.png',
 						videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
 						videoPoster: '/static/componentIndex.png',
@@ -442,9 +538,17 @@
 							'/static/componentIndex.png',
 							'/static/templateIndex.png',
 							'/static/image/day/VR体验馆.jpg'
+						],
+						detailImages: [
+							{ image: '/static/image/day/board-game.jpg', name: '桌游' },
+							{ image: '/static/image/day/table-game.jpg', name: '桌面游戏' },
+							{ image: '/static/image/day/strategy-game.jpg', name: '策略游戏' },
+							{ image: '/static/image/day/social-gaming.jpg', name: '社交游戏' }
 						]
 					}
 				],
+				// 产品明细数据（动态更新）
+				productDetails: [],
 				selectedProduct: 1,
 				availableRooms: [
 					{
@@ -661,11 +765,16 @@
 				return Math.round((duration / 60) * 10) / 10; // 保留一位小数
 			},
 			canBook() {
-				return this.selectedProduct && 
+				return this.selectedPackageType && 
 				       this.selectedRoom && 
 				       this.selectedStartTime &&
-				       this.selectedEndTime &&
-				       this.selectedPackage;
+				       this.selectedEndTime;
+			},
+			canConfirm() {
+				return this.selectedPackageType && 
+				       this.selectedRoom && 
+				       this.selectedStartTime &&
+				       this.selectedEndTime;
 			},
 			// 根据当前选择的产品返回对应的时间段状态
 			hourlyTimeSlots() {
@@ -703,8 +812,61 @@
 					console.error('解析项目数据失败:', e);
 				}
 			}
+			
+			// 初始化第一个产品的详情图片
+			if (this.products.length > 0) {
+				this.productDetails = this.products[0].detailImages || [];
+			}
 		},
 		methods: {
+			// 页面切换方法
+			goToStep1() {
+				this.currentStep = 1;
+			},
+			goToStep2() {
+				this.currentStep = 2;
+			},
+			
+			// 选择套餐方法
+			selectPackage(packageType) {
+				console.log('选择套餐:', packageType);
+				this.selectedPackageType = packageType;
+				console.log('selectedPackageType 已设置为:', this.selectedPackageType);
+				
+				// 选择套餐时清空后续所有选择
+				this.selectedRoom = null;
+				this.selectedStartTime = null;
+				this.selectedEndTime = null;
+				this.startTimeIndex = -1;
+				this.endTimeIndex = -1;
+				
+				// 显示提示信息
+				uni.showToast({
+					title: '已选择套餐: ' + packageType,
+					icon: 'none',
+					duration: 2000
+				});
+			},
+			
+			// 产品选择显示方法
+			selectProductForDisplay(product) {
+				this.selectedProduct = product.id;
+				// 更新当前产品信息，包括视频、轮播图、价格、套餐和详情图片
+				this.currentProduct = {
+					id: product.id,
+					name: product.name,
+					description: product.description,
+					price: product.price || 199,
+					package1Price: product.package1Price || 299,
+					package2Price: product.package2Price || 399,
+					package3Price: product.package3Price || 499,
+					videoUrl: product.videoUrl,
+					videoPoster: product.videoPoster,
+					images: product.images,
+					detailImages: product.detailImages || []
+				};
+			},
+			
 			navigateToStore() {
 				uni.showToast({
 					title: '正在打开导航...',
@@ -948,11 +1110,66 @@
 		padding-bottom: 120rpx;
 	}
 	
+	/* 页面标题 */
+	.page-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 20rpx 30rpx;
+		background-color: #fff;
+		border-bottom: 1rpx solid #ffe4e8;
+	}
+	
+	.page-title {
+		font-size: 36rpx;
+		font-weight: bold;
+		color: #333;
+	}
+	
+	.step-indicator {
+		display: flex;
+		align-items: center;
+		gap: 10rpx;
+	}
+	
+	.step {
+		width: 40rpx;
+		height: 40rpx;
+		border-radius: 50%;
+		background-color: #f0f0f0;
+		color: #666;
+		font-size: 24rpx;
+		font-weight: bold;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	
+	.step.active {
+		background-color: #FF69B4;
+		color: #fff;
+	}
+	
+	.step-line {
+		flex: 1;
+		height: 1rpx;
+		background-color: #ffe4e8;
+	}
+	
+	/* 第一页：产品详情 */
+	.product-detail-page {
+		padding: 30rpx;
+		background-color: #fff;
+		border-radius: 16rpx;
+		margin: 20rpx;
+		box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.1);
+	}
+	
 	/* 门店信息 */
 	.store-info {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 	}
@@ -994,30 +1211,11 @@
 		margin-right: 10rpx;
 	}
 	
-	/* 提示区域 */
-	.tip-section {
-		background-color: #fff0f5;
-		padding: 30rpx;
-		margin: 20rpx;
-		border-radius: 16rpx;
-		border: 1rpx solid #ffe4e8;
-	}
-	
-	.tip-content {
-		text-align: center;
-	}
-	
-	.tip-text {
-		font-size: 26rpx;
-		color: #FF69B4;
-		font-weight: bold;
-	}
-	
 	/* 视频区域 */
 	.video-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 	}
@@ -1039,7 +1237,7 @@
 	.swiper-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 	}
@@ -1056,11 +1254,231 @@
 		border-radius: 12rpx;
 	}
 	
+	/* 产品价格信息 */
+	.price-info-section {
+		background-color: #fff8fa;
+		padding: 20rpx 30rpx;
+		margin-bottom: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+	}
+	
+	.price-info-item {
+		display: flex;
+		align-items: flex-start;
+		gap: 15rpx;
+		margin-bottom: 15rpx;
+	}
+	
+	.price-info-item:last-child {
+		margin-bottom: 0;
+	}
+	
+	.price-label {
+		font-size: 26rpx;
+		color: #666;
+		font-weight: 500;
+		min-width: 120rpx;
+	}
+	
+	.price-value {
+		font-size: 28rpx;
+		color: #FF69B4;
+		font-weight: bold;
+	}
+	
+	.price-desc {
+		font-size: 26rpx;
+		color: #333;
+		line-height: 1.4;
+		flex: 1;
+	}
+	
+	/* 产品明细 */
+	.detail-section {
+		background-color: #fff8fa;
+		padding: 30rpx;
+		margin-bottom: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+	}
+	
+	.detail-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 15rpx;
+	}
+	
+	.detail-item {
+		display: flex;
+		align-items: center;
+		gap: 10rpx;
+	}
+	
+	.detail-image {
+		width: 80rpx;
+		height: 80rpx;
+		border-radius: 40rpx;
+		object-fit: cover;
+	}
+	
+	.detail-name {
+		font-size: 26rpx;
+		color: #333;
+	}
+	
+	/* 产品明细图片 */
+	.product-detail-images {
+		background-color: #fff8fa;
+		padding: 30rpx;
+		margin-bottom: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+	}
+	
+	.detail-images-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 20rpx;
+		margin-top: 20rpx;
+	}
+	
+	.detail-image-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10rpx;
+	}
+	
+	.detail-image {
+		width: 100%;
+		height: 200rpx;
+		border-radius: 12rpx;
+		object-fit: cover;
+		background-color: #f0f0f0;
+	}
+	
+	.detail-image-name {
+		font-size: 24rpx;
+		color: #666;
+		text-align: center;
+		line-height: 1.2;
+	}
+	
+	/* 产品选择网格 */
+	.product-selection-section {
+		background-color: #fff8fa;
+		padding: 30rpx;
+		margin-bottom: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+	}
+	
+	.product-grid {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		gap: 15rpx;
+		margin-top: 20rpx;
+	}
+	
+	.product-grid-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10rpx;
+		padding: 15rpx;
+		border-radius: 12rpx;
+		border: 2rpx solid transparent;
+		transition: all 0.3s ease;
+		cursor: pointer;
+	}
+	
+	.product-grid-item:hover {
+		border-color: #FF69B4;
+		background-color: #fff0f5;
+	}
+	
+	.product-grid-item.selected {
+		border-color: #FF69B4;
+		background-color: #fff0f5;
+	}
+	
+	.product-grid-thumbnail {
+		width: 80rpx;
+		height: 80rpx;
+		border-radius: 12rpx;
+		object-fit: cover;
+	}
+	
+	.product-grid-name {
+		font-size: 20rpx;
+		color: #333;
+		text-align: center;
+		line-height: 1.2;
+	}
+	
+	/* 下一步按钮 */
+	.next-step {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 20rpx 30rpx;
+		background-color: #FF69B4;
+		display: flex;
+		justify-content: center;
+	}
+	
+	.next-btn {
+		background-color: #fff;
+		color: #FF69B4;
+		padding: 20rpx 60rpx;
+		border-radius: 30rpx;
+		font-size: 30rpx;
+		font-weight: bold;
+		border: 2rpx solid #FF69B4;
+	}
+	
+	.next-btn:active {
+		background-color: #ffe4e8;
+	}
+	
+	/* 第二页：选择预订 */
+	.booking-page {
+		padding: 30rpx;
+		background-color: #fff;
+		border-radius: 16rpx;
+		margin: 20rpx;
+		box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.1);
+	}
+	
+	/* 返回按钮 */
+	.back-btn {
+		display: flex;
+		align-items: center;
+		gap: 10rpx;
+		margin-bottom: 20rpx;
+		padding: 15rpx 30rpx;
+		background-color: #f0f0f0;
+		border-radius: 12rpx;
+		border: 1rpx solid #ffe4e8;
+	}
+	
+	.back-icon {
+		font-size: 36rpx;
+		color: #666;
+	}
+	
+	.back-btn text {
+		font-size: 28rpx;
+		color: #666;
+	}
+	
 	/* 产品选择 */
 	.product-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 	}
@@ -1126,7 +1544,7 @@
 	.room-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 	}
@@ -1227,7 +1645,7 @@
 	.time-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 	}
@@ -1441,7 +1859,7 @@
 	.remark-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 	}
@@ -1484,9 +1902,61 @@
 	.package-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
+	}
+	
+	.package-options {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 20rpx;
+	}
+	
+	.package-option {
+		background-color: #fff;
+		padding: 25rpx;
+		border-radius: 12rpx;
+		border: 2rpx solid #ffe4e8;
+		cursor: pointer;
+		transition: all 0.3s ease;
+	}
+	
+	.package-option:hover {
+		border-color: #FF69B4;
+		transform: translateY(-2rpx);
+		box-shadow: 0 4rpx 12rpx rgba(255, 105, 180, 0.1);
+	}
+	
+	.package-option.selected {
+		border-color: #FF69B4;
+		background-color: #fff0f5;
+		box-shadow: 0 4rpx 12rpx rgba(255, 105, 180, 0.2);
+	}
+	
+	.package-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 10rpx;
+	}
+	
+	.package-name {
+		font-size: 28rpx;
+		font-weight: bold;
+		color: #333;
+	}
+	
+	.package-price {
+		font-size: 32rpx;
+		font-weight: bold;
+		color: #FF69B4;
+	}
+	
+	.package-desc {
+		font-size: 24rpx;
+		color: #666;
+		line-height: 1.4;
 	}
 	
 	.package-list {
@@ -1559,7 +2029,7 @@
 	.price-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 	}
@@ -1590,6 +2060,51 @@
 	.final-price {
 		color: #FF69B4;
 		font-size: 36rpx;
+	}
+	
+	/* 确认预订按钮 */
+	.confirm-booking {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 20rpx 30rpx;
+		background-color: #FF69B4;
+		display: flex;
+		justify-content: center;
+	}
+	
+	.confirm-btn {
+		background-color: #fff;
+		color: #FF69B4;
+		padding: 20rpx 60rpx;
+		border-radius: 30rpx;
+		font-size: 30rpx;
+		font-weight: bold;
+		border: 2rpx solid #FF69B4;
+	}
+	
+	.confirm-btn:active {
+		background-color: #ffe4e8;
+	}
+	
+	/* 提示区域 */
+	.tip-section {
+		background-color: #fff0f5;
+		padding: 30rpx;
+		margin: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+	}
+	
+	.tip-content {
+		text-align: center;
+	}
+	
+	.tip-text {
+		font-size: 26rpx;
+		color: #FF69B4;
+		font-weight: bold;
 	}
 	
 	/* 底部操作栏 */

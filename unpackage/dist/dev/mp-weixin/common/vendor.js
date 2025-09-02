@@ -7118,9 +7118,9 @@ function isConsoleWritable() {
   return isWritable;
 }
 function initRuntimeSocketService() {
-  const hosts = "198.18.0.1,192.168.62.47,127.0.0.1";
+  const hosts = "198.18.0.1,192.168.43.47,127.0.0.1";
   const port = "8090";
-  const id = "mp-weixin_jhlZRR";
+  const id = "mp-weixin_8w6rjg";
   const lazy = typeof swan !== "undefined";
   let restoreError = lazy ? () => {
   } : initOnError();
@@ -9957,17 +9957,17 @@ const pages = [
     }
   },
   {
-    path: "pages/shop/cart",
+    path: "pages/shop/purchase",
     style: {
-      navigationBarTitleText: "购物车",
+      navigationBarTitleText: "确认订单",
       navigationBarBackgroundColor: "#FFB6C1",
       navigationBarTextStyle: "white"
     }
   },
   {
-    path: "pages/shop/checkout",
+    path: "pages/shop/orders",
     style: {
-      navigationBarTitleText: "订单结算",
+      navigationBarTitleText: "我的订单",
       navigationBarBackgroundColor: "#FFB6C1",
       navigationBarTextStyle: "white"
     }
@@ -9976,6 +9976,14 @@ const pages = [
     path: "pages/shop/order-detail",
     style: {
       navigationBarTitleText: "订单详情",
+      navigationBarBackgroundColor: "#FFB6C1",
+      navigationBarTextStyle: "white"
+    }
+  },
+  {
+    path: "pages/area-selection/area-selection",
+    style: {
+      navigationBarTitleText: "选择区域",
       navigationBarBackgroundColor: "#FFB6C1",
       navigationBarTextStyle: "white"
     }
@@ -12874,7 +12882,7 @@ let er = new class {
 })();
 var tr = er;
 var define_process_env_UNI_STATISTICS_CONFIG_default = { version: "2", enable: true };
-var define_process_env_UNI_STAT_TITLE_JSON_default = { "pages/tabBar/home/home": "首页", "pages/tabBar/discount/discount": "热门活动", "pages/tabBar/booking/booking": "我的预订", "pages/tabBar/profile/profile": "个人中心", "pages/tabBar/experience/experience": "体验馆", "pages/tabBar/booking-detail/booking-detail": "预订详情", "pages/order-detail/order-detail": "订单详情", "pages/shop/shop": "商品出售", "pages/shop/product-detail": "商品详情", "pages/shop/cart": "购物车", "pages/shop/checkout": "订单结算", "pages/shop/order-detail": "订单详情" };
+var define_process_env_UNI_STAT_TITLE_JSON_default = { "pages/tabBar/home/home": "首页", "pages/tabBar/discount/discount": "热门活动", "pages/tabBar/booking/booking": "我的预订", "pages/tabBar/profile/profile": "个人中心", "pages/tabBar/experience/experience": "体验馆", "pages/tabBar/booking-detail/booking-detail": "预订详情", "pages/order-detail/order-detail": "订单详情", "pages/shop/shop": "商品出售", "pages/shop/product-detail": "商品详情", "pages/shop/purchase": "确认订单", "pages/shop/orders": "我的订单", "pages/shop/order-detail": "订单详情", "pages/area-selection/area-selection": "选择区域" };
 var define_process_env_UNI_STAT_UNI_CLOUD_default = {};
 const sys = index$1.getSystemInfoSync();
 const STAT_VERSION = "4.76";

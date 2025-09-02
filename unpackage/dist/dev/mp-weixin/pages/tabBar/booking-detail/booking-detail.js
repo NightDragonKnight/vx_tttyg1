@@ -3,6 +3,10 @@ const common_vendor = require("../../../common/vendor.js");
 const _sfc_main = {
   data() {
     return {
+      currentStep: 1,
+      // 当前页面步骤：1-产品详情，2-选择预订
+      selectedPackageType: "",
+      // 选择的套餐类型：hourly, package1, package2, package3
       storeInfo: {
         name: "朝阳VR体验馆",
         address: "北京市朝阳区建国路88号",
@@ -12,13 +16,22 @@ const _sfc_main = {
         id: 1,
         name: "VR虚拟现实体验",
         description: "沉浸式虚拟现实体验，带你进入全新的数字世界",
-        price: 80,
+        price: 199,
+        package1Price: 299,
+        package2Price: 399,
+        package3Price: 499,
         videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
         videoPoster: "/static/image/day/VR体验馆.jpg",
         images: [
           "/static/image/day/VR体验馆.jpg",
           "/static/image/day/VR体验馆.jpg",
           "/static/image/day/VR体验馆.jpg"
+        ],
+        detailImages: [
+          { image: "/static/image/day/vr-headset.jpg", name: "VR头显设备" },
+          { image: "/static/image/day/escape-room.jpg", name: "密室逃脱" },
+          { image: "/static/image/day/gaming.jpg", name: "电玩设备" },
+          { image: "/static/image/day/massage-chair.jpg", name: "按摩椅" }
         ]
       },
       products: [
@@ -34,13 +47,20 @@ const _sfc_main = {
             "/static/image/day/VR体验馆.jpg",
             "/static/componentIndex.png",
             "/static/templateIndex.png"
+          ],
+          detailImages: [
+            { image: "/static/image/day/vr-headset.jpg", name: "VR头显设备" },
+            { image: "/static/image/day/escape-room.jpg", name: "密室逃脱" }
           ]
         },
         {
           id: 2,
           name: "AR体验",
           description: "增强现实",
-          price: 100,
+          price: 199,
+          package1Price: 299,
+          package2Price: 399,
+          package3Price: 499,
           thumbnail: "/static/componentIndex.png",
           videoUrl: "https://www.w3schools.com/html/movie.mp4",
           videoPoster: "/static/componentIndex.png",
@@ -48,13 +68,22 @@ const _sfc_main = {
             "/static/componentIndex.png",
             "/static/image/day/VR体验馆.jpg",
             "/static/extuiIndex.png"
+          ],
+          detailImages: [
+            { image: "/static/image/day/ar-glasses.jpg", name: "AR眼镜" },
+            { image: "/static/image/day/ar-device.jpg", name: "AR设备" },
+            { image: "/static/image/day/ar-interaction.jpg", name: "AR交互" },
+            { image: "/static/image/day/ar-display.jpg", name: "AR显示" }
           ]
         },
         {
           id: 3,
           name: "MR体验",
           description: "混合现实",
-          price: 120,
+          price: 199,
+          package1Price: 299,
+          package2Price: 399,
+          package3Price: 499,
           thumbnail: "/static/extuiIndex.png",
           videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
           videoPoster: "/static/extuiIndex.png",
@@ -62,13 +91,22 @@ const _sfc_main = {
             "/static/extuiIndex.png",
             "/static/templateIndex.png",
             "/static/image/day/VR体验馆.jpg"
+          ],
+          detailImages: [
+            { image: "/static/image/day/mr-device.jpg", name: "MR设备" },
+            { image: "/static/image/day/mr-interaction.jpg", name: "MR交互" },
+            { image: "/static/image/day/mr-display.jpg", name: "MR显示" },
+            { image: "/static/image/day/mr-sensor.jpg", name: "MR传感器" }
           ]
         },
         {
           id: 4,
           name: "密室逃脱",
           description: "解谜冒险",
-          price: 90,
+          price: 199,
+          package1Price: 299,
+          package2Price: 399,
+          package3Price: 499,
           thumbnail: "/static/templateIndex.png",
           videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
           videoPoster: "/static/templateIndex.png",
@@ -76,13 +114,22 @@ const _sfc_main = {
             "/static/templateIndex.png",
             "/static/image/day/VR体验馆.jpg",
             "/static/componentIndex.png"
+          ],
+          detailImages: [
+            { image: "/static/image/day/escape-room.jpg", name: "密室场景" },
+            { image: "/static/image/day/puzzle-game.jpg", name: "解谜游戏" },
+            { image: "/static/image/day/team-activity.jpg", name: "团队活动" },
+            { image: "/static/image/day/escape-equipment.jpg", name: "逃脱设备" }
           ]
         },
         {
           id: 5,
           name: "剧本杀",
           description: "角色扮演",
-          price: 110,
+          price: 199,
+          package1Price: 299,
+          package2Price: 399,
+          package3Price: 499,
           thumbnail: "/static/extuiIndex.png",
           videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
           videoPoster: "/static/extuiIndex.png",
@@ -90,13 +137,22 @@ const _sfc_main = {
             "/static/extuiIndex.png",
             "/static/templateIndex.png",
             "/static/image/day/VR体验馆.jpg"
+          ],
+          detailImages: [
+            { image: "/static/image/day/script-killing.jpg", name: "剧本场景" },
+            { image: "/static/image/day/role-playing.jpg", name: "角色扮演" },
+            { image: "/static/image/day/detective-game.jpg", name: "侦探游戏" },
+            { image: "/static/image/day/team-building.jpg", name: "团队建设" }
           ]
         },
         {
           id: 6,
           name: "电竞游戏",
           description: "竞技对战",
-          price: 70,
+          price: 199,
+          package1Price: 299,
+          package2Price: 399,
+          package3Price: 499,
           thumbnail: "/static/componentIndex.png",
           videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
           videoPoster: "/static/componentIndex.png",
@@ -104,13 +160,22 @@ const _sfc_main = {
             "/static/componentIndex.png",
             "/static/image/day/VR体验馆.jpg",
             "/static/extuiIndex.png"
+          ],
+          detailImages: [
+            { image: "/static/image/day/esports-gaming.jpg", name: "电竞设备" },
+            { image: "/static/image/day/competitive-game.jpg", name: "竞技游戏" },
+            { image: "/static/image/day/gaming-tournament.jpg", name: "游戏比赛" },
+            { image: "/static/image/day/team-battle.jpg", name: "团队对战" }
           ]
         },
         {
           id: 7,
           name: "KTV包厢",
           description: "音乐娱乐",
-          price: 60,
+          price: 199,
+          package1Price: 299,
+          package2Price: 399,
+          package3Price: 499,
           thumbnail: "/static/image/day/VR体验馆.jpg",
           videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
           videoPoster: "/static/image/day/VR体验馆.jpg",
@@ -118,13 +183,22 @@ const _sfc_main = {
             "/static/image/day/VR体验馆.jpg",
             "/static/componentIndex.png",
             "/static/templateIndex.png"
+          ],
+          detailImages: [
+            { image: "/static/image/day/ktv-room.jpg", name: "KTV包间" },
+            { image: "/static/image/day/karaoke-system.jpg", name: "卡拉OK系统" },
+            { image: "/static/image/day/music-entertainment.jpg", name: "音乐娱乐" },
+            { image: "/static/image/day/party-room.jpg", name: "派对房间" }
           ]
         },
         {
           id: 8,
           name: "台球桌球",
           description: "桌球运动",
-          price: 50,
+          price: 199,
+          package1Price: 299,
+          package2Price: 399,
+          package3Price: 499,
           thumbnail: "/static/templateIndex.png",
           videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
           videoPoster: "/static/templateIndex.png",
@@ -132,13 +206,22 @@ const _sfc_main = {
             "/static/templateIndex.png",
             "/static/extuiIndex.png",
             "/static/componentIndex.png"
+          ],
+          detailImages: [
+            { image: "/static/image/day/billiards-table.jpg", name: "台球桌" },
+            { image: "/static/image/day/billiards-cues.jpg", name: "台球杆" },
+            { image: "/static/image/day/sports-equipment.jpg", name: "运动设备" },
+            { image: "/static/image/day/game-room.jpg", name: "游戏室" }
           ]
         },
         {
           id: 9,
           name: "棋牌室",
           description: "棋牌娱乐",
-          price: 40,
+          price: 199,
+          package1Price: 299,
+          package2Price: 399,
+          package3Price: 499,
           thumbnail: "/static/extuiIndex.png",
           videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
           videoPoster: "/static/extuiIndex.png",
@@ -146,13 +229,22 @@ const _sfc_main = {
             "/static/extuiIndex.png",
             "/static/image/day/VR体验馆.jpg",
             "/static/templateIndex.png"
+          ],
+          detailImages: [
+            { image: "/static/image/day/chess-room.jpg", name: "棋牌室" },
+            { image: "/static/image/day/chess-game.jpg", name: "棋类游戏" },
+            { image: "/static/image/day/card-game.jpg", name: "卡牌游戏" },
+            { image: "/static/image/day/leisure-entertainment.jpg", name: "休闲娱乐" }
           ]
         },
         {
           id: 10,
           name: "桌游室",
           description: "桌面游戏",
-          price: 45,
+          price: 199,
+          package1Price: 299,
+          package2Price: 399,
+          package3Price: 499,
           thumbnail: "/static/componentIndex.png",
           videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
           videoPoster: "/static/componentIndex.png",
@@ -160,9 +252,17 @@ const _sfc_main = {
             "/static/componentIndex.png",
             "/static/templateIndex.png",
             "/static/image/day/VR体验馆.jpg"
+          ],
+          detailImages: [
+            { image: "/static/image/day/board-game.jpg", name: "桌游" },
+            { image: "/static/image/day/table-game.jpg", name: "桌面游戏" },
+            { image: "/static/image/day/strategy-game.jpg", name: "策略游戏" },
+            { image: "/static/image/day/social-gaming.jpg", name: "社交游戏" }
           ]
         }
       ],
+      // 产品明细数据（动态更新）
+      productDetails: [],
       selectedProduct: 1,
       availableRooms: [
         {
@@ -398,7 +498,10 @@ const _sfc_main = {
       return Math.round(duration / 60 * 10) / 10;
     },
     canBook() {
-      return this.selectedProduct && this.selectedRoom && this.selectedStartTime && this.selectedEndTime && this.selectedPackage;
+      return this.selectedPackageType && this.selectedRoom && this.selectedStartTime && this.selectedEndTime;
+    },
+    canConfirm() {
+      return this.selectedPackageType && this.selectedRoom && this.selectedStartTime && this.selectedEndTime;
     },
     // 根据当前选择的产品返回对应的时间段状态
     hourlyTimeSlots() {
@@ -418,7 +521,7 @@ const _sfc_main = {
           phone: store.phone
         };
       } catch (e) {
-        common_vendor.index.__f__("error", "at pages/tabBar/booking-detail/booking-detail.vue:689", "解析门店数据失败:", e);
+        common_vendor.index.__f__("error", "at pages/tabBar/booking-detail/booking-detail.vue:798", "解析门店数据失败:", e);
       }
     }
     if (options.item) {
@@ -429,11 +532,54 @@ const _sfc_main = {
           this.selectProduct(matchedProduct);
         }
       } catch (e) {
-        common_vendor.index.__f__("error", "at pages/tabBar/booking-detail/booking-detail.vue:703", "解析项目数据失败:", e);
+        common_vendor.index.__f__("error", "at pages/tabBar/booking-detail/booking-detail.vue:812", "解析项目数据失败:", e);
       }
+    }
+    if (this.products.length > 0) {
+      this.productDetails = this.products[0].detailImages || [];
     }
   },
   methods: {
+    // 页面切换方法
+    goToStep1() {
+      this.currentStep = 1;
+    },
+    goToStep2() {
+      this.currentStep = 2;
+    },
+    // 选择套餐方法
+    selectPackage(packageType) {
+      common_vendor.index.__f__("log", "at pages/tabBar/booking-detail/booking-detail.vue:832", "选择套餐:", packageType);
+      this.selectedPackageType = packageType;
+      common_vendor.index.__f__("log", "at pages/tabBar/booking-detail/booking-detail.vue:834", "selectedPackageType 已设置为:", this.selectedPackageType);
+      this.selectedRoom = null;
+      this.selectedStartTime = null;
+      this.selectedEndTime = null;
+      this.startTimeIndex = -1;
+      this.endTimeIndex = -1;
+      common_vendor.index.showToast({
+        title: "已选择套餐: " + packageType,
+        icon: "none",
+        duration: 2e3
+      });
+    },
+    // 产品选择显示方法
+    selectProductForDisplay(product) {
+      this.selectedProduct = product.id;
+      this.currentProduct = {
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        price: product.price || 199,
+        package1Price: product.package1Price || 299,
+        package2Price: product.package2Price || 399,
+        package3Price: product.package3Price || 499,
+        videoUrl: product.videoUrl,
+        videoPoster: product.videoPoster,
+        images: product.images,
+        detailImages: product.detailImages || []
+      };
+    },
     navigateToStore() {
       common_vendor.index.showToast({
         title: "正在打开导航...",
@@ -444,7 +590,7 @@ const _sfc_main = {
       common_vendor.index.makePhoneCall({
         phoneNumber: this.storeInfo.phone,
         success: () => {
-          common_vendor.index.__f__("log", "at pages/tabBar/booking-detail/booking-detail.vue:719", "拨打电话成功");
+          common_vendor.index.__f__("log", "at pages/tabBar/booking-detail/booking-detail.vue:881", "拨打电话成功");
         },
         fail: () => {
           common_vendor.index.showToast({
@@ -642,10 +788,11 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return common_vendor.e({
-    a: common_vendor.t($data.storeInfo.name),
-    b: common_vendor.t($data.storeInfo.address),
-    c: common_vendor.o((...args) => $options.navigateToStore && $options.navigateToStore(...args)),
-    d: common_vendor.o((...args) => $options.callStore && $options.callStore(...args)),
+    a: common_vendor.t($data.currentStep === 1 ? "产品展示" : "选择预订"),
+    b: $data.currentStep === 1 ? 1 : "",
+    c: $data.currentStep === 2 ? 1 : "",
+    d: $data.currentStep === 1
+  }, $data.currentStep === 1 ? {
     e: $data.currentProduct.videoUrl,
     f: $data.currentProduct.videoPoster,
     g: common_vendor.f($data.currentProduct.images, (image, index, i0) => {
@@ -658,18 +805,79 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       return {
         a: product.thumbnail,
         b: common_vendor.t(product.name),
-        c: common_vendor.t(product.description),
-        d: common_vendor.t(product.price),
-        e: product.id,
-        f: $data.selectedProduct === product.id ? 1 : "",
-        g: common_vendor.o(($event) => $options.selectProduct(product), product.id)
+        c: product.id,
+        d: $data.selectedProduct === product.id ? 1 : "",
+        e: common_vendor.o(($event) => $options.selectProductForDisplay(product), product.id)
       };
     }),
-    i: !$data.selectedProduct
-  }, !$data.selectedProduct ? {} : {}, {
-    j: $data.selectedProduct
-  }, $data.selectedProduct ? common_vendor.e({
-    k: common_vendor.f($data.availableRooms, (room, k0, i0) => {
+    i: common_vendor.t($data.currentProduct.price),
+    j: common_vendor.t($data.currentProduct.package1Price),
+    k: common_vendor.t($data.currentProduct.package2Price),
+    l: common_vendor.t($data.currentProduct.package3Price),
+    m: common_vendor.f($data.currentProduct.detailImages, (detail, index, i0) => {
+      return {
+        a: detail.image,
+        b: common_vendor.t(detail.name),
+        c: index
+      };
+    }),
+    n: common_vendor.o((...args) => $options.goToStep2 && $options.goToStep2(...args))
+  } : {}, {
+    o: $data.currentStep === 2
+  }, $data.currentStep === 2 ? common_vendor.e({
+    p: common_vendor.o((...args) => $options.goToStep1 && $options.goToStep1(...args)),
+    q: common_vendor.t($data.selectedPackageType || "未选择"),
+    r: common_vendor.t($data.currentProduct.price),
+    s: common_vendor.o(($event) => $options.selectPackage("hourly")),
+    t: $data.selectedPackageType === "hourly" ? 1 : "",
+    v: common_vendor.t($data.currentProduct.package1Price),
+    w: common_vendor.o(($event) => $options.selectPackage("package1")),
+    x: $data.selectedPackageType === "package1" ? 1 : "",
+    y: common_vendor.t($data.currentProduct.package2Price),
+    z: common_vendor.o(($event) => $options.selectPackage("package2")),
+    A: $data.selectedPackageType === "package2" ? 1 : "",
+    B: common_vendor.t($data.currentProduct.package3Price),
+    C: common_vendor.o(($event) => $options.selectPackage("package3")),
+    D: $data.selectedPackageType === "package3" ? 1 : "",
+    E: !$data.selectedPackageType
+  }, !$data.selectedPackageType ? {} : {}, {
+    F: $data.selectedPackageType
+  }, $data.selectedPackageType ? common_vendor.e({
+    G: common_vendor.t($data.selectedPackageType),
+    H: common_vendor.t($data.selectedDate),
+    I: $data.selectedDate,
+    J: common_vendor.o((...args) => $options.onDateChange && $options.onDateChange(...args)),
+    K: common_vendor.t($data.selectedStartTime || "请选择开始时间"),
+    L: !$data.selectedStartTime ? 1 : "",
+    M: $data.startTimeIndex,
+    N: $options.availableStartTimes,
+    O: common_vendor.o((...args) => $options.onStartTimeChange && $options.onStartTimeChange(...args)),
+    P: common_vendor.t($data.selectedEndTime || ($data.selectedStartTime ? "请选择结束时间" : "请先选择开始时间")),
+    Q: !$data.selectedEndTime ? 1 : "",
+    R: !$data.selectedStartTime ? 1 : "",
+    S: $data.endTimeIndex,
+    T: $options.availableEndTimes,
+    U: common_vendor.o((...args) => $options.onEndTimeChange && $options.onEndTimeChange(...args)),
+    V: !$data.selectedStartTime,
+    W: $data.selectedStartTime && $data.selectedEndTime
+  }, $data.selectedStartTime && $data.selectedEndTime ? {
+    X: common_vendor.t($options.durationHours)
+  } : {}, {
+    Y: common_vendor.f($options.hourlyTimeSlots, (hour, index, i0) => {
+      return {
+        a: common_vendor.t(hour.hour),
+        b: common_vendor.n(hour.status),
+        c: index,
+        d: common_vendor.n($options.getTimeSlotClass(hour)),
+        e: common_vendor.o(($event) => $options.selectHourlySlot(hour), index)
+      };
+    })
+  }) : {}, {
+    Z: $data.selectedPackageType && (!$data.selectedStartTime || !$data.selectedEndTime)
+  }, $data.selectedPackageType && (!$data.selectedStartTime || !$data.selectedEndTime) ? {} : {}, {
+    aa: $data.selectedStartTime && $data.selectedEndTime
+  }, $data.selectedStartTime && $data.selectedEndTime ? common_vendor.e({
+    ab: common_vendor.f($data.availableRooms, (room, k0, i0) => {
       return {
         a: common_vendor.t(room.name),
         b: common_vendor.t(room.capacity),
@@ -682,85 +890,21 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         i: common_vendor.o(($event) => $options.selectRoom(room), room.id)
       };
     }),
-    l: $data.selectedRoom && $data.currentRoom.images.length > 0
+    ac: $data.selectedRoom && $data.currentRoom.images.length > 0
   }, $data.selectedRoom && $data.currentRoom.images.length > 0 ? {
-    m: common_vendor.f($data.currentRoom.images, (image, index, i0) => {
+    ad: common_vendor.f($data.currentRoom.images, (image, index, i0) => {
       return {
         a: image,
         b: index
       };
     })
   } : {}) : {}, {
-    n: $data.selectedProduct && !$data.selectedRoom
-  }, $data.selectedProduct && !$data.selectedRoom ? {} : {}, {
-    o: $data.selectedRoom
-  }, $data.selectedRoom ? common_vendor.e({
-    p: common_vendor.t($data.selectedDate),
-    q: $data.selectedDate,
-    r: common_vendor.o((...args) => $options.onDateChange && $options.onDateChange(...args)),
-    s: common_vendor.t($data.selectedStartTime || "请选择开始时间"),
-    t: !$data.selectedStartTime ? 1 : "",
-    v: $data.startTimeIndex,
-    w: $options.availableStartTimes,
-    x: common_vendor.o((...args) => $options.onStartTimeChange && $options.onStartTimeChange(...args)),
-    y: common_vendor.t($data.selectedEndTime || ($data.selectedStartTime ? "请选择结束时间" : "请先选择开始时间")),
-    z: !$data.selectedEndTime ? 1 : "",
-    A: !$data.selectedStartTime ? 1 : "",
-    B: $data.endTimeIndex,
-    C: $options.availableEndTimes,
-    D: common_vendor.o((...args) => $options.onEndTimeChange && $options.onEndTimeChange(...args)),
-    E: !$data.selectedStartTime,
-    F: $data.selectedStartTime && $data.selectedEndTime
-  }, $data.selectedStartTime && $data.selectedEndTime ? {
-    G: common_vendor.t($options.durationHours)
-  } : {}, {
-    H: common_vendor.f($options.hourlyTimeSlots, (hour, index, i0) => {
-      return {
-        a: common_vendor.t(hour.hour),
-        b: common_vendor.n(hour.status),
-        c: index,
-        d: common_vendor.n($options.getTimeSlotClass(hour)),
-        e: common_vendor.o(($event) => $options.selectHourlySlot(hour), index)
-      };
-    })
-  }) : {}, {
-    I: $data.selectedRoom && (!$data.selectedStartTime || !$data.selectedEndTime)
-  }, $data.selectedRoom && (!$data.selectedStartTime || !$data.selectedEndTime) ? {} : {}, {
-    J: $data.selectedStartTime && $data.selectedEndTime
-  }, $data.selectedStartTime && $data.selectedEndTime ? {
-    K: common_vendor.f($data.availablePackages, (pkg, k0, i0) => {
-      return {
-        a: common_vendor.t(pkg.name),
-        b: common_vendor.t(pkg.description),
-        c: common_vendor.t(pkg.includes.join("、")),
-        d: common_vendor.t(pkg.price),
-        e: pkg.id,
-        f: $data.selectedPackage === pkg.id ? 1 : "",
-        g: common_vendor.o(($event) => $options.selectPackage(pkg), pkg.id)
-      };
-    })
-  } : {}, {
-    L: $data.selectedStartTime && $data.selectedEndTime && !$data.selectedPackage
-  }, $data.selectedStartTime && $data.selectedEndTime && !$data.selectedPackage ? {} : {}, {
-    M: $data.selectedPackage
-  }, $data.selectedPackage ? common_vendor.e({
-    N: common_vendor.t($options.productPrice),
-    O: $options.packagePrice > 0
-  }, $options.packagePrice > 0 ? {
-    P: common_vendor.t($options.packagePrice)
-  } : {}, {
-    Q: common_vendor.t($options.totalPrice)
-  }) : {}, {
-    R: $data.selectedPackage
-  }, $data.selectedPackage ? {
-    S: $data.userRemark,
-    T: common_vendor.o(($event) => $data.userRemark = $event.detail.value),
-    U: common_vendor.t($data.userRemark.length)
-  } : {}, {
-    V: common_vendor.t($options.totalPrice),
-    W: common_vendor.o((...args) => $options.confirmBooking && $options.confirmBooking(...args)),
-    X: !$options.canBook
-  });
+    ae: $data.selectedStartTime && $data.selectedEndTime && !$data.selectedRoom
+  }, $data.selectedStartTime && $data.selectedEndTime && !$data.selectedRoom ? {} : {}, {
+    af: $options.canConfirm
+  }, $options.canConfirm ? {
+    ag: common_vendor.o((...args) => $options.confirmBooking && $options.confirmBooking(...args))
+  } : {}) : {});
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render]]);
 wx.createPage(MiniProgramPage);

@@ -32,9 +32,9 @@
 					</view>
 					<view class="stat-divider"></view>
 					<view class="stat-item" @click="handleAccountAction('points')">
-						<text class="stat-number">{{accountInfo.points}}</text>
-						<text class="stat-label">积分</text>
-						<text class="stat-action">兑换</text>
+						<text class="stat-number">¥{{accountInfo.points}}</text>
+						<text class="stat-label">消费余额</text>
+						<text class="stat-action">查看</text>
 					</view>
 					<view class="stat-divider"></view>
 					<view class="stat-item" @click="handleAccountAction('reviews')">
@@ -50,7 +50,7 @@
 		<view class="quick-services">
 			<view class="service-title">快捷操作</view>
 			
-			<!-- 第一行：储值充值、分佣收入、我的评价 -->
+			<!-- 第一行：储值充值、我的订单、我的评价 -->
 			<view class="service-grid">
 				<view class="service-item" @click="handleServiceClick(quickServices[0])">
 					<view class="service-icon" :style="{backgroundColor: quickServices[0].bgColor}">
@@ -58,23 +58,23 @@
 					</view>
 					<text class="service-text">{{quickServices[0].text}}</text>
 				</view>
-				<view class="service-item" @click="handleMenuClick(menuItems[2])">
-					<view class="service-icon" :style="{backgroundColor: menuItems[2].bgColor}">
-						<text class="icon-text">{{menuItems[2].icon}}</text>
-					</view>
-					<text class="service-text">{{menuItems[2].text}}</text>
-				</view>
 				<view class="service-item" @click="handleServiceClick(quickServices[1])">
 					<view class="service-icon" :style="{backgroundColor: quickServices[1].bgColor}">
 						<text class="icon-text">{{quickServices[1].icon}}</text>
 					</view>
 					<text class="service-text">{{quickServices[1].text}}</text>
 				</view>
+				<view class="service-item" @click="handleServiceClick(quickServices[2])">
+					<view class="service-icon" :style="{backgroundColor: quickServices[2].bgColor}">
+						<text class="icon-text">{{quickServices[2].icon}}</text>
+					</view>
+					<text class="service-text">{{quickServices[2].text}}</text>
+				</view>
 			</view>
 			
-			<!-- 第二行：意见反馈、关于我们、加盟我们、保洁专区 -->
+			<!-- 第二行：意见反馈、关于我们、分佣收入、加盟我们、保洁专区 -->
 			<view class="service-grid">
-				<view class="service-item" v-for="(item, index) in [menuItems[0], menuItems[1], menuItems[3], menuItems[4]]" :key="index" @click="handleMenuClick(item)">
+				<view class="service-item" v-for="(item, index) in [menuItems[0], menuItems[1], menuItems[2], menuItems[3], menuItems[4]]" :key="index" @click="handleMenuClick(item)">
 					<view class="service-icon" :style="{backgroundColor: item.bgColor}">
 						<text class="icon-text">{{item.icon}}</text>
 					</view>
@@ -111,6 +111,12 @@
 						text: '储值充值',
 						action: 'recharge',
 						bgColor: '#E8F5E8'
+					},
+					{
+						icon: '📦',
+						text: '我的订单',
+						action: 'orders',
+						bgColor: '#FFF0F5'
 					},
 					{
 						icon: '⭐',
@@ -321,7 +327,7 @@
 						this.showRechargeOptions();
 						break;
 					case 'points':
-						uni.showToast({ title: '积分商城', icon: 'none' });
+						this.showConsumptionBalance();
 						break;
 					case 'reviews':
 						this.goToReviews();
@@ -357,6 +363,24 @@
 				});
 			},
 			
+			// 显示消费余额详情
+			showConsumptionBalance() {
+				uni.showModal({
+					title: '消费余额详情',
+					content: `当前消费余额：¥${this.accountInfo.points}\n\n消费余额说明：\n• 通过消费获得，可用于抵扣\n• 1元消费=1元消费余额\n• 消费余额无有效期限制\n• 可用于下次消费时抵扣`,
+					confirmText: '查看明细',
+					cancelText: '关闭',
+					success: (res) => {
+						if (res.confirm) {
+							uni.showToast({
+								title: '跳转到消费明细页',
+								icon: 'none'
+							});
+						}
+					}
+				});
+			},
+			
 			// 处理充值
 			processRecharge(amount) {
 				if (amount <= 0 || isNaN(amount)) {
@@ -381,7 +405,7 @@
 								const currentBalance = parseFloat(this.accountInfo.balance);
 								this.accountInfo.balance = (currentBalance + amount).toFixed(2);
 								
-								// 增加积分（充值1元得1积分）
+								// 增加消费余额（充值1元得1元消费余额）
 								this.accountInfo.points += Math.floor(amount);
 								
 								// 保存到本地
@@ -403,7 +427,18 @@
 					this.getUserInfo();
 					return;
 				}
-				this.handleAccountAction(item.action);
+				
+				switch(item.action) {
+					case 'recharge':
+						this.handleAccountAction('recharge');
+						break;
+					case 'orders':
+						this.goToOrders();
+						break;
+					case 'reviews':
+						this.handleAccountAction('reviews');
+						break;
+				}
 			},
 			
 			// 处理菜单点击
@@ -430,6 +465,13 @@
 						this.showCleaningArea();
 						break;
 				}
+			},
+			
+			// 去订单页面
+			goToOrders() {
+				uni.navigateTo({
+					url: '/pages/shop/orders'
+				});
 			},
 			
 			// 去评价页面
@@ -655,15 +697,16 @@
 
 <style lang="scss">
 	.content {
-		background-color: #fef5f7;
+		background-color: #fef8fa; // 更淡的浅粉色背景，与其他页面保持一致
 		min-height: 100vh;
 	}
 	
 	/* 用户信息头部 */
 	.user-info {
-		background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+		background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%); // 更深的粉色渐变，让背景更加明显
 		padding: 60rpx 40rpx 40rpx;
 		color: #fff;
+		box-shadow: 0 4rpx 20rpx rgba(255, 105, 180, 0.4); // 添加阴影效果，增强视觉层次
 		
 		.avatar-section {
 			display: flex;
@@ -685,28 +728,37 @@
 					font-weight: bold;
 					display: block;
 					margin-bottom: 10rpx;
+					color: #fff; // 确保用户名文字为白色，更加明显
+					text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.3); // 添加文字阴影，增强可读性
 				}
 				
 				.user-level {
 					font-size: 26rpx;
-					opacity: 0.8;
+					color: #fff; // 确保用户等级文字为白色，更加明显
+					opacity: 0.9; // 提高透明度，让文字更清晰
+					text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.2); // 添加轻微文字阴影
 				}
 			}
 			
 			.login-tip {
-				background-color: rgba(255, 255, 255, 0.2);
+				background-color: rgba(255, 255, 255, 0.35); // 增加背景透明度，让背景更加明显
 				padding: 8rpx 16rpx;
 				border-radius: 20rpx;
+				border: 1rpx solid rgba(255, 255, 255, 0.5); // 增强边框透明度，让边框更加明显
+				box-shadow: 0 2rpx 8rpx rgba(255, 255, 255, 0.3); // 添加白色阴影，增强视觉效果
 				
 				text {
 					font-size: 24rpx;
+					color: #fff; // 确保文字为白色，更加明显
+					font-weight: 500; // 增加字体粗细
+					text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.2); // 添加轻微文字阴影
 				}
 			}
 			
 			.share-commission-btn {
-				background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+				background: linear-gradient(135deg, #FF4500 0%, #FF6347 100%); // 使用更明显的橙红色渐变，让按钮背景更加突出
 				color: #fff;
-				border: none;
+				border: 2rpx solid #FF4500; // 添加边框增强视觉效果
 				border-radius: 24rpx;
 				padding: 12rpx 20rpx;
 				display: flex;
@@ -714,19 +766,40 @@
 				gap: 8rpx;
 				font-size: 24rpx;
 				font-weight: bold;
-				box-shadow: 0 4rpx 12rpx rgba(255, 165, 0, 0.3);
+				box-shadow: 0 6rpx 16rpx rgba(255, 69, 0, 0.6); // 增强阴影效果，让按钮更加明显
+				position: relative;
+				overflow: hidden;
+				
+				// 添加内部光效
+				&::before {
+					content: '';
+					position: absolute;
+					top: 0;
+					left: -100%;
+					width: 100%;
+					height: 100%;
+					background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+					transition: left 0.5s;
+				}
+				
+				&:hover::before {
+					left: 100%;
+				}
 				
 				.btn-icon {
 					font-size: 28rpx;
+					text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.3); // 添加图标阴影
 				}
 				
 				.btn-text {
 					font-size: 24rpx;
+					text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.3); // 添加文字阴影
 				}
 				
 				&:active {
 					transform: scale(0.95);
-					box-shadow: 0 2rpx 6rpx rgba(255, 165, 0, 0.3);
+					box-shadow: 0 3rpx 8rpx rgba(255, 69, 0, 0.8); // 更深的阴影，让按钮激活状态更加明显
+					background: linear-gradient(135deg, #FF6347 0%, #FF4500 100%); // 激活时反转渐变方向
 				}
 			}
 		}
@@ -765,7 +838,7 @@
 					.stat-number {
 						font-size: 32rpx;
 						font-weight: bold;
-						color: #FF69B4;
+						color: #FFB6C1; // 更淡的粉色，与其他页面保持一致
 						display: block;
 						margin-bottom: 8rpx;
 					}
@@ -851,8 +924,8 @@
 			width: 100%;
 			height: 88rpx;
 			background-color: #fff8fa;
-			color: #ff6b35;
-			border: 1rpx solid #ff6b35;
+			color: #FFB6C1; // 更淡的粉色，与其他页面保持一致
+			border: 1rpx solid #FFB6C1; // 更淡的粉色边框，与其他页面保持一致
 			border-radius: 16rpx;
 			font-size: 30rpx;
 			display: flex;

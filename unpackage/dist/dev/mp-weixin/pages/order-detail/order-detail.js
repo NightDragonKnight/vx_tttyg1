@@ -15,7 +15,9 @@ const _sfc_main = {
         "时间冲突",
         "其他原因"
       ],
-      refundRemark: ""
+      refundRemark: "",
+      storeGuideVideo: "/static/video/store-guide.mp4"
+      // 到店指引视频路径
     };
   },
   computed: {
@@ -26,10 +28,10 @@ const _sfc_main = {
       return this.orderInfo.status === "paid" && this.orderInfo.roomNumber;
     },
     canUnlockNow() {
-      return this.orderInfo.roomStatus === "可使用" && this.unlockRemaining > 0;
+      return (this.orderInfo.roomStatus === "可使用" || this.orderInfo.roomStatus === "使用中") && this.unlockRemaining > 0;
     },
     unlockButtonText() {
-      if (this.orderInfo.roomStatus !== "可使用") {
+      if (this.orderInfo.roomStatus !== "可使用" && this.orderInfo.roomStatus !== "使用中") {
         return "房间暂不可用";
       }
       if (this.unlockRemaining <= 0) {
@@ -59,6 +61,10 @@ const _sfc_main = {
     if (options.orderData) {
       this.orderInfo = JSON.parse(decodeURIComponent(options.orderData));
       this.loadStoreDetail();
+      const savedUnlockRemaining = common_vendor.index.getStorageSync("unlockRemaining");
+      if (savedUnlockRemaining !== null && savedUnlockRemaining !== void 0) {
+        this.unlockRemaining = savedUnlockRemaining;
+      }
     }
   },
   methods: {
@@ -72,7 +78,7 @@ const _sfc_main = {
         const hoursDiff = timeDiff / (1e3 * 60 * 60);
         return Math.max(0, hoursDiff);
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/order-detail/order-detail.vue:235", "计算预约时间失败:", error);
+        common_vendor.index.__f__("error", "at pages/order-detail/order-detail.vue:269", "计算预约时间失败:", error);
         return 0;
       }
     },
@@ -118,7 +124,7 @@ const _sfc_main = {
         name: this.storeDetail.name,
         address: this.storeDetail.address,
         success: () => {
-          common_vendor.index.__f__("log", "at pages/order-detail/order-detail.vue:285", "导航成功");
+          common_vendor.index.__f__("log", "at pages/order-detail/order-detail.vue:319", "导航成功");
         },
         fail: (err) => {
           common_vendor.index.showToast({
@@ -132,7 +138,7 @@ const _sfc_main = {
       common_vendor.index.makePhoneCall({
         phoneNumber: this.storeDetail.phone,
         success: () => {
-          common_vendor.index.__f__("log", "at pages/order-detail/order-detail.vue:300", "拨打电话成功");
+          common_vendor.index.__f__("log", "at pages/order-detail/order-detail.vue:334", "拨打电话成功");
         },
         fail: (err) => {
           common_vendor.index.showToast({
@@ -141,6 +147,14 @@ const _sfc_main = {
           });
         }
       });
+    },
+    // 显示到店指引视频
+    showStoreGuide() {
+      this.$refs.storeGuidePopup.open();
+    },
+    // 关闭到店指引弹窗
+    closeStoreGuidePopup() {
+      this.$refs.storeGuidePopup.close();
     },
     requestRefund() {
       this.$refs.refundPopup.open();
@@ -186,9 +200,12 @@ const _sfc_main = {
       if (!this.canUnlockNow) {
         return;
       }
+      const roomStatusText = this.orderInfo.roomStatus === "使用中" ? "（房间正在使用中）" : "";
       common_vendor.index.showModal({
         title: "确认开锁",
-        content: `确定要开启房间 ${this.orderInfo.roomNumber} 吗？剩余开锁次数：${this.unlockRemaining}次`,
+        content: `确定要开启房间 ${this.orderInfo.roomNumber} 吗？${roomStatusText}
+
+剩余开锁次数：${this.unlockRemaining}次`,
         success: (res) => {
           if (res.confirm) {
             common_vendor.index.showLoading({
@@ -196,12 +213,39 @@ const _sfc_main = {
             });
             setTimeout(() => {
               common_vendor.index.hideLoading();
+              this.unlockRemaining--;
+              common_vendor.index.setStorageSync("unlockRemaining", this.unlockRemaining);
               common_vendor.index.showToast({
                 title: "开锁成功！",
                 icon: "success"
               });
-              this.unlockRemaining--;
-              this.orderInfo.roomStatus = "使用中";
+              if (this.unlockRemaining > 0) {
+                setTimeout(() => {
+                  const statusText = this.orderInfo.roomStatus === "使用中" ? "（房间正在使用中）" : "";
+                  common_vendor.index.showModal({
+                    title: "开锁成功",
+                    content: `房间 ${this.orderInfo.roomNumber} 已开启！${statusText}
+
+剩余开锁次数：${this.unlockRemaining}次
+
+您可以继续使用开锁功能，直到次数用完。`,
+                    confirmText: "知道了",
+                    showCancel: false
+                  });
+                }, 1e3);
+              } else {
+                setTimeout(() => {
+                  const statusText = this.orderInfo.roomStatus === "使用中" ? "（房间正在使用中）" : "";
+                  common_vendor.index.showModal({
+                    title: "开锁次数已用完",
+                    content: `房间 ${this.orderInfo.roomNumber} 已开启！${statusText}
+
+您的开锁次数已用完，如需继续使用，请联系客服。`,
+                    confirmText: "知道了",
+                    showCancel: false
+                  });
+                }, 1e3);
+              }
             }, 2e3);
           }
         }
@@ -243,7 +287,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     j: common_vendor.t($data.storeDetail.phone),
     k: common_vendor.o((...args) => $options.callStore && $options.callStore(...args)),
     l: common_vendor.o((...args) => $options.navigateToStore && $options.navigateToStore(...args)),
-    m: common_vendor.o((...args) => $options.callStore && $options.callStore(...args)),
+    m: common_vendor.o((...args) => $options.showStoreGuide && $options.showStoreGuide(...args)),
     n: $data.orderInfo.image,
     o: common_vendor.t($data.orderInfo.productName),
     p: common_vendor.t($data.orderInfo.description),
@@ -288,6 +332,13 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     U: common_vendor.o((...args) => $options.confirmRefund && $options.confirmRefund(...args)),
     V: common_vendor.sr("refundPopup", "4a47f22a-0"),
     W: common_vendor.p({
+      type: "center"
+    }),
+    X: common_vendor.o((...args) => $options.closeStoreGuidePopup && $options.closeStoreGuidePopup(...args)),
+    Y: $data.storeGuideVideo,
+    Z: common_vendor.t($data.storeDetail.name),
+    aa: common_vendor.sr("storeGuidePopup", "4a47f22a-1"),
+    ab: common_vendor.p({
       type: "center"
     })
   });

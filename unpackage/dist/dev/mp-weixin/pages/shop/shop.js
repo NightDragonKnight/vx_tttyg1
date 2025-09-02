@@ -6,7 +6,6 @@ const _sfc_main = {
       searchKeyword: "",
       selectedCategory: "all",
       sortType: "default",
-      cartCount: 0,
       categories: [
         { id: "all", name: "全部", icon: "🏪" },
         { id: "vr", name: "VR设备", icon: "🥽" },
@@ -132,21 +131,13 @@ const _sfc_main = {
       return result;
     }
   },
-  onLoad() {
-    this.loadCartCount();
-  },
   methods: {
-    // 加载购物车数量
-    loadCartCount() {
-      const cart = common_vendor.index.getStorageSync("cart") || [];
-      this.cartCount = cart.length;
-    },
     // 搜索输入
     onSearchInput() {
     },
     // 执行搜索
     search() {
-      common_vendor.index.__f__("log", "at pages/shop/shop.vue:259", "搜索关键词:", this.searchKeyword);
+      common_vendor.index.__f__("log", "at pages/shop/shop.vue:240", "搜索关键词:", this.searchKeyword);
     },
     // 选择分类
     selectCategory(category) {
@@ -176,32 +167,7 @@ const _sfc_main = {
     // 立即购买
     buyNow(product) {
       common_vendor.index.navigateTo({
-        url: `/pages/shop/checkout?product=${encodeURIComponent(JSON.stringify(product))}&type=buy_now`
-      });
-    },
-    // 添加到购物车
-    addToCart(product) {
-      let cart = common_vendor.index.getStorageSync("cart") || [];
-      const existingItem = cart.find((item) => item.id === product.id);
-      if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        cart.push({
-          ...product,
-          quantity: 1
-        });
-      }
-      common_vendor.index.setStorageSync("cart", cart);
-      this.cartCount = cart.length;
-      common_vendor.index.showToast({
-        title: "已添加到购物车",
-        icon: "success"
-      });
-    },
-    // 查看购物车
-    viewCart() {
-      common_vendor.index.navigateTo({
-        url: "/pages/shop/cart"
+        url: `/pages/shop/purchase?product=${encodeURIComponent(JSON.stringify(product))}`
       });
     }
   }
@@ -240,19 +206,13 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         h: common_vendor.t(product.originalPrice)
       } : {}, {
         i: common_vendor.o(($event) => $options.buyNow(product), index),
-        j: common_vendor.o(($event) => $options.addToCart(product), index),
-        k: index,
-        l: common_vendor.o(($event) => $options.viewProductDetail(product), index)
+        j: index,
+        k: common_vendor.o(($event) => $options.viewProductDetail(product), index)
       });
     }),
-    m: $data.cartCount > 0
-  }, $data.cartCount > 0 ? {
-    n: common_vendor.t($data.cartCount),
-    o: common_vendor.o((...args) => $options.viewCart && $options.viewCart(...args))
-  } : {}, {
-    p: $options.filteredProducts.length === 0
+    m: $options.filteredProducts.length === 0
   }, $options.filteredProducts.length === 0 ? {
-    q: common_vendor.t($data.searchKeyword ? "未找到相关商品" : "该分类暂无商品")
+    n: common_vendor.t($data.searchKeyword ? "未找到相关商品" : "该分类暂无商品")
   } : {});
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render]]);

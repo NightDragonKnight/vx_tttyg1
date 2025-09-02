@@ -2,6 +2,13 @@
 	<view class="content">
 		<!-- 搜索和区域选择 -->
 		<view class="search-section">
+			<!-- 区域选择按钮 -->
+			<view class="area-selector" @click="goToAreaSelection">
+				<view class="area-icon">
+					<text class="icon">🗺️</text>
+				</view>
+			</view>
+			
 			<!-- 搜索框 -->
 			<view class="search-bar">
 				<input 
@@ -12,33 +19,6 @@
 					@input="onSearchInput"
 				/>
 				<button class="search-btn" @click="search">搜索</button>
-			</view>
-			
-			<!-- 多级地区选择 -->
-			<view class="area-selector">
-				<picker :value="selectedProvinceIndex" :range="provinces" range-key="name" @change="onProvinceChange">
-					<view class="area-picker province-picker">
-						<text class="area-label">省份：</text>
-						<text class="area-text">{{selectedProvince.name}}</text>
-						<text class="area-arrow">▼</text>
-					</view>
-				</picker>
-				
-				<picker v-if="currentCities.length > 1" :value="selectedCityIndex" :range="currentCities" range-key="name" @change="onCityChange">
-					<view class="area-picker city-picker">
-						<text class="area-label">城市：</text>
-						<text class="area-text">{{selectedCity.name}}</text>
-						<text class="area-arrow">▼</text>
-					</view>
-				</picker>
-				
-				<picker v-if="currentDistricts.length > 1" :value="selectedDistrictIndex" :range="currentDistricts" range-key="name" @change="onDistrictChange">
-					<view class="area-picker district-picker">
-						<text class="area-label">区县：</text>
-						<text class="area-text">{{selectedDistrict.name}}</text>
-						<text class="area-arrow">▼</text>
-					</view>
-				</picker>
 			</view>
 		</view>
 		
@@ -52,15 +32,30 @@
 				<view class="store-info">
 					<text class="store-name">{{store.name}}</text>
 					<text class="store-address">📍 {{store.address}}</text>
-					<view class="store-details">
-						<text class="business-hours">🕐 {{store.businessHours}}</text>
-						<text class="phone">📞 {{store.phone}}</text>
-						<text class="services">🎮 {{store.services.join('、')}}</text>
+					
+					<!-- 每小时体验价格 -->
+					<view class="price-hour">
+						<text class="price-hour-label">每小时：</text>
+						<text class="price-hour-value">¥199</text>
 					</view>
-					<view class="store-footer">
-						<view class="price-range">
-							<text class="price-text">¥{{store.priceRange.min}}-{{store.priceRange.max}}</text>
+					
+					<!-- 三个套餐价格 -->
+					<view class="packages">
+						<view class="package">
+							<text class="package-label">套餐一：</text>
+							<text class="package-price">¥299</text>
 						</view>
+						<view class="package">
+							<text class="package-label">套餐二：</text>
+							<text class="package-price">¥399</text>
+						</view>
+						<view class="package">
+							<text class="package-label">套餐三：</text>
+							<text class="package-price">¥499</text>
+						</view>
+					</view>
+					
+					<view class="store-footer">
 						<view class="store-actions">
 							<button class="action-btn call-btn" @click.stop="callStore(store)">电话</button>
 							<button class="action-btn navigate-btn" @click.stop="navigateToStore(store)">导航</button>
@@ -88,119 +83,6 @@
 		data() {
 			return {
 				searchKeyword: '',
-				selectedProvinceIndex: 0,
-				selectedCityIndex: 0,
-				selectedDistrictIndex: 0,
-				provinces: [
-					{
-						name: '全国',
-						cities: [{ name: '全部城市', districts: [{ name: '全部区域' }] }]
-					},
-					{
-						name: '北京市',
-						cities: [
-							{ 
-								name: '全部区域',
-								districts: [{ name: '全部区县' }]
-							},
-							{
-								name: '朝阳区',
-								districts: [
-									{ name: '全部区域' },
-									{ name: '国贸' },
-									{ name: '三里屯' },
-									{ name: '望京' },
-									{ name: '酒仙桥' }
-								]
-							},
-							{
-								name: '海淀区',
-								districts: [
-									{ name: '全部区域' },
-									{ name: '中关村' },
-									{ name: '五道口' },
-									{ name: '西二旗' },
-									{ name: '公主坟' }
-								]
-							},
-							{
-								name: '西城区',
-								districts: [
-									{ name: '全部区域' },
-									{ name: '西单' },
-									{ name: '金融街' },
-									{ name: '新街口' }
-								]
-							}
-						]
-					},
-					{
-						name: '上海市',
-						cities: [
-							{ 
-								name: '全部区域',
-								districts: [{ name: '全部区县' }]
-							},
-							{
-								name: '浦东新区',
-								districts: [
-									{ name: '全部区域' },
-									{ name: '陆家嘴' },
-									{ name: '张江' },
-									{ name: '世纪公园' },
-									{ name: '川沙' }
-								]
-							},
-							{
-								name: '黄浦区',
-								districts: [
-									{ name: '全部区域' },
-									{ name: '外滩' },
-									{ name: '南京路' },
-									{ name: '人民广场' }
-								]
-							},
-							{
-								name: '徐汇区',
-								districts: [
-									{ name: '全部区域' },
-									{ name: '徐家汇' },
-									{ name: '田子坊' },
-									{ name: '衡山路' }
-								]
-							}
-						]
-					},
-					{
-						name: '广东省',
-						cities: [
-							{ 
-								name: '全部城市',
-								districts: [{ name: '全部区域' }]
-							},
-							{
-								name: '广州市',
-								districts: [
-									{ name: '全部区域' },
-									{ name: '天河区' },
-									{ name: '越秀区' },
-									{ name: '海珠区' },
-									{ name: '荔湾区' }
-								]
-							},
-							{
-								name: '深圳市',
-								districts: [
-									{ name: '全部区域' },
-									{ name: '南山区' },
-									{ name: '福田区' },
-									{ name: '罗湖区' },
-									{ name: '宝安区' }
-								]
-							}
-						]
-					}
-				],
 				stores: [
 					{
 						id: 1,
@@ -302,41 +184,10 @@
 			}
 		},
 		computed: {
-			selectedProvince() {
-				return this.provinces[this.selectedProvinceIndex] || this.provinces[0];
-			},
-			currentCities() {
-				return this.selectedProvince.cities || [];
-			},
-			selectedCity() {
-				return this.currentCities[this.selectedCityIndex] || this.currentCities[0];
-			},
-			currentDistricts() {
-				return this.selectedCity.districts || [];
-			},
-			selectedDistrict() {
-				return this.currentDistricts[this.selectedDistrictIndex] || this.currentDistricts[0];
-			},
 			filteredStores() {
 				let filtered = this.stores;
 				
-				// 先按地区筛选
-				if (this.selectedProvinceIndex > 0) {
-					const provinceName = this.selectedProvince.name;
-					filtered = filtered.filter(item => item.province === provinceName);
-					
-					if (this.selectedCityIndex > 0) {
-						const cityName = this.selectedCity.name;
-						filtered = filtered.filter(item => item.city === cityName);
-						
-						if (this.selectedDistrictIndex > 0) {
-							const districtName = this.selectedDistrict.name;
-							filtered = filtered.filter(item => item.district === districtName);
-						}
-					}
-				}
-				
-				// 再按地区搜索关键词筛选
+				// 按搜索关键词筛选
 				if (this.searchKeyword.trim()) {
 					const keyword = this.searchKeyword.toLowerCase();
 					filtered = filtered.filter(item => 
@@ -352,18 +203,13 @@
 			}
 		},
 		methods: {
-			onProvinceChange(e) {
-				this.selectedProvinceIndex = e.detail.value;
-				this.selectedCityIndex = 0;
-				this.selectedDistrictIndex = 0;
+			// 跳转到区域选择页面
+			goToAreaSelection() {
+				uni.navigateTo({
+					url: '/pages/area-selection/area-selection'
+				});
 			},
-			onCityChange(e) {
-				this.selectedCityIndex = e.detail.value;
-				this.selectedDistrictIndex = 0;
-			},
-			onDistrictChange(e) {
-				this.selectedDistrictIndex = e.detail.value;
-			},
+			
 			onSearchInput() {
 				// 实时搜索
 			},
@@ -435,12 +281,15 @@
 	/* 搜索和区域选择样式 */
 	.search-section {
 		padding: 20rpx;
+		display: flex;
+		gap: 20rpx;
+		align-items: center;
 	}
 	
 	.search-bar {
+		flex: 1;
 		display: flex;
 		gap: 20rpx;
-		margin-bottom: 20rpx;
 	}
 	
 	.search-input {
@@ -460,12 +309,33 @@
 		padding: 16rpx 32rpx;
 		border-radius: 30rpx;
 		font-size: 26rpx;
+		white-space: nowrap;
 	}
 	
 	.area-selector {
+		flex-shrink: 0;
+		width: 80rpx;
+	}
+	
+	.area-icon {
 		display: flex;
-		flex-direction: column;
-		gap: 15rpx;
+		align-items: center;
+		justify-content: center;
+		width: 80rpx;
+		height: 80rpx;
+		background-color: #fff8fa;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+		transition: all 0.3s ease;
+	}
+	
+	.area-icon:active {
+		transform: scale(0.95);
+		background-color: #ffe4e8;
+	}
+	
+	.area-icon .icon {
+		font-size: 34rpx;
 	}
 	
 	.area-picker {
@@ -501,156 +371,37 @@
 		margin-left: 10rpx;
 	}
 	
-	/* 门店列表样式 */
-	.store-list {
-		padding: 0 20rpx;
-	}
+	/* 门店列表样式（精简） */
+	.store-list { padding: 0 20rpx; }
+	.store-item { background-color: #fff8fa; border-radius: 16rpx; margin-bottom: 20rpx; overflow: hidden; border: 1rpx solid #ffe4e8; padding: 20rpx; }
+	.store-image { position: relative; width: 100%; height: 250rpx; margin-bottom: 16rpx; }
+	.store-image image { width: 100%; height: 100%; border-radius: 12rpx; }
+	.store-status { position: absolute; top: 10rpx; right: 10rpx; background-color: #FF69B4; color: #fff; padding: 6rpx 12rpx; border-radius: 15rpx; font-size: 20rpx; font-weight: bold; }
+	.store-status.open { background-color: #4CAF50; }
+	.store-status.busy { background-color: #FF9800; }
+	.store-status.renovation { background-color: #F44336; }
+	.store-status.closed { background-color: #9E9E9E; }
+	.store-name { font-size: 32rpx; font-weight: bold; color: #333; display: block; margin-bottom: 6rpx; }
+	.store-address { font-size: 26rpx; color: #666; display: block; margin-bottom: 10rpx; }
 	
-	.store-item {
-		background-color: #fff8fa;
-		border-radius: 16rpx;
-		margin-bottom: 20rpx;
-		overflow: hidden;
-		border: 1rpx solid #ffe4e8;
-		padding: 20rpx;
-	}
+	.price-hour { display: flex; align-items: baseline; gap: 8rpx; margin: 6rpx 0 12rpx; }
+	.price-hour-label { font-size: 26rpx; color: #666; }
+	.price-hour-value { font-size: 30rpx; color: #FF69B4; font-weight: bold; }
 	
-	.store-image {
-		position: relative;
-		width: 100%;
-		height: 250rpx;
-		margin-bottom: 20rpx;
-	}
+	.packages { display: flex; gap: 12rpx; margin-bottom: 12rpx; }
+	.package { background: #fff; border: 1rpx solid #ffe4e8; border-radius: 20rpx; padding: 8rpx 16rpx; display: flex; align-items: center; gap: 8rpx; }
+	.package-label { font-size: 22rpx; color: #666; }
+	.package-price { font-size: 24rpx; color: #FF69B4; font-weight: bold; }
 	
-	.store-image image {
-		width: 100%;
-		height: 100%;
-		border-radius: 12rpx;
-	}
+	.store-footer { display: flex; justify-content: flex-end; }
+	.store-actions { display: flex; gap: 15rpx; }
+	.action-btn { padding: 10rpx 20rpx; border-radius: 30rpx; font-size: 24rpx; font-weight: bold; }
+	.action-btn.call-btn { background-color: #4CAF50; color: #fff; }
+	.action-btn.navigate-btn { background-color: #2196F3; color: #fff; }
+	.action-btn.book-btn { background-color: #FF69B4; color: #fff; }
+	.action-btn.book-btn.disabled { background-color: #CCCCCC; color: #999999; }
 	
-	.store-status {
-		position: absolute;
-		top: 10rpx;
-		right: 10rpx;
-		background-color: #FF69B4;
-		color: #fff;
-		padding: 6rpx 12rpx;
-		border-radius: 15rpx;
-		font-size: 20rpx;
-		font-weight: bold;
-	}
-	
-	.store-status.open {
-		background-color: #4CAF50; /* 营业中 - 绿色 */
-	}
-	
-	.store-status.busy {
-		background-color: #FF9800; /* 火爆 - 橙色 */
-	}
-	
-	.store-status.renovation {
-		background-color: #F44336; /* 装修中 - 红色 */
-	}
-	
-	.store-status.closed {
-		background-color: #9E9E9E; /* 休息中 - 灰色 */
-	}
-	
-	.store-info {
-		width: 100%;
-	}
-	
-	.store-name {
-		font-size: 32rpx;
-		font-weight: bold;
-		color: #333;
-		display: block;
-		margin-bottom: 10rpx;
-	}
-	
-	.store-address {
-		font-size: 26rpx;
-		color: #666;
-		display: block;
-		margin-bottom: 10rpx;
-	}
-	
-	.store-details {
-		margin-bottom: 15rpx;
-	}
-	
-	.store-details text {
-		font-size: 24rpx;
-		color: #999;
-		display: block;
-		margin-bottom: 5rpx;
-	}
-	
-	.store-footer {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-	
-	.price-range {
-		background-color: #FFE4E8;
-		border-radius: 20rpx;
-		padding: 8rpx 15rpx;
-		font-size: 26rpx;
-		color: #FF69B4;
-		font-weight: bold;
-	}
-	
-	.price-text {
-		font-size: 26rpx;
-		color: #FF69B4;
-		font-weight: bold;
-	}
-	
-	.store-actions {
-		display: flex;
-		gap: 15rpx;
-	}
-	
-	.action-btn {
-		padding: 10rpx 20rpx;
-		border-radius: 30rpx;
-		font-size: 24rpx;
-		font-weight: bold;
-	}
-	
-	.action-btn.call-btn {
-		background-color: #4CAF50;
-		color: #fff;
-	}
-	
-	.action-btn.navigate-btn {
-		background-color: #2196F3;
-		color: #fff;
-	}
-	
-	.action-btn.book-btn {
-		background-color: #FF69B4;
-		color: #fff;
-	}
-	
-	.action-btn.book-btn.disabled {
-		background-color: #CCCCCC;
-		color: #999999;
-		cursor: not-allowed;
-	}
-	
-	/* 空状态样式 */
-	.empty-state {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		padding: 100rpx 0;
-	}
-	
-	.empty-text {
-		font-size: 28rpx;
-		color: #999;
-	}
+	/* 空状态 */
+	.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100rpx 0; }
+	.empty-text { font-size: 28rpx; color: #999; }
 </style> 

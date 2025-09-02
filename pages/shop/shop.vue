@@ -77,18 +77,9 @@
 					</view>
 					<view class="product-actions">
 						<button class="buy-btn" @click.stop="buyNow(product)">立即购买</button>
-						<button class="cart-btn" @click.stop="addToCart(product)">
-							<text class="cart-icon">🛒</text>
-						</button>
 					</view>
 				</view>
 			</view>
-		</view>
-		
-		<!-- 购物车悬浮按钮 -->
-		<view class="cart-float" @click="viewCart" v-if="cartCount > 0">
-			<text class="cart-icon">🛒</text>
-			<view class="cart-badge">{{cartCount}}</view>
 		</view>
 		
 		<!-- 空状态 -->
@@ -105,7 +96,6 @@
 				searchKeyword: '',
 				selectedCategory: 'all',
 				sortType: 'default',
-				cartCount: 0,
 				categories: [
 					{ id: 'all', name: '全部', icon: '🏪' },
 					{ id: 'vr', name: 'VR设备', icon: '🥽' },
@@ -239,16 +229,7 @@
 				return result;
 			}
 		},
-		onLoad() {
-			this.loadCartCount();
-		},
 		methods: {
-			// 加载购物车数量
-			loadCartCount() {
-				const cart = uni.getStorageSync('cart') || [];
-				this.cartCount = cart.length;
-			},
-			
 			// 搜索输入
 			onSearchInput() {
 				// 实时搜索，可以添加防抖
@@ -291,41 +272,7 @@
 			// 立即购买
 			buyNow(product) {
 				uni.navigateTo({
-					url: `/pages/shop/checkout?product=${encodeURIComponent(JSON.stringify(product))}&type=buy_now`
-				});
-			},
-			
-			// 添加到购物车
-			addToCart(product) {
-				let cart = uni.getStorageSync('cart') || [];
-				
-				// 检查是否已在购物车中
-				const existingItem = cart.find(item => item.id === product.id);
-				if (existingItem) {
-					existingItem.quantity += 1;
-				} else {
-					cart.push({
-						...product,
-						quantity: 1
-					});
-				}
-				
-				// 保存到本地存储
-				uni.setStorageSync('cart', cart);
-				
-				// 更新购物车数量
-				this.cartCount = cart.length;
-				
-				uni.showToast({
-					title: '已添加到购物车',
-					icon: 'success'
-				});
-			},
-			
-			// 查看购物车
-			viewCart() {
-				uni.navigateTo({
-					url: '/pages/shop/cart'
+					url: `/pages/shop/purchase?product=${encodeURIComponent(JSON.stringify(product))}`
 				});
 			}
 		}
@@ -336,7 +283,7 @@
 	.content {
 		background-color: #fef8fa; // 更淡的浅粉色背景
 		min-height: 100vh;
-		padding-bottom: 120rpx;
+		padding-bottom: 20rpx;
 	}
 	
 	/* 搜索栏 */
@@ -522,68 +469,18 @@
 				}
 				
 				.product-actions {
-					display: flex;
-					gap: 10rpx;
 					padding: 0 20rpx 20rpx;
 					
 					.buy-btn {
-						flex: 1;
+						width: 100%;
 						height: 60rpx;
 						background-color: #FFB6C1; // 更淡的粉色
 						color: #fff;
 						border-radius: 30rpx;
 						font-size: 26rpx;
 					}
-					
-					.cart-btn {
-						width: 60rpx;
-						height: 60rpx;
-						background-color: #f0f0f0;
-						border-radius: 30rpx;
-						display: flex;
-						align-items: center;
-						justify-content: center;
-						
-						.cart-icon {
-							font-size: 28rpx;
-						}
-					}
 				}
 			}
-		}
-	}
-	
-	/* 购物车悬浮按钮 */
-	.cart-float {
-		position: fixed;
-		bottom: 120rpx;
-		right: 30rpx;
-		width: 100rpx;
-		height: 100rpx;
-		background-color: #FFB6C1; // 更淡的粉色
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		box-shadow: 0 8rpx 20rpx rgba(255, 182, 193, 0.3); // 更淡的阴影
-		z-index: 999;
-		
-		.cart-icon {
-			font-size: 40rpx;
-			color: #fff;
-		}
-		
-		.cart-badge {
-			position: absolute;
-			top: -8rpx;
-			right: -8rpx;
-			background-color: #ff4757;
-			color: #fff;
-			font-size: 20rpx;
-			padding: 4rpx 8rpx;
-			border-radius: 20rpx;
-			min-width: 32rpx;
-			text-align: center;
 		}
 	}
 	

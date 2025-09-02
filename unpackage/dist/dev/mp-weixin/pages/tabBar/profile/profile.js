@@ -22,6 +22,12 @@ const _sfc_main = {
           bgColor: "#E8F5E8"
         },
         {
+          icon: "📦",
+          text: "我的订单",
+          action: "orders",
+          bgColor: "#FFF0F5"
+        },
+        {
           icon: "⭐",
           text: "我的评价",
           action: "reviews",
@@ -75,7 +81,7 @@ const _sfc_main = {
       common_vendor.index.getUserProfile({
         desc: "用于完善个人资料",
         success: (res) => {
-          common_vendor.index.__f__("log", "at pages/tabBar/profile/profile.vue:170", "获取用户信息成功", res);
+          common_vendor.index.__f__("log", "at pages/tabBar/profile/profile.vue:176", "获取用户信息成功", res);
           this.userInfo = {
             nickName: res.userInfo.nickName,
             avatarUrl: res.userInfo.avatarUrl,
@@ -89,7 +95,7 @@ const _sfc_main = {
           });
         },
         fail: (err) => {
-          common_vendor.index.__f__("log", "at pages/tabBar/profile/profile.vue:187", "获取用户信息失败", err);
+          common_vendor.index.__f__("log", "at pages/tabBar/profile/profile.vue:193", "获取用户信息失败", err);
           common_vendor.index.showToast({
             title: "登录失败",
             icon: "none"
@@ -199,7 +205,7 @@ const _sfc_main = {
           this.showRechargeOptions();
           break;
         case "points":
-          common_vendor.index.showToast({ title: "积分商城", icon: "none" });
+          this.showConsumptionBalance();
           break;
         case "reviews":
           this.goToReviews();
@@ -227,6 +233,29 @@ const _sfc_main = {
             });
           } else {
             this.processRecharge(amount);
+          }
+        }
+      });
+    },
+    // 显示消费余额详情
+    showConsumptionBalance() {
+      common_vendor.index.showModal({
+        title: "消费余额详情",
+        content: `当前消费余额：¥${this.accountInfo.points}
+
+消费余额说明：
+• 通过消费获得，可用于抵扣
+• 1元消费=1元消费余额
+• 消费余额无有效期限制
+• 可用于下次消费时抵扣`,
+        confirmText: "查看明细",
+        cancelText: "关闭",
+        success: (res) => {
+          if (res.confirm) {
+            common_vendor.index.showToast({
+              title: "跳转到消费明细页",
+              icon: "none"
+            });
           }
         }
       });
@@ -267,7 +296,17 @@ const _sfc_main = {
         this.getUserInfo();
         return;
       }
-      this.handleAccountAction(item.action);
+      switch (item.action) {
+        case "recharge":
+          this.handleAccountAction("recharge");
+          break;
+        case "orders":
+          this.goToOrders();
+          break;
+        case "reviews":
+          this.handleAccountAction("reviews");
+          break;
+      }
     },
     // 处理菜单点击
     handleMenuClick(item) {
@@ -292,6 +331,12 @@ const _sfc_main = {
           this.showCleaningArea();
           break;
       }
+    },
+    // 去订单页面
+    goToOrders() {
+      common_vendor.index.navigateTo({
+        url: "/pages/shop/orders"
+      });
     },
     // 去评价页面
     goToReviews() {
@@ -420,7 +465,7 @@ const _sfc_main = {
               common_vendor.index.makePhoneCall({
                 phoneNumber: "400-888-9999",
                 success: () => {
-                  common_vendor.index.__f__("log", "at pages/tabBar/profile/profile.vue:569", "拨打招商热线成功");
+                  common_vendor.index.__f__("log", "at pages/tabBar/profile/profile.vue:611", "拨打招商热线成功");
                 },
                 fail: () => {
                   common_vendor.index.showToast({
@@ -521,15 +566,15 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     o: $data.quickServices[0].bgColor,
     p: common_vendor.t($data.quickServices[0].text),
     q: common_vendor.o(($event) => $options.handleServiceClick($data.quickServices[0])),
-    r: common_vendor.t($data.menuItems[2].icon),
-    s: $data.menuItems[2].bgColor,
-    t: common_vendor.t($data.menuItems[2].text),
-    v: common_vendor.o(($event) => $options.handleMenuClick($data.menuItems[2])),
-    w: common_vendor.t($data.quickServices[1].icon),
-    x: $data.quickServices[1].bgColor,
-    y: common_vendor.t($data.quickServices[1].text),
-    z: common_vendor.o(($event) => $options.handleServiceClick($data.quickServices[1])),
-    A: common_vendor.f([$data.menuItems[0], $data.menuItems[1], $data.menuItems[3], $data.menuItems[4]], (item, index, i0) => {
+    r: common_vendor.t($data.quickServices[1].icon),
+    s: $data.quickServices[1].bgColor,
+    t: common_vendor.t($data.quickServices[1].text),
+    v: common_vendor.o(($event) => $options.handleServiceClick($data.quickServices[1])),
+    w: common_vendor.t($data.quickServices[2].icon),
+    x: $data.quickServices[2].bgColor,
+    y: common_vendor.t($data.quickServices[2].text),
+    z: common_vendor.o(($event) => $options.handleServiceClick($data.quickServices[2])),
+    A: common_vendor.f([$data.menuItems[0], $data.menuItems[1], $data.menuItems[2], $data.menuItems[3], $data.menuItems[4]], (item, index, i0) => {
       return {
         a: common_vendor.t(item.icon),
         b: item.bgColor,

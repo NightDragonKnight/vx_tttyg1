@@ -1,0 +1,213 @@
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 主题颜色 - 淡淡的浅粉色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.content {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* 筛选区域 */
+.filter-section {
+  background-color: #fff;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+.filter-section .filter-scroll {
+  white-space: nowrap;
+}
+.filter-section .filter-list {
+  display: flex;
+  padding: 0 20rpx;
+}
+.filter-section .filter-item {
+  display: flex;
+  align-items: center;
+  padding: 15rpx 25rpx;
+  margin-right: 20rpx;
+  border-radius: 25rpx;
+  background-color: #f8f8f8;
+  transition: all 0.3s ease;
+}
+.filter-section .filter-item.active {
+  background-color: #FFB6C1;
+  color: #fff;
+}
+.filter-section .filter-item .filter-text {
+  font-size: 26rpx;
+}
+.filter-section .filter-item .filter-count {
+  font-size: 22rpx;
+  margin-left: 5rpx;
+  opacity: 0.8;
+}
+
+/* 订单列表 */
+.orders-section {
+  padding: 20rpx;
+}
+.orders-section .order-item {
+  background-color: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+.orders-section .order-item .order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+.orders-section .order-item .order-header .order-no {
+  font-size: 24rpx;
+  color: #666;
+}
+.orders-section .order-item .order-header .order-status {
+  font-size: 24rpx;
+  padding: 6rpx 12rpx;
+  border-radius: 15rpx;
+}
+.orders-section .order-item .order-header .order-status.paid {
+  background-color: #e8f5e8;
+  color: #4caf50;
+}
+.orders-section .order-item .order-header .order-status.shipped {
+  background-color: #e3f2fd;
+  color: #2196f3;
+}
+.orders-section .order-item .order-header .order-status.completed {
+  background-color: #f3e5f5;
+  color: #9c27b0;
+}
+.orders-section .order-item .order-header .order-status.refunding {
+  background-color: #fff3e0;
+  color: #ff9800;
+}
+.orders-section .order-item .order-header .order-status.refunded {
+  background-color: #e0f2f1;
+  color: #009688;
+}
+.orders-section .order-item .order-content {
+  display: flex;
+  padding: 30rpx;
+}
+.orders-section .order-item .order-content .product-image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  margin-right: 20rpx;
+}
+.orders-section .order-item .order-content .order-info {
+  flex: 1;
+}
+.orders-section .order-item .order-content .order-info .product-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 8rpx;
+}
+.orders-section .order-item .order-content .order-info .product-spec {
+  font-size: 24rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 8rpx;
+}
+.orders-section .order-item .order-content .order-info .order-meta {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 8rpx;
+}
+.orders-section .order-item .order-content .order-info .order-time {
+  font-size: 22rpx;
+  color: #999;
+}
+.orders-section .order-item .order-content .order-price {
+  text-align: right;
+}
+.orders-section .order-item .order-content .order-price .price-label {
+  font-size: 22rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 5rpx;
+}
+.orders-section .order-item .order-content .order-price .price-value {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #FFB6C1;
+}
+.orders-section .order-item .order-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20rpx 30rpx;
+  border-top: 1rpx solid #f0f0f0;
+  gap: 20rpx;
+}
+.orders-section .order-item .order-footer .action-btn {
+  padding: 12rpx 24rpx;
+  border-radius: 25rpx;
+  font-size: 24rpx;
+}
+.orders-section .order-item .order-footer .action-btn.secondary {
+  background-color: #f8f8f8;
+  color: #666;
+}
+.orders-section .order-item .order-footer .action-btn.primary {
+  background-color: #FFB6C1;
+  color: #fff;
+}
+.orders-section .order-item .order-footer .action-btn.danger {
+  background-color: #ffebee;
+  color: #f44336;
+  border: 1rpx solid #f44336;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+}
+.empty-state .empty-image {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 30rpx;
+}
+.empty-state .empty-text {
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 40rpx;
+}
+.empty-state .go-shopping-btn {
+  background-color: #FFB6C1;
+  color: #fff;
+  padding: 20rpx 60rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+}

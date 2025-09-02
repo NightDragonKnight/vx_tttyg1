@@ -11,7 +11,7 @@
  * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
  */
 /* 颜色变量 */
-/* 行为相关颜色 */
+/* 主题颜色 - 淡淡的浅粉色 */
 /* 文字基本颜色 */
 /* 背景颜色 */
 /* 边框颜色 */
@@ -26,7 +26,7 @@
 .content {
   background-color: #fef8fa;
   min-height: 100vh;
-  padding-bottom: 120rpx;
+  padding-bottom: 20rpx;
 }
 
 /* 搜索栏 */
@@ -188,61 +188,15 @@
   text-decoration: line-through;
 }
 .product-section .product-grid .product-card .product-actions {
-  display: flex;
-  gap: 10rpx;
   padding: 0 20rpx 20rpx;
 }
 .product-section .product-grid .product-card .product-actions .buy-btn {
-  flex: 1;
+  width: 100%;
   height: 60rpx;
   background-color: #FFB6C1;
   color: #fff;
   border-radius: 30rpx;
   font-size: 26rpx;
-}
-.product-section .product-grid .product-card .product-actions .cart-btn {
-  width: 60rpx;
-  height: 60rpx;
-  background-color: #f0f0f0;
-  border-radius: 30rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.product-section .product-grid .product-card .product-actions .cart-btn .cart-icon {
-  font-size: 28rpx;
-}
-
-/* 购物车悬浮按钮 */
-.cart-float {
-  position: fixed;
-  bottom: 120rpx;
-  right: 30rpx;
-  width: 100rpx;
-  height: 100rpx;
-  background-color: #FFB6C1;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8rpx 20rpx rgba(255, 182, 193, 0.3);
-  z-index: 999;
-}
-.cart-float .cart-icon {
-  font-size: 40rpx;
-  color: #fff;
-}
-.cart-float .cart-badge {
-  position: absolute;
-  top: -8rpx;
-  right: -8rpx;
-  background-color: #ff4757;
-  color: #fff;
-  font-size: 20rpx;
-  padding: 4rpx 8rpx;
-  border-radius: 20rpx;
-  min-width: 32rpx;
-  text-align: center;
 }
 
 /* 空状态 */

@@ -156,25 +156,34 @@
 			}
 		},
 		{
-			"path": "pages/shop/cart",
+			"path": "pages/shop/purchase",
 			"style": {
-				"navigationBarTitleText": "购物车",
+				"navigationBarTitleText": "确认订单",
 				"navigationBarBackgroundColor": "#FFB6C1",
 				"navigationBarTextStyle": "white"
 			}
 		},
 		{
-			"path": "pages/shop/checkout",
+			"path": "pages/shop/orders",
 			"style": {
-				"navigationBarTitleText": "订单结算",
+				"navigationBarTitleText": "我的订单",
 				"navigationBarBackgroundColor": "#FFB6C1",
 				"navigationBarTextStyle": "white"
 			}
 		},
+
 		{
 			"path": "pages/shop/order-detail",
 			"style": {
 				"navigationBarTitleText": "订单详情",
+				"navigationBarBackgroundColor": "#FFB6C1",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/area-selection/area-selection",
+			"style": {
+				"navigationBarTitleText": "选择区域",
 				"navigationBarBackgroundColor": "#FFB6C1",
 				"navigationBarTextStyle": "white"
 			}

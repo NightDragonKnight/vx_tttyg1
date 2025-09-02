@@ -5,11 +5,61 @@
 		padding-bottom: 120rpx;
 }
 	
+	/* 页面标题 */
+.page-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 20rpx 30rpx;
+		background-color: #fff;
+		border-bottom: 1rpx solid #ffe4e8;
+}
+.page-title {
+		font-size: 36rpx;
+		font-weight: bold;
+		color: #333;
+}
+.step-indicator {
+		display: flex;
+		align-items: center;
+		gap: 10rpx;
+}
+.step {
+		width: 40rpx;
+		height: 40rpx;
+		border-radius: 50%;
+		background-color: #f0f0f0;
+		color: #666;
+		font-size: 24rpx;
+		font-weight: bold;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+}
+.step.active {
+		background-color: #FF69B4;
+		color: #fff;
+}
+.step-line {
+		flex: 1;
+		height: 1rpx;
+		background-color: #ffe4e8;
+}
+	
+	/* 第一页：产品详情 */
+.product-detail-page {
+		padding: 30rpx;
+		background-color: #fff;
+		border-radius: 16rpx;
+		margin: 20rpx;
+		box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.1);
+}
+	
 	/* 门店信息 */
 .store-info {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 }
@@ -45,28 +95,11 @@
 		margin-right: 10rpx;
 }
 	
-	/* 提示区域 */
-.tip-section {
-		background-color: #fff0f5;
-		padding: 30rpx;
-		margin: 20rpx;
-		border-radius: 16rpx;
-		border: 1rpx solid #ffe4e8;
-}
-.tip-content {
-		text-align: center;
-}
-.tip-text {
-		font-size: 26rpx;
-		color: #FF69B4;
-		font-weight: bold;
-}
-	
 	/* 视频区域 */
 .video-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 }
@@ -86,7 +119,7 @@
 .swiper-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 }
@@ -101,11 +134,208 @@
 		border-radius: 12rpx;
 }
 	
+	/* 产品价格信息 */
+.price-info-section {
+		background-color: #fff8fa;
+		padding: 20rpx 30rpx;
+		margin-bottom: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+}
+.price-info-item {
+		display: flex;
+		align-items: flex-start;
+		gap: 15rpx;
+		margin-bottom: 15rpx;
+}
+.price-info-item:last-child {
+		margin-bottom: 0;
+}
+.price-label {
+		font-size: 26rpx;
+		color: #666;
+		font-weight: 500;
+		min-width: 120rpx;
+}
+.price-value {
+		font-size: 28rpx;
+		color: #FF69B4;
+		font-weight: bold;
+}
+.price-desc {
+		font-size: 26rpx;
+		color: #333;
+		line-height: 1.4;
+		flex: 1;
+}
+	
+	/* 产品明细 */
+.detail-section {
+		background-color: #fff8fa;
+		padding: 30rpx;
+		margin-bottom: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+}
+.detail-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 15rpx;
+}
+.detail-item {
+		display: flex;
+		align-items: center;
+		gap: 10rpx;
+}
+.detail-image {
+		width: 80rpx;
+		height: 80rpx;
+		border-radius: 40rpx;
+		object-fit: cover;
+}
+.detail-name {
+		font-size: 26rpx;
+		color: #333;
+}
+	
+	/* 产品明细图片 */
+.product-detail-images {
+		background-color: #fff8fa;
+		padding: 30rpx;
+		margin-bottom: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+}
+.detail-images-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 20rpx;
+		margin-top: 20rpx;
+}
+.detail-image-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10rpx;
+}
+.detail-image {
+		width: 100%;
+		height: 200rpx;
+		border-radius: 12rpx;
+		object-fit: cover;
+		background-color: #f0f0f0;
+}
+.detail-image-name {
+		font-size: 24rpx;
+		color: #666;
+		text-align: center;
+		line-height: 1.2;
+}
+	
+	/* 产品选择网格 */
+.product-selection-section {
+		background-color: #fff8fa;
+		padding: 30rpx;
+		margin-bottom: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+}
+.product-grid {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		gap: 15rpx;
+		margin-top: 20rpx;
+}
+.product-grid-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10rpx;
+		padding: 15rpx;
+		border-radius: 12rpx;
+		border: 2rpx solid transparent;
+		transition: all 0.3s ease;
+		cursor: pointer;
+}
+.product-grid-item:hover {
+		border-color: #FF69B4;
+		background-color: #fff0f5;
+}
+.product-grid-item.selected {
+		border-color: #FF69B4;
+		background-color: #fff0f5;
+}
+.product-grid-thumbnail {
+		width: 80rpx;
+		height: 80rpx;
+		border-radius: 12rpx;
+		object-fit: cover;
+}
+.product-grid-name {
+		font-size: 20rpx;
+		color: #333;
+		text-align: center;
+		line-height: 1.2;
+}
+	
+	/* 下一步按钮 */
+.next-step {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 20rpx 30rpx;
+		background-color: #FF69B4;
+		display: flex;
+		justify-content: center;
+}
+.next-btn {
+		background-color: #fff;
+		color: #FF69B4;
+		padding: 20rpx 60rpx;
+		border-radius: 30rpx;
+		font-size: 30rpx;
+		font-weight: bold;
+		border: 2rpx solid #FF69B4;
+}
+.next-btn:active {
+		background-color: #ffe4e8;
+}
+	
+	/* 第二页：选择预订 */
+.booking-page {
+		padding: 30rpx;
+		background-color: #fff;
+		border-radius: 16rpx;
+		margin: 20rpx;
+		box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.1);
+}
+	
+	/* 返回按钮 */
+.back-btn {
+		display: flex;
+		align-items: center;
+		gap: 10rpx;
+		margin-bottom: 20rpx;
+		padding: 15rpx 30rpx;
+		background-color: #f0f0f0;
+		border-radius: 12rpx;
+		border: 1rpx solid #ffe4e8;
+}
+.back-icon {
+		font-size: 36rpx;
+		color: #666;
+}
+.back-btn text {
+		font-size: 28rpx;
+		color: #666;
+}
+	
 	/* 产品选择 */
 .product-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 }
@@ -163,7 +393,7 @@
 .room-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 }
@@ -249,7 +479,7 @@
 .time-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 }
@@ -437,7 +667,7 @@
 .remark-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 }
@@ -480,9 +710,53 @@
 .package-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
+}
+.package-options {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 20rpx;
+}
+.package-option {
+		background-color: #fff;
+		padding: 25rpx;
+		border-radius: 12rpx;
+		border: 2rpx solid #ffe4e8;
+		cursor: pointer;
+		transition: all 0.3s ease;
+}
+.package-option:hover {
+		border-color: #FF69B4;
+		transform: translateY(-2rpx);
+		box-shadow: 0 4rpx 12rpx rgba(255, 105, 180, 0.1);
+}
+.package-option.selected {
+		border-color: #FF69B4;
+		background-color: #fff0f5;
+		box-shadow: 0 4rpx 12rpx rgba(255, 105, 180, 0.2);
+}
+.package-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 10rpx;
+}
+.package-name {
+		font-size: 28rpx;
+		font-weight: bold;
+		color: #333;
+}
+.package-price {
+		font-size: 32rpx;
+		font-weight: bold;
+		color: #FF69B4;
+}
+.package-desc {
+		font-size: 24rpx;
+		color: #666;
+		line-height: 1.4;
 }
 .package-list {
 		display: flex;
@@ -544,7 +818,7 @@
 .price-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
-		margin: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
 }
@@ -571,6 +845,47 @@
 .final-price {
 		color: #FF69B4;
 		font-size: 36rpx;
+}
+	
+	/* 确认预订按钮 */
+.confirm-booking {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 20rpx 30rpx;
+		background-color: #FF69B4;
+		display: flex;
+		justify-content: center;
+}
+.confirm-btn {
+		background-color: #fff;
+		color: #FF69B4;
+		padding: 20rpx 60rpx;
+		border-radius: 30rpx;
+		font-size: 30rpx;
+		font-weight: bold;
+		border: 2rpx solid #FF69B4;
+}
+.confirm-btn:active {
+		background-color: #ffe4e8;
+}
+	
+	/* 提示区域 */
+.tip-section {
+		background-color: #fff0f5;
+		padding: 30rpx;
+		margin: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+}
+.tip-content {
+		text-align: center;
+}
+.tip-text {
+		font-size: 26rpx;
+		color: #FF69B4;
+		font-weight: bold;
 }
 	
 	/* 底部操作栏 */

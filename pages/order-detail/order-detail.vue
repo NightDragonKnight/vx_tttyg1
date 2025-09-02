@@ -39,9 +39,9 @@
 						<text class="btn-icon">🗺️</text>
 						<text>门店导航</text>
 					</button>
-					<button class="action-btn call" @click="callStore">
-						<text class="btn-icon">📞</text>
-						<text>联系门店</text>
+					<button class="action-btn call" @click="showStoreGuide">
+						<text class="btn-icon">📍</text>
+						<text>到店指引</text>
 					</button>
 				</view>
 			</view>
@@ -145,6 +145,33 @@
 				</view>
 			</view>
 		</uni-popup>
+
+		<!-- 到店指引视频弹窗 -->
+		<uni-popup ref="storeGuidePopup" type="center">
+			<view class="store-guide-popup">
+				<view class="popup-header">
+					<text class="popup-title">到店指引</text>
+					<text class="popup-close" @click="closeStoreGuidePopup">✕</text>
+				</view>
+				<view class="popup-content">
+					<view class="video-container">
+						<video 
+							:src="storeGuideVideo" 
+							class="guide-video"
+							controls
+							autoplay
+							show-center-play-btn
+							show-play-btn
+							show-fullscreen-btn
+						></video>
+					</view>
+					<view class="guide-info">
+						<text class="guide-title">{{storeDetail.name}} - 到店指引</text>
+						<text class="guide-desc">观看视频了解如何到达门店，包括交通方式、地标建筑等信息</text>
+					</view>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -164,7 +191,8 @@
 					'时间冲突',
 					'其他原因'
 				],
-				refundRemark: ''
+				refundRemark: '',
+				storeGuideVideo: '/static/video/store-guide.mp4' // 到店指引视频路径
 			}
 		},
 		computed: {
@@ -177,11 +205,11 @@
 				return this.orderInfo.status === 'paid' && this.orderInfo.roomNumber;
 			},
 			canUnlockNow() {
-				// 房间可使用且有剩余开锁次数
-				return this.orderInfo.roomStatus === '可使用' && this.unlockRemaining > 0;
+				// 房间可使用或使用中，且有剩余开锁次数
+				return (this.orderInfo.roomStatus === '可使用' || this.orderInfo.roomStatus === '使用中') && this.unlockRemaining > 0;
 			},
 			unlockButtonText() {
-				if (this.orderInfo.roomStatus !== '可使用') {
+				if (this.orderInfo.roomStatus !== '可使用' && this.orderInfo.roomStatus !== '使用中') {
 					return '房间暂不可用';
 				}
 				if (this.unlockRemaining <= 0) {
@@ -211,6 +239,12 @@
 			if (options.orderData) {
 				this.orderInfo = JSON.parse(decodeURIComponent(options.orderData));
 				this.loadStoreDetail();
+				
+				// 从本地存储恢复开锁次数
+				const savedUnlockRemaining = uni.getStorageSync('unlockRemaining');
+				if (savedUnlockRemaining !== null && savedUnlockRemaining !== undefined) {
+					this.unlockRemaining = savedUnlockRemaining;
+				}
 			}
 		},
 		methods: {
@@ -308,6 +342,16 @@
 				});
 			},
 			
+			// 显示到店指引视频
+			showStoreGuide() {
+				this.$refs.storeGuidePopup.open();
+			},
+			
+			// 关闭到店指引弹窗
+			closeStoreGuidePopup() {
+				this.$refs.storeGuidePopup.close();
+			},
+			
 			requestRefund() {
 				this.$refs.refundPopup.open();
 			},
@@ -358,9 +402,12 @@
 					return;
 				}
 				
+				// 根据房间状态显示不同的提示信息
+				const roomStatusText = this.orderInfo.roomStatus === '使用中' ? '（房间正在使用中）' : '';
+				
 				uni.showModal({
 					title: '确认开锁',
-					content: `确定要开启房间 ${this.orderInfo.roomNumber} 吗？剩余开锁次数：${this.unlockRemaining}次`,
+					content: `确定要开启房间 ${this.orderInfo.roomNumber} 吗？${roomStatusText}\n\n剩余开锁次数：${this.unlockRemaining}次`,
 					success: (res) => {
 						if (res.confirm) {
 							uni.showLoading({
@@ -370,16 +417,42 @@
 							// 模拟开锁过程
 							setTimeout(() => {
 								uni.hideLoading();
+								
+								// 减少开锁次数
+								this.unlockRemaining--;
+								
+								// 保存到本地存储
+								uni.setStorageSync('unlockRemaining', this.unlockRemaining);
+								
+								// 显示开锁成功提示
 								uni.showToast({
 									title: '开锁成功！',
 									icon: 'success'
 								});
 								
-								// 减少开锁次数
-								this.unlockRemaining--;
-								
-								// 更新房间状态
-								this.orderInfo.roomStatus = '使用中';
+								// 如果还有剩余次数，显示继续开锁的提示
+								if (this.unlockRemaining > 0) {
+									setTimeout(() => {
+										const statusText = this.orderInfo.roomStatus === '使用中' ? '（房间正在使用中）' : '';
+										uni.showModal({
+											title: '开锁成功',
+											content: `房间 ${this.orderInfo.roomNumber} 已开启！${statusText}\n\n剩余开锁次数：${this.unlockRemaining}次\n\n您可以继续使用开锁功能，直到次数用完。`,
+											confirmText: '知道了',
+											showCancel: false
+										});
+									}, 1000);
+								} else {
+									// 次数用完时的提示
+									setTimeout(() => {
+										const statusText = this.orderInfo.roomStatus === '使用中' ? '（房间正在使用中）' : '';
+										uni.showModal({
+											title: '开锁次数已用完',
+											content: `房间 ${this.orderInfo.roomNumber} 已开启！${statusText}\n\n您的开锁次数已用完，如需继续使用，请联系客服。`,
+											confirmText: '知道了',
+											showCancel: false
+										});
+									}, 1000);
+								}
 							}, 2000);
 						}
 					}
@@ -907,6 +980,82 @@
 				&.confirm {
 					color: #FF69B4;
 					font-weight: bold;
+				}
+			}
+		}
+	}
+	
+	/* 到店指引视频弹窗 */
+	.store-guide-popup {
+		width: 700rpx;
+		background-color: #fff;
+		border-radius: 16rpx;
+		overflow: hidden;
+		
+		.popup-header {
+			padding: 30rpx;
+			text-align: center;
+			border-bottom: 1rpx solid #f0f0f0;
+			position: relative;
+			
+			.popup-title {
+				font-size: 32rpx;
+				font-weight: bold;
+				color: #333;
+			}
+			
+			.popup-close {
+				position: absolute;
+				right: 30rpx;
+				top: 30rpx;
+				font-size: 32rpx;
+				color: #999;
+				cursor: pointer;
+				width: 40rpx;
+				height: 40rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 50%;
+				transition: background-color 0.3s;
+				
+				&:hover {
+					background-color: #f5f5f5;
+				}
+			}
+		}
+		
+		.popup-content {
+			padding: 30rpx;
+			
+			.video-container {
+				margin-bottom: 30rpx;
+				border-radius: 12rpx;
+				overflow: hidden;
+				box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+				
+				.guide-video {
+					width: 100%;
+					height: 400rpx;
+					background-color: #000;
+				}
+			}
+			
+			.guide-info {
+				text-align: center;
+				
+				.guide-title {
+					font-size: 28rpx;
+					font-weight: bold;
+					color: #333;
+					display: block;
+					margin-bottom: 12rpx;
+				}
+				
+				.guide-desc {
+					font-size: 24rpx;
+					color: #666;
+					line-height: 1.5;
 				}
 			}
 		}
