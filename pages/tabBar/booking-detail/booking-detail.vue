@@ -13,33 +13,41 @@
 		<!-- 第一页：产品展示 -->
 		<view v-if="currentStep === 1" class="product-detail-page">
 			
-			<!-- 产品视频 -->
-			<view class="video-section">
-				<view class="section-title">产品视频</view>
-				<video 
-					:src="currentProduct.videoUrl" 
-					class="product-video"
-					controls
-					:poster="currentProduct.videoPoster"
-				></video>
-			</view>
-			
-			<!-- 产品轮播图 -->
-			<view class="swiper-section">
-				<view class="section-title">产品图片</view>
-				<swiper 
-					class="product-swiper" 
-					:indicator-dots="true" 
-					:autoplay="true" 
-					:interval="3000" 
-					:duration="500"
-					indicator-color="rgba(255,255,255,0.6)"
-					indicator-active-color="#FF69B4"
-				>
-					<swiper-item v-for="(image, index) in currentProduct.images" :key="index">
-						<image :src="image" class="swiper-image" mode="aspectFill"></image>
-					</swiper-item>
-				</swiper>
+			<!-- 产品详情 -->
+			<view class="product-detail-section">
+				<view class="section-title">产品详情</view>
+				
+				<!-- 产品轮播（视频+图片） -->
+				<view class="media-swiper-section">
+					<swiper 
+						class="product-media-swiper" 
+						:indicator-dots="true" 
+						:autoplay="true" 
+						:interval="3000" 
+						:duration="500"
+						indicator-color="rgba(255,255,255,0.6)"
+						indicator-active-color="#FF69B4"
+					>
+						<!-- 视频轮播项 -->
+						<swiper-item v-if="currentProduct.videoUrl">
+							<view class="media-item video-item" @click="previewVideo">
+								<video 
+									:src="currentProduct.videoUrl" 
+									class="product-video"
+									:poster="currentProduct.videoPoster"
+								></video>
+								<view class="play-icon">▶</view>
+							</view>
+						</swiper-item>
+						
+						<!-- 图片轮播项 -->
+						<swiper-item v-for="(image, index) in currentProduct.images" :key="index">
+							<view class="media-item image-item" @click="previewImage(image, currentProduct.images)">
+								<image :src="image" class="swiper-image" mode="aspectFill"></image>
+							</view>
+						</swiper-item>
+					</swiper>
+				</view>
 			</view>
 			
 			<!-- 产品选择 -->
@@ -67,17 +75,60 @@
 				</view>
 				<view class="price-info-item">
 					<text class="price-label">套餐详情：</text>
-					<text class="price-desc">套餐一 ¥{{currentProduct.package1Price}}（基础体验） | 套餐二 ¥{{currentProduct.package2Price}}（进阶体验） | 套餐三 ¥{{currentProduct.package3Price}}（豪华体验）</text>
+					<view class="package-details">
+						<view class="package-detail-item">
+							<text class="package-detail-name">套餐一：</text>
+							<text class="package-detail-price">¥{{currentProduct.package1Price}}</text>
+							<text class="package-detail-desc">（基础体验）</text>
+						</view>
+						<view class="package-detail-item">
+							<text class="package-detail-name">套餐二：</text>
+							<text class="package-detail-price">¥{{currentProduct.package2Price}}</text>
+							<text class="package-detail-desc">（进阶体验）</text>
+						</view>
+						<view class="package-detail-item">
+							<text class="package-detail-name">套餐三：</text>
+							<text class="package-detail-price">¥{{currentProduct.package3Price}}</text>
+							<text class="package-detail-desc">（豪华体验）</text>
+						</view>
+					</view>
 				</view>
 			</view>
 			
-			<!-- 产品明细图片 -->
-			<view class="product-detail-images">
-				<view class="section-title">产品明细</view>
-				<view class="detail-images-grid">
-					<view class="detail-image-item" v-for="(detail, index) in currentProduct.detailImages" :key="index">
-						<image :src="detail.image" class="detail-image" mode="aspectFill"></image>
-						<text class="detail-image-name">{{detail.name}}</text>
+			<!-- 产品简介和郑重声明 -->
+			<view class="product-info-section">
+				<view class="section-title">产品简介</view>
+				<view class="product-description">
+					<view class="description-item">
+						<text class="description-label">适用身高：</text>
+						<text class="description-value">{{currentProduct.height || '120-180cm'}}</text>
+					</view>
+					<view class="description-item">
+						<text class="description-label">产品尺寸：</text>
+						<text class="description-value">{{currentProduct.dimensions || '长200cm × 宽150cm × 高180cm'}}</text>
+					</view>
+					<view class="description-item">
+						<text class="description-label">动力类型：</text>
+						<text class="description-value">{{currentProduct.powerType || '电动驱动'}}</text>
+					</view>
+					<view class="description-item">
+						<text class="description-label">安全等级：</text>
+						<text class="description-value">{{currentProduct.safetyLevel || 'A级安全认证'}}</text>
+					</view>
+					<view class="description-item">
+						<text class="description-label">使用说明：</text>
+						<text class="description-value">{{currentProduct.usage || '专业工作人员指导操作，请勿自行操作'}}</text>
+					</view>
+				</view>
+				
+				<view class="disclaimer-section">
+					<view class="disclaimer-title">郑重声明</view>
+					<view class="disclaimer-content">
+						<text class="disclaimer-text">1. 本产品仅供娱乐体验，请遵守相关安全规定</text>
+						<text class="disclaimer-text">2. 体验前请仔细阅读安全须知，确保身体健康</text>
+						<text class="disclaimer-text">3. 未成年人请在监护人陪同下体验</text>
+						<text class="disclaimer-text">4. 如有身体不适请立即停止体验并告知工作人员</text>
+						<text class="disclaimer-text">5. 本店保留最终解释权</text>
 					</view>
 				</view>
 			</view>
@@ -138,15 +189,8 @@
 				</view>
 			</view>
 			
-			<!-- 选择套餐提示 -->
-			<view class="tip-section" v-if="!selectedPackageType">
-				<view class="tip-content">
-					<text class="tip-text">👆 请先选择计费方式</text>
-				</view>
-			</view>
-			
 			<!-- 时间选择 -->
-			<view class="time-section" v-if="selectedPackageType">
+			<view class="time-section">
 				<!-- 调试信息 -->
 				<view style="background: #f0f0f0; padding: 10rpx; margin-bottom: 20rpx; font-size: 24rpx; color: #666;">
 					调试信息: selectedPackageType = {{selectedPackageType}}
@@ -223,15 +267,8 @@
 				</view>
 			</view>
 			
-			<!-- 选择时间提示 -->
-			<view class="tip-section" v-if="selectedPackageType && (!selectedStartTime || !selectedEndTime)">
-				<view class="tip-content">
-					<text class="tip-text">👆 请选择时间</text>
-				</view>
-			</view>
-			
 			<!-- 房间选择 -->
-			<view class="room-section" v-if="selectedStartTime && selectedEndTime">
+			<view class="room-section">
 				<view class="section-title">选择房间</view>
 				<view class="room-list">
 					<view 
@@ -272,16 +309,32 @@
 				</view>
 			</view>
 			
-			<!-- 选择房间提示 -->
-			<view class="tip-section" v-if="selectedStartTime && selectedEndTime && !selectedRoom">
-				<view class="tip-content">
-					<text class="tip-text">👆 请选择房间</text>
-				</view>
+			<!-- 确认预订按钮 -->
+			<view class="confirm-booking">
+				<button 
+					class="confirm-btn" 
+					:class="{ disabled: !canConfirm }"
+					@click="confirmBooking"
+					:disabled="!canConfirm"
+				>
+					{{ canConfirm ? '确认预订' : '请完成所有选择' }}
+				</button>
 			</view>
 			
-			<!-- 确认预订按钮 -->
-			<view class="confirm-booking" v-if="canConfirm">
-				<button class="confirm-btn" @click="confirmBooking">确认预订</button>
+			<!-- 选择状态提示 -->
+			<view class="selection-status" v-if="!canConfirm">
+				<view class="status-item" :class="{ completed: selectedPackageType }">
+					<text class="status-icon">{{ selectedPackageType ? '✅' : '⭕' }}</text>
+					<text class="status-text">选择套餐</text>
+				</view>
+				<view class="status-item" :class="{ completed: selectedStartTime && selectedEndTime }">
+					<text class="status-icon">{{ selectedStartTime && selectedEndTime ? '✅' : '⭕' }}</text>
+					<text class="status-text">选择时间</text>
+				</view>
+				<view class="status-item" :class="{ completed: selectedRoom }">
+					<text class="status-icon">{{ selectedRoom ? '✅' : '⭕' }}</text>
+					<text class="status-text">选择房间</text>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -851,7 +904,7 @@
 			// 产品选择显示方法
 			selectProductForDisplay(product) {
 				this.selectedProduct = product.id;
-				// 更新当前产品信息，包括视频、轮播图、价格、套餐和详情图片
+				// 更新当前产品信息，包括视频、轮播图、价格、套餐和产品简介
 				this.currentProduct = {
 					id: product.id,
 					name: product.name,
@@ -863,8 +916,41 @@
 					videoUrl: product.videoUrl,
 					videoPoster: product.videoPoster,
 					images: product.images,
-					detailImages: product.detailImages || []
+					detailImages: product.detailImages || [],
+					// 产品简介相关属性
+					height: product.height || '120-180cm',
+					dimensions: product.dimensions || '长200cm × 宽150cm × 高180cm',
+					powerType: product.powerType || '电动驱动',
+					safetyLevel: product.safetyLevel || 'A级安全认证',
+					usage: product.usage || '专业工作人员指导操作，请勿自行操作'
 				};
+			},
+			
+			// 预览视频
+			previewVideo() {
+				// 使用uni-app的预览视频API
+				uni.navigateTo({
+					url: `/pages/video-player/video-player?videoUrl=${encodeURIComponent(this.currentProduct.videoUrl)}&title=${encodeURIComponent(this.currentProduct.name)}`
+				});
+			},
+			
+			// 预览图片
+			previewImage(currentImage, allImages) {
+				// 使用uni-app的预览图片API
+				uni.previewImage({
+					current: currentImage,
+					urls: allImages,
+					success: () => {
+						console.log('预览图片成功');
+					},
+					fail: (err) => {
+						console.error('预览图片失败:', err);
+						uni.showToast({
+							title: '预览图片失败',
+							icon: 'none'
+						});
+					}
+				});
 			},
 			
 			navigateToStore() {
@@ -898,7 +984,13 @@
 					price: product.price,
 					videoUrl: product.videoUrl,
 					videoPoster: product.videoPoster,
-					images: product.images
+					images: product.images,
+					// 产品简介相关属性
+					height: product.height || '120-180cm',
+					dimensions: product.dimensions || '长200cm × 宽150cm × 高180cm',
+					powerType: product.powerType || '电动驱动',
+					safetyLevel: product.safetyLevel || 'A级安全认证',
+					usage: product.usage || '专业工作人员指导操作，请勿自行操作'
 				};
 				// 选择产品时清空后续所有选择
 				this.selectedRoom = null;
@@ -1211,13 +1303,68 @@
 		margin-right: 10rpx;
 	}
 	
-	/* 视频区域 */
-	.video-section {
+	/* 产品详情块 */
+	.product-detail-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
 		margin-bottom: 20rpx;
 		border-radius: 16rpx;
 		border: 1rpx solid #ffe4e8;
+	}
+	
+	/* 媒体轮播区域 */
+	.media-swiper-section {
+		margin-bottom: 0;
+	}
+	
+	.product-media-swiper {
+		width: 100%;
+		height: 400rpx;
+		border-radius: 12rpx;
+	}
+	
+	.media-item {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		border-radius: 12rpx;
+		overflow: hidden;
+		cursor: pointer;
+	}
+	
+	.video-item {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: #000;
+	}
+	
+	.image-item {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	
+	.play-icon {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 80rpx;
+		height: 80rpx;
+		background-color: rgba(0, 0, 0, 0.7);
+		color: #fff;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 40rpx;
+		z-index: 10;
+	}
+	
+	/* 视频区域 */
+	.video-section {
+		margin-bottom: 20rpx;
 	}
 	
 	.section-title {
@@ -1229,22 +1376,7 @@
 	
 	.product-video {
 		width: 100%;
-		height: 400rpx;
-		border-radius: 12rpx;
-	}
-	
-	/* 产品轮播图 */
-	.swiper-section {
-		background-color: #fff8fa;
-		padding: 30rpx;
-		margin-bottom: 20rpx;
-		border-radius: 16rpx;
-		border: 1rpx solid #ffe4e8;
-	}
-	
-	.product-swiper {
-		width: 100%;
-		height: 300rpx;
+		height: 100%;
 		border-radius: 12rpx;
 	}
 	
@@ -1287,11 +1419,35 @@
 		font-weight: bold;
 	}
 	
-	.price-desc {
-		font-size: 26rpx;
-		color: #333;
-		line-height: 1.4;
+	.package-details {
+		display: flex;
+		flex-direction: column;
+		gap: 12rpx;
 		flex: 1;
+	}
+	
+	.package-detail-item {
+		display: flex;
+		align-items: center;
+		gap: 15rpx;
+	}
+	
+	.package-detail-name {
+		font-size: 26rpx;
+		color: #666;
+		font-weight: 500;
+		min-width: 80rpx;
+	}
+	
+	.package-detail-price {
+		font-size: 28rpx;
+		color: #FF69B4;
+		font-weight: bold;
+	}
+	
+	.package-detail-desc {
+		font-size: 24rpx;
+		color: #999;
 	}
 	
 	/* 产品明细 */
@@ -1327,8 +1483,8 @@
 		color: #333;
 	}
 	
-	/* 产品明细图片 */
-	.product-detail-images {
+	/* 产品简介和郑重声明 */
+	.product-info-section {
 		background-color: #fff8fa;
 		padding: 30rpx;
 		margin-bottom: 20rpx;
@@ -1336,33 +1492,57 @@
 		border: 1rpx solid #ffe4e8;
 	}
 	
-	.detail-images-grid {
+	.product-description {
+		margin-bottom: 30rpx;
 		display: flex;
 		flex-direction: column;
-		gap: 20rpx;
-		margin-top: 20rpx;
+		gap: 15rpx;
 	}
 	
-	.detail-image-item {
+	.description-item {
+		display: flex;
+		align-items: flex-start;
+		gap: 15rpx;
+	}
+	
+	.description-label {
+		font-size: 26rpx;
+		color: #666;
+		font-weight: 500;
+		min-width: 120rpx;
+		flex-shrink: 0;
+	}
+	
+	.description-value {
+		font-size: 26rpx;
+		color: #333;
+		line-height: 1.5;
+		flex: 1;
+	}
+	
+	.disclaimer-section {
+		border-top: 1rpx solid #ffe4e8;
+		padding-top: 20rpx;
+	}
+	
+	.disclaimer-title {
+		font-size: 28rpx;
+		font-weight: bold;
+		color: #FF69B4;
+		margin-bottom: 15rpx;
+	}
+	
+	.disclaimer-content {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		gap: 10rpx;
+		gap: 12rpx;
 	}
 	
-	.detail-image {
-		width: 100%;
-		height: 200rpx;
-		border-radius: 12rpx;
-		object-fit: cover;
-		background-color: #f0f0f0;
-	}
-	
-	.detail-image-name {
+	.disclaimer-text {
 		font-size: 24rpx;
 		color: #666;
-		text-align: center;
-		line-height: 1.2;
+		line-height: 1.5;
+		text-align: justify;
 	}
 	
 	/* 产品选择网格 */
@@ -1908,8 +2088,8 @@
 	}
 	
 	.package-options {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
+		display: flex;
+		flex-direction: column;
 		gap: 20rpx;
 	}
 	
@@ -1920,6 +2100,7 @@
 		border: 2rpx solid #ffe4e8;
 		cursor: pointer;
 		transition: all 0.3s ease;
+		width: 100%;
 	}
 	
 	.package-option:hover {
@@ -2086,6 +2267,56 @@
 	
 	.confirm-btn:active {
 		background-color: #ffe4e8;
+	}
+	
+	.confirm-btn.disabled {
+		background-color: #ccc;
+		color: #999;
+		border-color: #ccc;
+		cursor: not-allowed;
+	}
+	
+	.confirm-btn.disabled:active {
+		background-color: #ccc;
+	}
+	
+	/* 选择状态提示 */
+	.selection-status {
+		background-color: #fff8fa;
+		padding: 20rpx 30rpx;
+		margin: 20rpx;
+		border-radius: 16rpx;
+		border: 1rpx solid #ffe4e8;
+		display: flex;
+		flex-direction: column;
+		gap: 15rpx;
+	}
+	
+	.status-item {
+		display: flex;
+		align-items: center;
+		gap: 15rpx;
+		padding: 10rpx 0;
+	}
+	
+	.status-item.completed {
+		color: #4CAF50;
+	}
+	
+	.status-icon {
+		font-size: 24rpx;
+		width: 30rpx;
+		text-align: center;
+	}
+	
+	.status-text {
+		font-size: 26rpx;
+		color: #666;
+	}
+	
+	.status-item.completed .status-text {
+		color: #4CAF50;
+		font-weight: 500;
 	}
 	
 	/* 提示区域 */

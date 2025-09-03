@@ -24,47 +24,49 @@
 		
 		<!-- 门店列表 -->
 		<view class="store-list">
-			<view class="store-item" v-for="(store, index) in filteredStores" :key="index" @click="viewStoreDetail(store)">
-				<view class="store-image">
-					<image :src="store.image" mode="aspectFill"></image>
-					<view class="store-status" :class="store.status">{{store.statusText}}</view>
-				</view>
-				<view class="store-info">
-					<text class="store-name">{{store.name}}</text>
-					<text class="store-address">📍 {{store.address}}</text>
-					
-					<!-- 每小时体验价格 -->
-					<view class="price-hour">
-						<text class="price-hour-label">每小时：</text>
-						<text class="price-hour-value">¥199</text>
+			<view class="store-item" v-for="(store, index) in filteredStores" :key="index">
+				<view class="store-content">
+					<view class="store-image" @click="bookStore(store)">
+						<image :src="store.image" mode="aspectFill"></image>
+						<view class="store-status" :class="store.status">{{store.statusText}}</view>
 					</view>
-					
-					<!-- 三个套餐价格 -->
-					<view class="packages">
-						<view class="package">
-							<text class="package-label">套餐一：</text>
-							<text class="package-price">¥299</text>
+					<view class="store-info">
+						<text class="store-name">{{store.name}}</text>
+						<text class="store-address">📍 {{store.address}}</text>
+						
+						<!-- 每小时体验价格 -->
+						<view class="price-hour">
+							<text class="price-hour-label">每小时：</text>
+							<text class="price-hour-value">¥199</text>
 						</view>
-						<view class="package">
-							<text class="package-label">套餐二：</text>
-							<text class="package-price">¥399</text>
+						
+						<!-- 三个套餐价格 -->
+						<view class="packages">
+							<view class="package">
+								<text class="package-label">套餐一：</text>
+								<text class="package-price">¥299</text>
+							</view>
+							<view class="package">
+								<text class="package-label">套餐二：</text>
+								<text class="package-price">¥399</text>
+							</view>
+							<view class="package">
+								<text class="package-label">套餐三：</text>
+								<text class="package-price">¥499</text>
+							</view>
 						</view>
-						<view class="package">
-							<text class="package-label">套餐三：</text>
-							<text class="package-price">¥499</text>
-						</view>
-					</view>
-					
-					<view class="store-footer">
-						<view class="store-actions">
-							<button class="action-btn call-btn" @click.stop="callStore(store)">电话</button>
-							<button class="action-btn navigate-btn" @click.stop="navigateToStore(store)">导航</button>
-							<button 
-								class="action-btn book-btn" 
-								:class="{ disabled: store.status === 'renovation' || store.status === 'closed' }"
-								@click.stop="bookStore(store)"
-								:disabled="store.status === 'renovation' || store.status === 'closed'"
-							>预订</button>
+						
+						<view class="store-footer">
+							<view class="store-actions">
+								<button class="action-btn call-btn" @click.stop="callStore(store)">电话</button>
+								<button class="action-btn navigate-btn" @click.stop="navigateToStore(store)">导航</button>
+								<button 
+									class="action-btn book-btn" 
+									:class="{ disabled: store.status === 'renovation' || store.status === 'closed' }"
+									@click.stop="bookStore(store)"
+									:disabled="store.status === 'renovation' || store.status === 'closed'"
+								>预订</button>
+							</view>
 						</view>
 					</view>
 				</view>
@@ -217,12 +219,7 @@
 				// 执行搜索
 				console.log('搜索关键词:', this.searchKeyword);
 			},
-			viewStoreDetail(store) {
-				uni.showToast({
-					title: `查看${store.name}详情`,
-					icon: 'none'
-				});
-			},
+
 			callStore(store) {
 				uni.makePhoneCall({
 					phoneNumber: store.phone,
@@ -374,28 +371,86 @@
 	/* 门店列表样式（精简） */
 	.store-list { padding: 0 20rpx; }
 	.store-item { background-color: #fff8fa; border-radius: 16rpx; margin-bottom: 20rpx; overflow: hidden; border: 1rpx solid #ffe4e8; padding: 20rpx; }
-	.store-image { position: relative; width: 100%; height: 250rpx; margin-bottom: 16rpx; }
+	
+	.store-content {
+		display: flex;
+		gap: 20rpx;
+		align-items: flex-start;
+	}
+	
+	.store-image { 
+		position: relative; 
+		width: 400rpx; 
+		height: 350rpx; 
+		flex-shrink: 0;
+		cursor: pointer;
+		transition: transform 0.2s ease;
+		overflow: hidden;
+	}
+	
+	.store-image:active {
+		transform: scale(0.98);
+	}
+	
+	.store-image::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(45deg, transparent 70%, rgba(255, 105, 180, 0.1) 100%);
+		pointer-events: none;
+		opacity: 0;
+		transition: opacity 0.2s ease;
+	}
+	
+	.store-image:hover::after {
+		opacity: 1;
+	}
 	.store-image image { width: 100%; height: 100%; border-radius: 12rpx; }
 	.store-status { position: absolute; top: 10rpx; right: 10rpx; background-color: #FF69B4; color: #fff; padding: 6rpx 12rpx; border-radius: 15rpx; font-size: 20rpx; font-weight: bold; }
 	.store-status.open { background-color: #4CAF50; }
 	.store-status.busy { background-color: #FF9800; }
 	.store-status.renovation { background-color: #F44336; }
 	.store-status.closed { background-color: #9E9E9E; }
-	.store-name { font-size: 32rpx; font-weight: bold; color: #333; display: block; margin-bottom: 6rpx; }
-	.store-address { font-size: 26rpx; color: #666; display: block; margin-bottom: 10rpx; }
 	
-	.price-hour { display: flex; align-items: baseline; gap: 8rpx; margin: 6rpx 0 12rpx; }
-	.price-hour-label { font-size: 26rpx; color: #666; }
-	.price-hour-value { font-size: 30rpx; color: #FF69B4; font-weight: bold; }
+	.store-info {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		min-height: 350rpx;
+	}
 	
-	.packages { display: flex; gap: 12rpx; margin-bottom: 12rpx; }
-	.package { background: #fff; border: 1rpx solid #ffe4e8; border-radius: 20rpx; padding: 8rpx 16rpx; display: flex; align-items: center; gap: 8rpx; }
-	.package-label { font-size: 22rpx; color: #666; }
-	.package-price { font-size: 24rpx; color: #FF69B4; font-weight: bold; }
+	.store-name { font-size: 28rpx; font-weight: bold; color: #333; display: block; margin-bottom: 4rpx; }
+	.store-address { font-size: 22rpx; color: #666; display: block; margin-bottom: 8rpx; }
+	
+	.price-hour { display: flex; align-items: baseline; gap: 8rpx; margin: 4rpx 0 8rpx; }
+	.price-hour-label { font-size: 22rpx; color: #666; }
+	.price-hour-value { font-size: 26rpx; color: #FF69B4; font-weight: bold; }
+	
+	.packages { 
+		display: flex; 
+		flex-wrap: wrap; 
+		gap: 8rpx; 
+		margin-bottom: 8rpx; 
+	}
+	.package { 
+		background: #fff; 
+		border: 1rpx solid #ffe4e8; 
+		border-radius: 16rpx; 
+		padding: 6rpx 12rpx; 
+		display: flex; 
+		align-items: center; 
+		gap: 6rpx; 
+	}
+	.package-label { font-size: 20rpx; color: #666; }
+	.package-price { font-size: 22rpx; color: #FF69B4; font-weight: bold; }
 	
 	.store-footer { display: flex; justify-content: flex-end; }
-	.store-actions { display: flex; gap: 15rpx; }
-	.action-btn { padding: 10rpx 20rpx; border-radius: 30rpx; font-size: 24rpx; font-weight: bold; }
+	.store-actions { display: flex; gap: 12rpx; }
+	.action-btn { padding: 8rpx 16rpx; border-radius: 24rpx; font-size: 22rpx; font-weight: bold; }
 	.action-btn.call-btn { background-color: #4CAF50; color: #fff; }
 	.action-btn.navigate-btn { background-color: #2196F3; color: #fff; }
 	.action-btn.book-btn { background-color: #FF69B4; color: #fff; }

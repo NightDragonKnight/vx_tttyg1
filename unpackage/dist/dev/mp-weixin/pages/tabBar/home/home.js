@@ -65,17 +65,39 @@ const _sfc_main = {
           linkData: "weekend_party"
         }
       ],
-      products: [
-        { name: "VR体验馆", price: "80", image: "/static/image/day/VR体验馆.jpg" },
-        { name: "棋牌室", price: "60", image: "/static/image/day/棋牌1.jpg" },
-        { name: "台球室", price: "50", image: "/static/image/day/台球1.png" },
-        { name: "密室逃脱", price: "120", image: "/static/image/day/密室逃脱.jpg" }
+      // 热门推荐数据 - 后台传递图片、名称、链接
+      hotProducts: [
+        {
+          id: 1,
+          name: "VR虚拟现实体验",
+          image: "/static/image/day/VR体验馆.jpg",
+          link: "/pages/tabBar/booking-detail/booking-detail"
+        },
+        {
+          id: 2,
+          name: "密室逃脱挑战",
+          image: "/static/image/day/密室逃脱.jpg",
+          link: "/pages/tabBar/booking-detail/booking-detail"
+        },
+        {
+          id: 3,
+          name: "VR头显设备",
+          image: "/static/image/day/vr-headset.jpg",
+          link: "/pages/shop/product-detail"
+        },
+        {
+          id: 4,
+          name: "台球杆套装",
+          image: "/static/image/day/台球1.png",
+          link: "/pages/shop/product-detail"
+        }
       ]
     };
   },
   onLoad() {
     this.checkAndShowAnnouncement();
     this.loadBanners();
+    this.loadHotProducts();
   },
   methods: {
     // 加载轮播图数据（从后台获取）
@@ -88,16 +110,16 @@ const _sfc_main = {
               this.banners = res.data;
             }
           }).catch((err) => {
-            common_vendor.index.__f__("error", "at pages/tabBar/home/home.vue:200", "加载模拟轮播图失败:", err);
+            common_vendor.index.__f__("error", "at pages/tabBar/home/home.vue:223", "加载模拟轮播图失败:", err);
           });
         }
       }).catch((err) => {
-        common_vendor.index.__f__("error", "at pages/tabBar/home/home.vue:215", "导入API模块失败:", err);
+        common_vendor.index.__f__("error", "at pages/tabBar/home/home.vue:238", "导入API模块失败:", err);
       });
     },
     // 轮播图点击事件
     onBannerClick(banner) {
-      common_vendor.index.__f__("log", "at pages/tabBar/home/home.vue:222", "点击轮播图:", banner);
+      common_vendor.index.__f__("log", "at pages/tabBar/home/home.vue:245", "点击轮播图:", banner);
       switch (banner.linkType) {
         case "activity":
           this.navigateToActivity(banner.linkData);
@@ -164,6 +186,30 @@ const _sfc_main = {
     // 测试方法：重新显示公告（开发调试用）
     showTestAnnouncement() {
       this.showAnnouncement = true;
+    },
+    // 加载热门推荐数据（从后台获取）
+    loadHotProducts() {
+      "../../../api/products.js".then((module) => {
+        const { getHotProducts } = module;
+        getHotProducts().then((res) => {
+          if (res.success && res.data) {
+            this.hotProducts = res.data;
+          }
+        }).catch((err) => {
+          common_vendor.index.__f__("error", "at pages/tabBar/home/home.vue:349", "加载热门推荐失败:", err);
+        });
+      }).catch((err) => {
+        common_vendor.index.__f__("error", "at pages/tabBar/home/home.vue:353", "导入API模块失败:", err);
+      });
+    },
+    // 查看热门推荐产品
+    viewHotProduct(product) {
+      common_vendor.index.__f__("log", "at pages/tabBar/home/home.vue:360", "查看热门推荐:", product);
+      if (product.link) {
+        common_vendor.index.navigateTo({
+          url: product.link
+        });
+      }
     }
   }
 };
@@ -210,13 +256,12 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     o: common_assets._imports_0,
     p: common_vendor.o((...args) => $options.navigateToMainFunction && $options.navigateToMainFunction(...args)),
     q: common_vendor.o((...args) => $options.showTestAnnouncement && $options.showTestAnnouncement(...args)),
-    r: common_vendor.f($data.products, (item, index, i0) => {
+    r: common_vendor.f($data.hotProducts, (item, index, i0) => {
       return {
         a: item.image,
         b: common_vendor.t(item.name),
-        c: common_vendor.t(item.price),
-        d: index,
-        e: common_vendor.o(($event) => $options.viewProduct(item), index)
+        c: index,
+        d: common_vendor.o(($event) => $options.viewHotProduct(item), index)
       };
     })
   });

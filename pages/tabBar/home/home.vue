@@ -91,12 +91,12 @@
 				<!-- 开发测试按钮 (生产环境可删除) -->
 				<text class="test-btn" @click="showTestAnnouncement">📢</text>
 			</view>
+			
 			<view class="product-list">
-				<view class="product-item" v-for="(item, index) in products" :key="index" @click="viewProduct(item)">
+				<view class="product-item" v-for="(item, index) in hotProducts" :key="index" @click="viewHotProduct(item)">
 					<image :src="item.image" mode="aspectFill" class="product-image"></image>
 					<view class="product-info">
 						<text class="product-name">{{item.name}}</text>
-						<text class="product-price">¥{{item.price}}</text>
 					</view>
 				</view>
 			</view>
@@ -166,11 +166,32 @@
 					}
 				],
 
-				products: [
-					{ name: 'VR体验馆', price: '80', image: '/static/image/day/VR体验馆.jpg' },
-					{ name: '棋牌室', price: '60', image: '/static/image/day/棋牌1.jpg' },
-					{ name: '台球室', price: '50', image: '/static/image/day/台球1.png' },
-					{ name: '密室逃脱', price: '120', image: '/static/image/day/密室逃脱.jpg' }
+				// 热门推荐数据 - 后台传递图片、名称、链接
+				hotProducts: [
+					{ 
+						id: 1,
+						name: 'VR虚拟现实体验', 
+						image: '/static/image/day/VR体验馆.jpg',
+						link: '/pages/tabBar/booking-detail/booking-detail'
+					},
+					{ 
+						id: 2,
+						name: '密室逃脱挑战', 
+						image: '/static/image/day/密室逃脱.jpg',
+						link: '/pages/tabBar/booking-detail/booking-detail'
+					},
+					{ 
+						id: 3,
+						name: 'VR头显设备', 
+						image: '/static/image/day/vr-headset.jpg',
+						link: '/pages/shop/product-detail'
+					},
+					{ 
+						id: 4,
+						name: '台球杆套装', 
+						image: '/static/image/day/台球1.png',
+						link: '/pages/shop/product-detail'
+					}
 				]
 			}
 		},
@@ -179,6 +200,8 @@
 			this.checkAndShowAnnouncement();
 			// 加载轮播图数据
 			this.loadBanners();
+			// 加载热门推荐数据
+			this.loadHotProducts();
 		},
 		methods: {
 			// 加载轮播图数据（从后台获取）
@@ -309,6 +332,38 @@
 			// 测试方法：重新显示公告（开发调试用）
 			showTestAnnouncement() {
 				this.showAnnouncement = true;
+			},
+			
+			// 加载热门推荐数据（从后台获取）
+			loadHotProducts() {
+				// 导入API接口
+				import('@/api/products.js').then(module => {
+					const { getHotProducts } = module;
+					
+					// 调用后台API获取热门推荐数据
+					getHotProducts().then(res => {
+						if (res.success && res.data) {
+							this.hotProducts = res.data;
+						}
+					}).catch(err => {
+						console.error('加载热门推荐失败:', err);
+						// 使用默认数据
+					});
+				}).catch(err => {
+					console.error('导入API模块失败:', err);
+					// 使用默认数据
+				});
+			},
+			
+			// 查看热门推荐产品
+			viewHotProduct(product) {
+				console.log('查看热门推荐:', product);
+				// 根据后台传递的链接进行跳转
+				if (product.link) {
+					uni.navigateTo({
+						url: product.link
+					});
+				}
 			}
 		}
 	}
@@ -573,43 +628,38 @@
 		}
 		
 		.product-list {
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: space-between;
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 20rpx;
+		}
+		
+		.product-item {
+			background-color: #fff;
+			border-radius: 12rpx;
+			overflow: hidden;
+			border: 1rpx solid #ffe8ec;
+			transition: all 0.3s ease;
 			
-			.product-item {
-				width: 48%;
-				margin-bottom: 20rpx;
-				border-radius: 12rpx;
-				overflow: hidden;
-				background-color: #fef8fa; // 更淡的浅粉色背景
-				border: 1rpx solid #ffe8ec; // 更淡的边框色
-				transition: all 0.3s ease;
+			&:active {
+				transform: translateY(-2rpx);
+				box-shadow: 0 8rpx 20rpx rgba(255, 182, 193, 0.2);
+			}
+			
+			.product-image {
+				width: 100%;
+				height: 200rpx;
+				background-color: #f5f5f5;
+			}
+			
+			.product-info {
+				padding: 20rpx;
 				
-				&:active {
-					transform: scale(0.95);
-				}
-				
-				.product-image {
-					width: 100%;
-					height: 200rpx;
-				}
-				
-				.product-info {
-					padding: 20rpx;
-					
-					.product-name {
-						font-size: 28rpx;
-						color: #333;
-						display: block;
-						margin-bottom: 10rpx;
-					}
-					
-					.product-price {
-						font-size: 32rpx;
-						color: #FFB6C1; // 更淡的粉色
-						font-weight: bold;
-					}
+				.product-name {
+					font-size: 28rpx;
+					font-weight: bold;
+					color: #333;
+					display: block;
+					text-align: center;
 				}
 			}
 		}

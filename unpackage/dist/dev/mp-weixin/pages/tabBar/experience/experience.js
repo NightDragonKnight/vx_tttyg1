@@ -126,19 +126,13 @@ const _sfc_main = {
     onSearchInput() {
     },
     search() {
-      common_vendor.index.__f__("log", "at pages/tabBar/experience/experience.vue:218", "搜索关键词:", this.searchKeyword);
-    },
-    viewStoreDetail(store) {
-      common_vendor.index.showToast({
-        title: `查看${store.name}详情`,
-        icon: "none"
-      });
+      common_vendor.index.__f__("log", "at pages/tabBar/experience/experience.vue:220", "搜索关键词:", this.searchKeyword);
     },
     callStore(store) {
       common_vendor.index.makePhoneCall({
         phoneNumber: store.phone,
         success: () => {
-          common_vendor.index.__f__("log", "at pages/tabBar/experience/experience.vue:230", "拨打电话成功");
+          common_vendor.index.__f__("log", "at pages/tabBar/experience/experience.vue:227", "拨打电话成功");
         },
         fail: () => {
           common_vendor.index.showToast({
@@ -188,15 +182,15 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         a: store.image,
         b: common_vendor.t(store.statusText),
         c: common_vendor.n(store.status),
-        d: common_vendor.t(store.name),
-        e: common_vendor.t(store.address),
-        f: common_vendor.o(($event) => $options.callStore(store), index),
-        g: common_vendor.o(($event) => $options.navigateToStore(store), index),
-        h: store.status === "renovation" || store.status === "closed" ? 1 : "",
-        i: common_vendor.o(($event) => $options.bookStore(store), index),
-        j: store.status === "renovation" || store.status === "closed",
-        k: index,
-        l: common_vendor.o(($event) => $options.viewStoreDetail(store), index)
+        d: common_vendor.o(($event) => $options.bookStore(store), index),
+        e: common_vendor.t(store.name),
+        f: common_vendor.t(store.address),
+        g: common_vendor.o(($event) => $options.callStore(store), index),
+        h: common_vendor.o(($event) => $options.navigateToStore(store), index),
+        i: store.status === "renovation" || store.status === "closed" ? 1 : "",
+        j: common_vendor.o(($event) => $options.bookStore(store), index),
+        k: store.status === "renovation" || store.status === "closed",
+        l: index
       };
     }),
     f: $options.filteredStores.length === 0

@@ -521,7 +521,7 @@ const _sfc_main = {
           phone: store.phone
         };
       } catch (e) {
-        common_vendor.index.__f__("error", "at pages/tabBar/booking-detail/booking-detail.vue:798", "解析门店数据失败:", e);
+        common_vendor.index.__f__("error", "at pages/tabBar/booking-detail/booking-detail.vue:851", "解析门店数据失败:", e);
       }
     }
     if (options.item) {
@@ -532,7 +532,7 @@ const _sfc_main = {
           this.selectProduct(matchedProduct);
         }
       } catch (e) {
-        common_vendor.index.__f__("error", "at pages/tabBar/booking-detail/booking-detail.vue:812", "解析项目数据失败:", e);
+        common_vendor.index.__f__("error", "at pages/tabBar/booking-detail/booking-detail.vue:865", "解析项目数据失败:", e);
       }
     }
     if (this.products.length > 0) {
@@ -549,9 +549,9 @@ const _sfc_main = {
     },
     // 选择套餐方法
     selectPackage(packageType) {
-      common_vendor.index.__f__("log", "at pages/tabBar/booking-detail/booking-detail.vue:832", "选择套餐:", packageType);
+      common_vendor.index.__f__("log", "at pages/tabBar/booking-detail/booking-detail.vue:885", "选择套餐:", packageType);
       this.selectedPackageType = packageType;
-      common_vendor.index.__f__("log", "at pages/tabBar/booking-detail/booking-detail.vue:834", "selectedPackageType 已设置为:", this.selectedPackageType);
+      common_vendor.index.__f__("log", "at pages/tabBar/booking-detail/booking-detail.vue:887", "selectedPackageType 已设置为:", this.selectedPackageType);
       this.selectedRoom = null;
       this.selectedStartTime = null;
       this.selectedEndTime = null;
@@ -577,8 +577,37 @@ const _sfc_main = {
         videoUrl: product.videoUrl,
         videoPoster: product.videoPoster,
         images: product.images,
-        detailImages: product.detailImages || []
+        detailImages: product.detailImages || [],
+        // 产品简介相关属性
+        height: product.height || "120-180cm",
+        dimensions: product.dimensions || "长200cm × 宽150cm × 高180cm",
+        powerType: product.powerType || "电动驱动",
+        safetyLevel: product.safetyLevel || "A级安全认证",
+        usage: product.usage || "专业工作人员指导操作，请勿自行操作"
       };
+    },
+    // 预览视频
+    previewVideo() {
+      common_vendor.index.navigateTo({
+        url: `/pages/video-player/video-player?videoUrl=${encodeURIComponent(this.currentProduct.videoUrl)}&title=${encodeURIComponent(this.currentProduct.name)}`
+      });
+    },
+    // 预览图片
+    previewImage(currentImage, allImages) {
+      common_vendor.index.previewImage({
+        current: currentImage,
+        urls: allImages,
+        success: () => {
+          common_vendor.index.__f__("log", "at pages/tabBar/booking-detail/booking-detail.vue:944", "预览图片成功");
+        },
+        fail: (err) => {
+          common_vendor.index.__f__("error", "at pages/tabBar/booking-detail/booking-detail.vue:947", "预览图片失败:", err);
+          common_vendor.index.showToast({
+            title: "预览图片失败",
+            icon: "none"
+          });
+        }
+      });
     },
     navigateToStore() {
       common_vendor.index.showToast({
@@ -590,7 +619,7 @@ const _sfc_main = {
       common_vendor.index.makePhoneCall({
         phoneNumber: this.storeInfo.phone,
         success: () => {
-          common_vendor.index.__f__("log", "at pages/tabBar/booking-detail/booking-detail.vue:881", "拨打电话成功");
+          common_vendor.index.__f__("log", "at pages/tabBar/booking-detail/booking-detail.vue:967", "拨打电话成功");
         },
         fail: () => {
           common_vendor.index.showToast({
@@ -609,7 +638,13 @@ const _sfc_main = {
         price: product.price,
         videoUrl: product.videoUrl,
         videoPoster: product.videoPoster,
-        images: product.images
+        images: product.images,
+        // 产品简介相关属性
+        height: product.height || "120-180cm",
+        dimensions: product.dimensions || "长200cm × 宽150cm × 高180cm",
+        powerType: product.powerType || "电动驱动",
+        safetyLevel: product.safetyLevel || "A级安全认证",
+        usage: product.usage || "专业工作人员指导操作，请勿自行操作"
       };
       this.selectedRoom = null;
       this.selectedStartTime = null;
@@ -792,16 +827,21 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     b: $data.currentStep === 1 ? 1 : "",
     c: $data.currentStep === 2 ? 1 : "",
     d: $data.currentStep === 1
-  }, $data.currentStep === 1 ? {
-    e: $data.currentProduct.videoUrl,
-    f: $data.currentProduct.videoPoster,
-    g: common_vendor.f($data.currentProduct.images, (image, index, i0) => {
+  }, $data.currentStep === 1 ? common_vendor.e({
+    e: $data.currentProduct.videoUrl
+  }, $data.currentProduct.videoUrl ? {
+    f: $data.currentProduct.videoUrl,
+    g: $data.currentProduct.videoPoster,
+    h: common_vendor.o((...args) => $options.previewVideo && $options.previewVideo(...args))
+  } : {}, {
+    i: common_vendor.f($data.currentProduct.images, (image, index, i0) => {
       return {
         a: image,
-        b: index
+        b: common_vendor.o(($event) => $options.previewImage(image, $data.currentProduct.images), index),
+        c: index
       };
     }),
-    h: common_vendor.f($data.products, (product, k0, i0) => {
+    j: common_vendor.f($data.products, (product, k0, i0) => {
       return {
         a: product.thumbnail,
         b: common_vendor.t(product.name),
@@ -810,60 +850,54 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         e: common_vendor.o(($event) => $options.selectProductForDisplay(product), product.id)
       };
     }),
-    i: common_vendor.t($data.currentProduct.price),
-    j: common_vendor.t($data.currentProduct.package1Price),
-    k: common_vendor.t($data.currentProduct.package2Price),
-    l: common_vendor.t($data.currentProduct.package3Price),
-    m: common_vendor.f($data.currentProduct.detailImages, (detail, index, i0) => {
-      return {
-        a: detail.image,
-        b: common_vendor.t(detail.name),
-        c: index
-      };
-    }),
-    n: common_vendor.o((...args) => $options.goToStep2 && $options.goToStep2(...args))
-  } : {}, {
-    o: $data.currentStep === 2
+    k: common_vendor.t($data.currentProduct.price),
+    l: common_vendor.t($data.currentProduct.package1Price),
+    m: common_vendor.t($data.currentProduct.package2Price),
+    n: common_vendor.t($data.currentProduct.package3Price),
+    o: common_vendor.t($data.currentProduct.height || "120-180cm"),
+    p: common_vendor.t($data.currentProduct.dimensions || "长200cm × 宽150cm × 高180cm"),
+    q: common_vendor.t($data.currentProduct.powerType || "电动驱动"),
+    r: common_vendor.t($data.currentProduct.safetyLevel || "A级安全认证"),
+    s: common_vendor.t($data.currentProduct.usage || "专业工作人员指导操作，请勿自行操作"),
+    t: common_vendor.o((...args) => $options.goToStep2 && $options.goToStep2(...args))
+  }) : {}, {
+    v: $data.currentStep === 2
   }, $data.currentStep === 2 ? common_vendor.e({
-    p: common_vendor.o((...args) => $options.goToStep1 && $options.goToStep1(...args)),
-    q: common_vendor.t($data.selectedPackageType || "未选择"),
-    r: common_vendor.t($data.currentProduct.price),
-    s: common_vendor.o(($event) => $options.selectPackage("hourly")),
-    t: $data.selectedPackageType === "hourly" ? 1 : "",
-    v: common_vendor.t($data.currentProduct.package1Price),
-    w: common_vendor.o(($event) => $options.selectPackage("package1")),
-    x: $data.selectedPackageType === "package1" ? 1 : "",
-    y: common_vendor.t($data.currentProduct.package2Price),
-    z: common_vendor.o(($event) => $options.selectPackage("package2")),
-    A: $data.selectedPackageType === "package2" ? 1 : "",
-    B: common_vendor.t($data.currentProduct.package3Price),
-    C: common_vendor.o(($event) => $options.selectPackage("package3")),
-    D: $data.selectedPackageType === "package3" ? 1 : "",
-    E: !$data.selectedPackageType
-  }, !$data.selectedPackageType ? {} : {}, {
-    F: $data.selectedPackageType
-  }, $data.selectedPackageType ? common_vendor.e({
-    G: common_vendor.t($data.selectedPackageType),
-    H: common_vendor.t($data.selectedDate),
-    I: $data.selectedDate,
-    J: common_vendor.o((...args) => $options.onDateChange && $options.onDateChange(...args)),
-    K: common_vendor.t($data.selectedStartTime || "请选择开始时间"),
-    L: !$data.selectedStartTime ? 1 : "",
-    M: $data.startTimeIndex,
-    N: $options.availableStartTimes,
-    O: common_vendor.o((...args) => $options.onStartTimeChange && $options.onStartTimeChange(...args)),
-    P: common_vendor.t($data.selectedEndTime || ($data.selectedStartTime ? "请选择结束时间" : "请先选择开始时间")),
-    Q: !$data.selectedEndTime ? 1 : "",
-    R: !$data.selectedStartTime ? 1 : "",
-    S: $data.endTimeIndex,
-    T: $options.availableEndTimes,
-    U: common_vendor.o((...args) => $options.onEndTimeChange && $options.onEndTimeChange(...args)),
-    V: !$data.selectedStartTime,
-    W: $data.selectedStartTime && $data.selectedEndTime
+    w: common_vendor.o((...args) => $options.goToStep1 && $options.goToStep1(...args)),
+    x: common_vendor.t($data.selectedPackageType || "未选择"),
+    y: common_vendor.t($data.currentProduct.price),
+    z: common_vendor.o(($event) => $options.selectPackage("hourly")),
+    A: $data.selectedPackageType === "hourly" ? 1 : "",
+    B: common_vendor.t($data.currentProduct.package1Price),
+    C: common_vendor.o(($event) => $options.selectPackage("package1")),
+    D: $data.selectedPackageType === "package1" ? 1 : "",
+    E: common_vendor.t($data.currentProduct.package2Price),
+    F: common_vendor.o(($event) => $options.selectPackage("package2")),
+    G: $data.selectedPackageType === "package2" ? 1 : "",
+    H: common_vendor.t($data.currentProduct.package3Price),
+    I: common_vendor.o(($event) => $options.selectPackage("package3")),
+    J: $data.selectedPackageType === "package3" ? 1 : "",
+    K: common_vendor.t($data.selectedPackageType),
+    L: common_vendor.t($data.selectedDate),
+    M: $data.selectedDate,
+    N: common_vendor.o((...args) => $options.onDateChange && $options.onDateChange(...args)),
+    O: common_vendor.t($data.selectedStartTime || "请选择开始时间"),
+    P: !$data.selectedStartTime ? 1 : "",
+    Q: $data.startTimeIndex,
+    R: $options.availableStartTimes,
+    S: common_vendor.o((...args) => $options.onStartTimeChange && $options.onStartTimeChange(...args)),
+    T: common_vendor.t($data.selectedEndTime || ($data.selectedStartTime ? "请选择结束时间" : "请先选择开始时间")),
+    U: !$data.selectedEndTime ? 1 : "",
+    V: !$data.selectedStartTime ? 1 : "",
+    W: $data.endTimeIndex,
+    X: $options.availableEndTimes,
+    Y: common_vendor.o((...args) => $options.onEndTimeChange && $options.onEndTimeChange(...args)),
+    Z: !$data.selectedStartTime,
+    aa: $data.selectedStartTime && $data.selectedEndTime
   }, $data.selectedStartTime && $data.selectedEndTime ? {
-    X: common_vendor.t($options.durationHours)
+    ab: common_vendor.t($options.durationHours)
   } : {}, {
-    Y: common_vendor.f($options.hourlyTimeSlots, (hour, index, i0) => {
+    ac: common_vendor.f($options.hourlyTimeSlots, (hour, index, i0) => {
       return {
         a: common_vendor.t(hour.hour),
         b: common_vendor.n(hour.status),
@@ -871,13 +905,8 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         d: common_vendor.n($options.getTimeSlotClass(hour)),
         e: common_vendor.o(($event) => $options.selectHourlySlot(hour), index)
       };
-    })
-  }) : {}, {
-    Z: $data.selectedPackageType && (!$data.selectedStartTime || !$data.selectedEndTime)
-  }, $data.selectedPackageType && (!$data.selectedStartTime || !$data.selectedEndTime) ? {} : {}, {
-    aa: $data.selectedStartTime && $data.selectedEndTime
-  }, $data.selectedStartTime && $data.selectedEndTime ? common_vendor.e({
-    ab: common_vendor.f($data.availableRooms, (room, k0, i0) => {
+    }),
+    ad: common_vendor.f($data.availableRooms, (room, k0, i0) => {
       return {
         a: common_vendor.t(room.name),
         b: common_vendor.t(room.capacity),
@@ -890,20 +919,27 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         i: common_vendor.o(($event) => $options.selectRoom(room), room.id)
       };
     }),
-    ac: $data.selectedRoom && $data.currentRoom.images.length > 0
+    ae: $data.selectedRoom && $data.currentRoom.images.length > 0
   }, $data.selectedRoom && $data.currentRoom.images.length > 0 ? {
-    ad: common_vendor.f($data.currentRoom.images, (image, index, i0) => {
+    af: common_vendor.f($data.currentRoom.images, (image, index, i0) => {
       return {
         a: image,
         b: index
       };
     })
-  } : {}) : {}, {
-    ae: $data.selectedStartTime && $data.selectedEndTime && !$data.selectedRoom
-  }, $data.selectedStartTime && $data.selectedEndTime && !$data.selectedRoom ? {} : {}, {
-    af: $options.canConfirm
-  }, $options.canConfirm ? {
-    ag: common_vendor.o((...args) => $options.confirmBooking && $options.confirmBooking(...args))
+  } : {}, {
+    ag: common_vendor.t($options.canConfirm ? "确认预订" : "请完成所有选择"),
+    ah: !$options.canConfirm ? 1 : "",
+    ai: common_vendor.o((...args) => $options.confirmBooking && $options.confirmBooking(...args)),
+    aj: !$options.canConfirm,
+    ak: !$options.canConfirm
+  }, !$options.canConfirm ? {
+    al: common_vendor.t($data.selectedPackageType ? "✅" : "⭕"),
+    am: $data.selectedPackageType ? 1 : "",
+    an: common_vendor.t($data.selectedStartTime && $data.selectedEndTime ? "✅" : "⭕"),
+    ao: $data.selectedStartTime && $data.selectedEndTime ? 1 : "",
+    ap: common_vendor.t($data.selectedRoom ? "✅" : "⭕"),
+    aq: $data.selectedRoom ? 1 : ""
   } : {}) : {});
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render]]);
