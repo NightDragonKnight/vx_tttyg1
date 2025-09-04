@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="header">
-			<text class="title">我的预订</text>
+			<text class="title">我的预1订</text>
 		</view>
 		
 		<!-- 搜索栏 -->
